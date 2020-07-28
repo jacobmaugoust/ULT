@@ -1,0 +1,24 @@
+Package: jacob.maugoust
+Title: Jacob Maugoust's own package
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Jacob",
+           family = "Maugoust",
+           role = c("aut", "cre"),
+           email = "jacob.maugoust@umontpellier.fr")
+Description: Stock my own formulas
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    scales,
+    lattice,
+    Matrix,
+    Rdpack
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+RdMacros:
+    Rdpack
