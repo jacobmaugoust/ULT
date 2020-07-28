@@ -1,11 +1,11 @@
 #' @title
-#' Function to give a vector of 20 contrasting colors
+#' Function to give a vector of 22 contrasting colors
 #'
 #' @description
-#' This function is simply a vector, as rainbow() is for instance. It returns 20 simple and distinct colors found by Sasha Trubetskoy.
+#' This function is simply a vector, as rainbow() is for instance. It returns 20 simple and distinct colors found by Sasha Trubetskoy + black and white.
 #'
 #' @seealso
-#' For further details on this set of 20 colors, see \url{https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/}
+#' For further details on this set of 20 of the 22 colors, see \url{https://sashat.me/2017/01/11/list-of-20-simple-distinct-colors/}
 #'
 #' @importFrom gtools ask
 #'
