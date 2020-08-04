@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_from_factor.R
 \name{extract.from.factor}
 \alias{extract.from.factor}
-\title{Extract a factor vector with some levels of an initial factor vector}
+\title{Extract a vector with some levels of an initial factor vector}
 \usage{
 extract.from.factor(factor_vector, factor_levels, x = NA, output)
 }

@@ -1,5 +1,5 @@
 #' @title
-#' Extract a factor vector with some levels of an initial factor vector
+#' Extract a vector with some levels of an initial factor vector
 #'
 #' @description
 #' The main goal of this function is to return a subset or a vector able to subset a data vector linked to a factor vector according to some levels of this factor vector.
