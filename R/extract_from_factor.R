@@ -45,6 +45,9 @@ extract.from.factor<-function(factor_vector,factor_levels,x=NA,output){
   result<-c()
   for (i in 1:length(factor_vector)){
     for (j in 1:length(factor_levels)){
+      if(is.na(factor_vector[i])){
+        break
+      }
       if(output=="factor"){
         if(factor_vector[i]==factor_levels[j]){
           result<-c(result,as.character(factor_vector[i]))
@@ -57,7 +60,10 @@ extract.from.factor<-function(factor_vector,factor_levels,x=NA,output){
       }
     }
     if(output=="logical"){
-      if(any(factor_vector[i]==factor_levels)){
+      if(is.na(factor_vector[i])){
+        result<-c(result,FALSE)
+      }
+      else if(any(factor_vector[i]==factor_levels)){
         result<-c(result,TRUE)
       }
       else{
