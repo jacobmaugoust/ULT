@@ -3,6 +3,7 @@
 S3method(print,multkw.output)
 export(contrasting_palette)
 export(create.tree)
+export(extract.from.factor)
 export(morphospace)
 export(multkw)
 export(multkw.m)

@@ -21,4 +21,5 @@ This function permits to easily have a reduced factor vector containing some of 
 f1<-as.factor(c(rep("A",10),rep("B",5),rep("C",8),rep("A",4)))
 f2<-c("A","B")
 extract.from.factor(f1,f2)
+
 }
