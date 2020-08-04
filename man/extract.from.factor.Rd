@@ -4,7 +4,7 @@
 \alias{extract.from.factor}
 \title{Extract a factor vector with some levels of an initial factor vector}
 \usage{
-extract.from.factor(f1, f2)
+extract.from.factor(factor_vector, factor_levels, x = NA, output)
 }
 \arguments{
 \item{f1}{The initial factor vector}
@@ -12,14 +12,20 @@ extract.from.factor(f1, f2)
 \item{f2}{The vector containing the levels to extract}
 }
 \value{
-A factor vector with only the specified levels in f2
+If output is "factor", the function will return a shorter factor vector with the levels specified in the factor_levels argument only.
+If output is "logical", the function will return a logical vector of same length than the factor_vector specifying if each level is equal to the specified factor_levels. This can be especially useful when subsetting a vector according to multiple factor with (optionally) multiple levels for each.
+If output is "data", the function will return the data in x if the levels of the factor_vector of the same location are aqual to the specified factor_levels.
 }
 \description{
-This function permits to easily have a reduced factor vector containing some of the original levels
+The main goal of this function is to return a subset or a vector able to subset a data vector linked to a factor vector according to some levels of this factor vector.
 }
 \examples{
-f1<-as.factor(c(rep("A",10),rep("B",5),rep("C",8),rep("A",4)))
-f2<-c("A","B")
-extract.from.factor(f1,f2)
+factor_vector<-as.factor(c(rep("A",10),rep("B",5),rep("A",4),rep("C",6)))
+factor_levels<-c("B","C")
+x<-c(rep(10,10),rep(5,5),rep(11,4),rep(9,6))
+
+extract.from.factor(factor_vector,factor_levels,output="factor")
+extract.from.factor(factor_vector,factor_levels,output="logical")
+extract.from.factor(factor_vector,factor_levels,x,output="data")
 
 }
