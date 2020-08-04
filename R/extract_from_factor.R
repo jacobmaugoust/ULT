@@ -14,6 +14,8 @@
 #' f1<-as.factor(c(rep("A",10),rep("B",5),rep("C",8),rep("A",4)))
 #' f2<-c("A","B")
 #' extract.from.factor(f1,f2)
+#'
+#' @export
 
 extract.from.factor<-function(f1,f2){
   if(is.factor(f1)==FALSE){
