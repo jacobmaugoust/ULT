@@ -10,7 +10,8 @@ transparent_colors(
   front_alpha,
   back_alpha = NA,
   whole_background = NA,
-  output
+  output,
+  simple_multicol_output = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ transparent_colors(
 \item{whole_background}{The background color to be under the front color and potentially the back color. Cannot be transparent. By default, set to white.}
 
 \item{output}{The output of the color code(s). Can be "color name" (default value), being the color code in R, a "RGB 255 code" (values between 0 and 255) or a "RGB \% code" (values between 0 and 1).}
+
+\item{simple_multicol_output}{Logical. The output of the function if you specify a front and a back colors. Set by default to TRUE, meaning the only output will be the "mixed" color. Otherwise, it will return a list of two elements containing (1) the front, back and mixed colors and (2) the mixed transparency.}
 }
 \value{
 If there is a single color to be transparent, the color code or name.

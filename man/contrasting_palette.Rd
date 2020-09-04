@@ -4,10 +4,12 @@
 \alias{contrasting_palette}
 \title{Function to give a vector of 22 contrasting colors}
 \usage{
-contrasting_palette(value, black.and.white = TRUE)
+contrasting_palette(value, black.and.white = TRUE, sequential = TRUE)
 }
 \arguments{
 \item{black.and.white}{Logical. Choose ot include or not black and white and theend of the list of colors. By default set to TRUE.}
+
+\item{sequential}{Logical. If the value is a single number, choose if you want to have all colors between the first and the value, or if you want to have the color at the value. By default set too TRUE.}
 }
 \description{
 This function is simply a vector, as rainbow() is for instance. It returns 20 simple and distinct colors found by Sasha Trubetskoy + black and white.

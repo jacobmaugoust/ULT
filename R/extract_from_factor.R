@@ -43,40 +43,30 @@ extract.from.factor<-function(factor_vector,factor_levels,x=NA,output){
   if(length(x)!=length(factor_vector)){
     errorCondition("Error: data vector does not have the same length than the factor vector")
   }
+  if(missing(x)==FALSE&output!="data"){
+    warning("You provided a data vector but asked for a logical or factor output / did not asked for a data output. It is suggested to add output='data' in the function")
+  }
 
   result<-c()
   for (i in 1:length(factor_vector)){
-    for (j in 1:length(factor_levels)){
-      if(is.na(factor_vector[i])){
-        break
-      }
-      if(output=="factor"){
-        if(factor_vector[i]==factor_levels[j]){
-          result<-c(result,as.character(factor_vector[i]))
-        }
-      }
-      if(output=="data"){
-        if(factor_vector[i]==factor_levels[j]){
-          result<-c(result,x[i])
-        }
-      }
+    if(is.na(factor_vector[i])){
+      result<-c(result,FALSE)
     }
-    if(output=="logical"){
-      if(is.na(factor_vector[i])){
-        result<-c(result,FALSE)
-      }
-      else if(any(factor_vector[i]==factor_levels)){
-        result<-c(result,TRUE)
-      }
-      else{
-        result<-c(result,FALSE)
-      }
+    else if(any(factor_vector[i]==factor_levels)){
+      result<-c(result,TRUE)
     }
+    else{
+      result<-c(result,FALSE)
+    }
+  }
+
+  if(output=="logical"){
+    return(result)
   }
   if(output=="factor"){
-    return(as.factor(result))
+    return(factor_vector[result])
   }
-  else{
-    return(result)
+  if(output=="data"){
+    return(x[result])
   }
 }

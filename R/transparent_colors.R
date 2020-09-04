@@ -16,6 +16,7 @@
 #' @param back_alpha The transparency (or alpha value) of the back color. Can be between 0 and 1 and 0 and 100. Optional.
 #' @param whole_background The background color to be under the front color and potentially the back color. Cannot be transparent. By default, set to white.
 #' @param output The output of the color code(s). Can be "color name" (default value), being the color code in R, a "RGB 255 code" (values between 0 and 255) or a "RGB \% code" (values between 0 and 1).
+#' @param simple_multicol_output Logical. The output of the function if you specify a front and a back colors. Set by default to TRUE, meaning the only output will be the "mixed" color. Otherwise, it will return a list of two elements containing (1) the front, back and mixed colors and (2) the mixed transparency.
 #'
 #' @return
 #' If there is a single color to be transparent, the color code or name.
@@ -35,7 +36,7 @@
 #'
 #' @export
 
-transparent_colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA,whole_background=NA,output){
+transparent_colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA,whole_background=NA,output,simple_multicol_output=TRUE){
   if(all(is.na(back_color)==FALSE)){
     if(all(is.na(back_alpha)==TRUE)){
       stop("Please provide an alpha value, ranging from 0 (fully transparent) to 1, 100 (=100%) or 255 (fully opaque), for each color")
@@ -239,6 +240,11 @@ transparent_colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA
         }
       }
     }
-    return(list(transparent_colors,mixed_transparency))
+    if(simple_multicol_output==TRUE){
+      return(transparent_colors[[3]])
+    }
+    else{
+      return(list(transparent_colors,mixed_transparency))
+    }
   }
 }
