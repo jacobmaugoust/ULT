@@ -1,4 +1,4 @@
-# Package "ULT""
+# Package "ULT"
 # ULT stands for "Useful Little Things"
 ## This is a package designed to create some useful functions; no peculiar topic, only things that I found difficult to do and I tried to make easier
 
