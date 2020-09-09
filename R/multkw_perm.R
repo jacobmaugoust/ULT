@@ -21,8 +21,10 @@
 #' @import lattice
 #' @import Matrix
 #' @importFrom Rdpack reprompt
+#' @importFrom Rdpack insert_all_ref
 #'
-#' @references{\insertAllCited{}}
+#' @references
+#' \insertRef{He.etal.2017}{ULT}
 #'
 #' @return
 #' Returns a list of results of the various multivariate Kruskal-Wallis tests that have been computed.

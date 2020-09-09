@@ -25,7 +25,7 @@
 #' @importFrom Rdpack reprompt
 #'
 #' @references
-#'     \insertAllCited{}
+#' \insertRef{He.etal.2017}{ULT}
 #'
 #' @return
 #' Returns a list of results of the various multivariate Kruskal-Wallis tests that have been computed.

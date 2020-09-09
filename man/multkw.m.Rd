@@ -39,7 +39,7 @@ multkw.m(y=datamkw,airquality$Month)
 
 }
 \references{
-\insertAllCited{}
+\insertRef{He.etal.2017}{ULT}
 }
 \seealso{
 See chapter 2.2.2 and 4.2 of the \href{http://d-scholarship.pitt.edu/19411/1/Fanyin_ETD_draft_08-06-2013.pdf}{PhD manuscript of Fanyin He} and 'Methodology' of \insertCite{He.etal.2017;textual}{ULT} for more details.
