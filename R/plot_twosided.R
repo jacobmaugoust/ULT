@@ -42,7 +42,7 @@
 #' plot_twosided(x,y,y2,xy.plot.param=list(col="red",border="blue"),xy2.plot.param=list(type="l",col="green3",lwd=2),y.axis.param=list(col="red"),y2.axis.param=list(col="green3"))
 #'
 #' @export
-plot_twosided<-function(x,y,y2,xy.plot.type,xy2.plot.type,xy.plot.param,xy2.plot.param,y.axis.param,y2.axis.param){
+plot.twosided<-function(x,y,y2,xy.plot.type,xy2.plot.type,xy.plot.param,xy2.plot.param,y.axis.param,y2.axis.param){
   if(is.character(x)){x<-as.factor(x)}
 
   if(missing(xy.plot.param)){xy.plot.param<-list(yaxt="n",xlab="",ylab="")}

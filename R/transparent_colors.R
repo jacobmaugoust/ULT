@@ -36,7 +36,7 @@
 #'
 #' @export
 
-transparent_colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA,whole_background=NA,output,simple_multicol_output=TRUE){
+transparent.colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA,whole_background=NA,output,simple_multicol_output=TRUE){
   if(all(is.na(back_color)==FALSE)){
     if(all(is.na(back_alpha)==TRUE)){
       stop("Please provide an alpha value, ranging from 0 (fully transparent) to 1, 100 (=100%) or 255 (fully opaque), for each color")
