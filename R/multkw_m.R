@@ -12,7 +12,7 @@
 #' Degrees of freedom ar not the same for the "complete" data test and for the "missing" data test, see the See Also section.
 #'
 #' @seealso
-#' See chapter 2.2.2 and 4.2 of the \href{http://d-scholarship.pitt.edu/19411/1/Fanyin_ETD_draft_08-06-2013.pdf}{PhD manuscript of Fanyin He} and 'Methodology' of \insertCite{He.etal.2017;textual}{jacob.maugoust} for more details.
+#' See chapter 2.2.2 and 4.2 of the \href{http://d-scholarship.pitt.edu/19411/1/Fanyin_ETD_draft_08-06-2013.pdf}{PhD manuscript of Fanyin He} and 'Methodology' of \insertCite{He.etal.2017;textual}{ULT} for more details.
 #'
 #' @param group The factorial variable that subsets the dataset in groups. Can be a character vector, a factorial vector or an integer/numeric vector.
 #' @param y The dataset of n numeric(or integer) variables.
