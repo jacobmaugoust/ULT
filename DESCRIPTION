@@ -1,12 +1,12 @@
-Package: jacob.maugoust
-Title: Jacob Maugoust's own package
+Package: ULT
+Title: Useful Little Things
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jacob",
            family = "Maugoust",
            role = c("aut", "cre"),
            email = "jacob.maugoust@umontpellier.fr")
-Description: Stock my own formulas
+Description: Stock my own formulas. Various topics (stats, graph, basics...).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
