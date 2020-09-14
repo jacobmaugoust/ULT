@@ -369,7 +369,12 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   for (i in 1:length(branches[, 1])) {
     age_branches[i] <- age_all[branches[i, 1]] - age_all[branches[i, 2]]
   }
-  output <-list(edge = branches,if(aged_tree){edge.length = age_branches},Nnode = as.integer(nbnodes),tip.label = taxa)
+  if(aged_tree){
+    output <-list(edge = branches,edge.length = age_branches,Nnode = as.integer(nbnodes),tip.label = taxa)
+  }
+  else{
+    output <-list(edge = branches,Nnode = as.integer(nbnodes),tip.label = taxa)
+  }
   attributes(output)$class <- "phylo"
   attributes(output)$order <- "cladewise"
   output <- read.tree(text = write.tree(output))
