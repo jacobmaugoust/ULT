@@ -31,7 +31,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
     }
   }
   else{
-    aged_tree<-FALSE
+    aged_tree<-TRUE
   }
   if (missing(taxa)) {
     taxa <- c()
