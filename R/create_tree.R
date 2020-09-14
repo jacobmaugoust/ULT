@@ -175,17 +175,19 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   ultra<-c()
   while (loop != "end" & node != nodemax) {
     node <- node + 1
-    if(is.null(age_nodes)&aged_tree==TRUE){
-      ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
-      if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
-        ultra<-TRUE
-      }
-      else{
-        ultra<-FALSE
-      }
+    if(aged_tree){
+      ultra<-TRUE
     }
     else{
-      ultra<-TRUE
+      if(is.null(age_nodes)){
+        ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+        if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+          ultra<-TRUE
+        }
+        else{
+          ultra<-FALSE
+        }
+      }
     }
     node_nb_ends[[node]] <- ask(paste0(
       if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
