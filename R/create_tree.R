@@ -175,7 +175,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   ultra<-c()
   while (loop != "end" & node != nodemax) {
     node <- node + 1
-    if(aged_tree){
+    if(aged_tree==FALSE){
       ultra<-TRUE
     }
     else{
