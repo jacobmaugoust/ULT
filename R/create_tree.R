@@ -21,7 +21,7 @@
 #' @export
 
 create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
-  if(missing(age_taxa)|missing(age_nodes)){
+  if(missing(age_taxa)&missing(age_nodes)){
     aged_tree<-ask("Do you want to give ages to the tips of the tree ? (Y/N)")
     if(aged_tree=="Y"|aged_tree=="y"|aged_tree=="YES"|aged_tree=="yes"|aged_tree=="Yes"){
       aged_tree<-TRUE
