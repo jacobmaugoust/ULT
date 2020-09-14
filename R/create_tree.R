@@ -21,9 +21,18 @@
 #' @export
 
 create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
+  if(missing(age_taxa)|missing(age_nodes)){
+    aged_tree<-ask("Do you want to give ages to the tips of the tree ? (Y/N)")
+    if(aged_tree=="Y"|aged_tree=="y"|aged_tree=="YES"|aged_tree=="yes"|aged_tree=="Yes"){
+      aged_tree<-TRUE
+    }
+    else{
+      aged_tree<-FALSE
+    }
+  }
   if (missing(taxa)) {
     taxa <- c()
-    age_taxa <- c()
+    if(aged_tree){age_taxa <- c()}
     if (missing(nbtaxa)) {
       loop <- "go"
       nbtaxa <- 0
@@ -42,17 +51,19 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
                                        if (nbtaxa == 2) {"-nd"}
                                        else{"-th"}},
                                      " taxon; if you finished, please write 'end'"))
-          if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
-            cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
-            temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
-                                       if (nbtaxa == 1) {"-st"}
-                                       else{
-                                         if (nbtaxa == 2) {"-nd"}
-                                         else{"-th"}},
-                                       " taxon; if you finished, please write 'end'"))
+          if(aged_tree){
+            if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
+              cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
+              temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
+                                          if (nbtaxa == 1) {"-st"}
+                                          else{
+                                            if (nbtaxa == 2) {"-nd"}
+                                            else{"-th"}},
+                                          " taxon; if you finished, please write 'end'"))
             }
+          }
           taxa[nbtaxa] <- as.character(temp_taxa)
-          age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)
+          if(aged_tree){age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)}
         }
         else{
           loop <- "end"
@@ -74,40 +85,47 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
                                       if (i == 2) {"-nd"}
                                       else{"-th"}},
                                     " taxon"))
-        if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
-          cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
-          temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
-                                     if (i == 1) {"-st"}
-                                     else{
-                                       if (i == 2) {"-nd"}
-                                       else{"-th"}},
-                                     " taxon; if you finished, please write 'end'"))
+        if(aged_tree){
+          if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
+            cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
+            temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
+                                        if (i == 1) {"-st"}
+                                        else{
+                                          if (i == 2) {"-nd"}
+                                          else{"-th"}},
+                                        " taxon; if you finished, please write 'end'"))
           }
+        }
         taxa[i] <- as.character(temp_taxa)
-        age_taxa[i] <- as.numeric(temp_age_taxa)
+        if(aged_tree){age_taxa[i] <- as.numeric(temp_age_taxa)}
       }
     }
   }
   else{
     taxa <- as.character(taxa)
     nbtaxa <- length(taxa)
-    if (missing(age_taxa)) {
-      age_taxa <- "nothing"
-    }
-    if (all(suppressWarnings(is.na(as.numeric(age_taxa))))) {
-      for (i in 1:length(taxa)) {
-        temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
-        if (all(is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE)) {
-          cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
-          temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
-        }
-        age_taxa[i] <- as.numeric(temp_age_taxa)
+    if(aged_tree){
+      if (missing(age_taxa)) {
+        age_taxa <- "nothing"
       }
-      age_taxa <- as.numeric(age_taxa)
+      if (all(suppressWarnings(is.na(as.numeric(age_taxa))))) {
+        for (i in 1:length(taxa)) {
+          temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
+          if (all(is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE)) {
+            cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
+            temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
+          }
+          age_taxa[i] <- as.numeric(temp_age_taxa)
+        }
+        age_taxa <- as.numeric(age_taxa)
+      }
+      else{
+        age_taxa <- as.numeric(age_taxa)
+      }
     }
-    else{
-      age_taxa <- as.numeric(age_taxa)
-    }
+  }
+  if(aged_tree==FALSE){
+    age_taxa<-rep(0,length(taxa))
   }
 
   temp_phylo <- c()
@@ -157,8 +175,17 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   ultra<-c()
   while (loop != "end" & node != nodemax) {
     node <- node + 1
-    if(is.null(age_nodes)){
+    if(is.null(age_nodes)&aged_tree==TRUE){
       ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+      if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+        ultra<-TRUE
+      }
+      else{
+        ultra<-FALSE
+      }
+    }
+    else{
+      ultra<-TRUE
     }
     node_nb_ends[[node]] <- ask(paste0(
       if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
@@ -214,7 +241,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
       age_nodes<-age_nodes
     }
     else{
-      if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+      if(ultra){
         age_nodes[node] <- max(c(suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[node]]))])), suppressWarnings(max(age_nodes[unlist(foreach(i=1:as.numeric(node_nb_ends[[node]]))%do%which((names(node_ends)==node_ends[[node]][i])))])))) + 1
       }
       else{
@@ -337,7 +364,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   for (i in 1:length(branches[, 1])) {
     age_branches[i] <- age_all[branches[i, 1]] - age_all[branches[i, 2]]
   }
-  output <-list(edge = branches,edge.length = age_branches,Nnode = as.integer(nbnodes),tip.label = taxa)
+  output <-list(edge = branches,if(aged_tree){edge.length = age_branches},Nnode = as.integer(nbnodes),tip.label = taxa)
   attributes(output)$class <- "phylo"
   attributes(output)$order <- "cladewise"
   output <- read.tree(text = write.tree(output))
