@@ -4,7 +4,7 @@
 \alias{create.tree}
 \title{Create a phylogenetic tree}
 \usage{
-create.tree(nbtaxa, taxa, age_taxa, nbnodes, age_nodes, format)
+create.tree(nbtaxa, taxa, age_taxa, nbnodes, nodes, age_nodes, format)
 }
 \arguments{
 \item{nbtaxa}{Desired number of taxa; optional, especially if either \emph{taxa} or \emph{age_taxa} parameters are present}
@@ -14,6 +14,8 @@ create.tree(nbtaxa, taxa, age_taxa, nbnodes, age_nodes, format)
 \item{age_taxa}{A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
 
 \item{nbnodes}{Desired number of nodes; optional, especially if \emph{age_nodes} is present}
+
+\item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.}
 
 \item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
 
