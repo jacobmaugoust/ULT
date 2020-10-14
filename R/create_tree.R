@@ -17,6 +17,7 @@
 #' @importFrom gtools ask
 #' @importFrom ape plot.phylo read.tree write.tree
 #' @importFrom foreach foreach %do%
+#' @importFrom DescTools RoundTo
 #'
 #' @export
 
