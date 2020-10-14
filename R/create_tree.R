@@ -132,8 +132,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
   }
 
   temp_phylo <- c()
+  plot_depth <- max(age_taxa,if(missing(age_nodes)==FALSE){age_nodes})
   for (i in 1:nbtaxa) {
-    temp_phylo[i] <- paste0(taxa[i], ":", max(age_taxa) - age_taxa[i], ",", collapse = "")
+    temp_phylo[i] <- paste0(taxa[i], ":", plot_depth - age_taxa[i], ",", collapse = "")
   }
   temp_phylo <- paste0("(", gsub('.{1}$', '', paste(temp_phylo, collapse = "", sep = "")), ");")
   temp <- read.tree(text = temp_phylo)
@@ -153,15 +154,24 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
     }
   }
   temp$tip.label <- taxa_short
-  plot.phylo(temp,edge.color = "white",x.lim = c(min(age_taxa), max(age_taxa)),label.offset = -0.1)
-  x_ticks <-invisible(axis(1,labels = NA,tick = FALSE,at = seq(floor(min(age_taxa)), ceiling(max(age_taxa)), round(log10(max(age_taxa) - min(age_taxa))))))
+  x_gap<-log10(plot_depth - min(age_taxa))
+  if(x_gap<1){
+    x_gap_magnitude<-0
+    x_gap_temp<-0
+    while(x_gap_temp<1){
+      x_gap_temp<-x_gap*10^x_gap_magnitude
+      if(x_gap_temp<1){x_gap_magnitude<-x_gap_magnitude+1}
+    }
+    x_gap<-RoundTo(round(x_gap,x_gap_magnitude),5/10^x_gap_magnitude)
+  }
+  plot.phylo(temp,edge.color = "white",x.lim = c(min(age_taxa), plot_depth),label.offset = -x_gap/10)
+  x_ticks <-invisible(axis(1,labels = NA,tick = FALSE,at = seq(floor(min(age_taxa)), ceiling(plot_depth), x_gap)))
   x_labels <- rev(x_ticks)
   axis(1, at = x_ticks, labels = x_labels)
   node_nb_ends <- list()
   node_ends <- list()
   node_coords_x <- c()
   node_coords_y <- c()
-  plot_depth <- max(x_ticks)
   loop <- "go"
   node <- 0
   nodemax<--1
@@ -270,7 +280,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,age_nodes,format) {
       }
     }
     max_depth <- max(c(max(age_taxa), max(age_nodes)),na.rm=TRUE)
-    node_coords_x[node] <- max(age_taxa) - age_nodes[node]
+    node_coords_x[node] <- plot_depth - age_nodes[node]
     if (all(suppressWarnings(is.na(as.numeric(node_ends[[node]]))) == FALSE)) {
       node_coords_y[node] <- mean(as.numeric(node_ends[[node]]))
     }
