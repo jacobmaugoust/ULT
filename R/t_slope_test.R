@@ -105,7 +105,7 @@ t.slope.test<-function(x,y,factor,x2,y2,object_1,object_2,parameter="slope"){
   se_parameter_1<-object_1$coefficients[parameter,2]
   se_parameter_2<-object_2$coefficients[parameter,2]
   n_1<-length(object_1$residuals)
-  n_2<-length(object_1$residuals)
+  n_2<-length(object_2$residuals)
   n<-n_1+n_2
   num<-abs(parameter_1-parameter_2)
   denom<-sqrt(se_parameter_1^2+se_parameter_2^2)
