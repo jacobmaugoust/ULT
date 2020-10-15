@@ -9,7 +9,7 @@ t.slope.test(x, y, factor, x2, y2, object_1, object_2, parameter = "slope")
 \arguments{
 \item{x}{the x-values to be used. Can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the x-values for the first group.}
 
-\item{y}{the y-values to be used. As for x, it can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the y-values for the first group.}
+\item{y}{the y-values to be used. As for \code{x}, it can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the y-values for the first group.}
 
 \item{factor}{mandatory if providing \code{x} and \code{y} data to separate two groups.}
 
@@ -36,7 +36,7 @@ Finally, it can be performed on two lm outputs (no matter if the output comes fr
 }
 \examples{
 
-# For an expected equality of slope :
+# For an expected equality of slopes :
 x_A<-sort(runif(50,0,10))
 x_B<-c()
 for (i in 1:50){

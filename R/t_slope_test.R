@@ -9,7 +9,7 @@
 #' Finally, it can be performed on two lm outputs (no matter if the output comes from \code{lm()} or \code{summary(lm()))}.
 #'
 #' @param x the x-values to be used. Can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the x-values for the first group.
-#' @param y the y-values to be used. As for x, it can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the y-values for the first group.
+#' @param y the y-values to be used. As for \code{x}, it can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the y-values for the first group.
 #' @param factor mandatory if providing \code{x} and \code{y} data to separate two groups.
 #' @param x2 the x-values to be used for the second group.
 #' @param y2 the y-values to be used for the second group.
@@ -21,7 +21,7 @@
 #'
 #' @examples
 #'
-#' # For an expected equality of slope :
+#' # For an expected equality of slopes :
 #' x_A<-sort(runif(50,0,10))
 #' x_B<-c()
 #' for (i in 1:50){
