@@ -5,8 +5,8 @@
 #' It can also be used to test whether a regression slope or intercept is equal to a given value.
 #'
 #' @details
-#' The t-test can be performed on two x and y value vectors if also bringing a factor vector separating the x and y data in two subgroups.
-#' It can also be performed on two independant x and y value vectors, that are x, y, x2 and y2.
+#' The t-test can be performed on two \code{x} and \code{y} value vectors if also bringing a factor vector separating the x and y data in two subgroups.
+#' It can also be performed on two independant \code{x} and \code{y} value vectors, that are \code{x}, \code{y}, \code{x2} and \code{y2}.
 #' Finally, it can be performed on two lm outputs (no matter if the output comes from \code{lm()} or \code{summary(lm()))}.
 #'
 #' @param x the x-values to be used. Can contain the two groups of data if the parameter \code{factor} is provided. Otherwise, contain the x-values for the first group.
@@ -18,7 +18,7 @@
 #' @param object_2 the output of the linear model for the second group; can be an output of \code{"lm"} or of \code{"summary(lm)"}
 #' @param parameter the parameter of the regression line to be tested; by default the \code{"slope"}, otherwise can be the \code{"intercept"}
 #'
-#' @return Returns an object containing the absolute difference between the two estimated parameters ($Estimate), the standard error of this difference ($Std. Error), the t-value of the t-test ($t value), the degrees of freedom of the test ($df) and the p-value of the bilateral t-test ($p-value).
+#' @return Returns an object containing the absolute difference between the two estimated parameters (\code{$Estimate}), the standard error of this difference (\code{$Std. Error}), the t-value of the t-test (\code{$t value}), the degrees of freedom of the test (\code{$df}) and the p-value of the bilateral t-test (\code{$p-value}).
 #'
 #' @examples
 #'
@@ -65,8 +65,11 @@
 #' @importFrom rlang is_formula
 #' @export
 
-reg.param.t.test<-function(x,y,factor,x2,y2,object_1=NULL,object_2=NULL,delta=NULL,parameter="slope"){
-
+reg.param.t.test<-function(x,y,factor,x2,y2,object_1,object_2,delta,parameter){
+  if(missing(parameter)){parameter<-"slope"}
+  if(missing(delta)){delta<-NULL}
+  if(missing(object_2)){object_2<-NULL}
+  if(missing(object_1)){object_1<-NULL}
   if(missing(y2)==FALSE){
     if(y2=="slope"|y2=="intercept"){
       parameter<-y2
