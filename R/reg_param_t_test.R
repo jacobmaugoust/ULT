@@ -44,6 +44,8 @@
 #' slope1<-runif(1,-100,100)
 #' intercept<-runif(1,-100,100)
 #' slope2<-runif(1,-100,100)
+#' y1<-c()
+#' y2<-c()
 #' for (i in 1:length(x1)){
 #'   y1[i]<-x1[i]*slope1+intercept+runif(1,-abs(slope1)/100,abs(slope1)/100)
 #'   y2[i]<-x2[i]*slope2+intercept+runif(1,-abs(slope2)/100,abs(slope2)/100)
