@@ -228,11 +228,11 @@ reg.param.t.test<-function(x,y,factor,x2,y2,object_1,object_2,delta,parameter){
   n_1<-length(object_1$residuals)
   n_2<-length(object_2$residuals)
   n<-n_1+n_2
-  num<-abs(parameter_1-parameter_2)
+  num<-parameter_1-parameter_2
   denom<-sqrt(se_parameter_1^2+se_parameter_2^2)
   t<-num/denom
   df<-n-4-dfsup
-  p<-2*pt(-t,df)
+  p<-2*pt(-abs(t),df)
   results<-list(num,denom,t,df,p)
   names(results)<-c("Estimate","Std. Error","t value","df","p-value")
   return(results)
