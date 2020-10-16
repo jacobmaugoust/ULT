@@ -66,6 +66,7 @@ for (i in 1:length(x1)){
 x12<-c(x1,x2)
 y12<-c(y1,y2)
 fac<-c(rep("1",50),rep("2",50))
+parameter<-"slope"
 object_1<-summary(lm(y12[fac==levels(factor(fac))[1]]~x12[fac==levels(factor(fac))[1]]))
 object_2<-summary(lm(y12[fac==levels(factor(fac))[2]]~x12[fac==levels(factor(fac))[2]]))
 plot(x1,y1,type="l",col="blue",ylim=c(min(min(y1),min(y2)),max(max(y1),max(y2))))
