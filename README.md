@@ -10,4 +10,4 @@
 
 ### I plan to build other functions, especially a function to draw a tree and be completely parametrable
 
-### Feel free to use, please just cite this package if used (and the references associated to the used functions, if relevant) and let me know it (jacob.maugoust@montpellier.fr)
+### Feel free to use, please just cite this package if used (and the references associated to the used functions, if relevant) and let me know it (jacob.maugoust@umontpellier.fr)
