@@ -1,4 +1,6 @@
-<meta name="google-site-verification" content="8RxjfD3zAKng0Ht73dgzJk9f9ddsO9Do3k_d8CXpxpM" />
+<head>
+  <meta name="google-site-verification" content="8RxjfD3zAKng0Ht73dgzJk9f9ddsO9Do3k_d8CXpxpM" />
+</head>
 
 # Package "ULT"
 # ULT stands for "Useful Little Things"
