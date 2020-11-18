@@ -7,7 +7,7 @@
 #' @param factor_vector The initial factor vector
 #' @param factor_levels The vector containing the levels to extract
 #' @param x Optional. The data (of any kind) whose values are to be extracted from the factor_vector
-#' @param output Optional. The type of output of the function. See Value section below.
+#' @param output Optional. The type of output of the function. See value section below.
 #'
 #' @return
 #' If output is "factor", the function will return a shorter factor vector with the levels specified in the factor_levels argument only.
