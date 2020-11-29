@@ -1,3 +1,7 @@
+<head>
+  <meta name="google-site-verification" content="8RxjfD3zAKng0Ht73dgzJk9f9ddsO9Do3k_d8CXpxpM" />
+</head>
+
 # Package "ULT"
 # ULT stands for "Useful Little Things"
 ## This is a package designed to create some useful functions; no peculiar topic, only things that I found difficult to do and I tried to make easier
@@ -10,4 +14,4 @@
 
 ### I plan to build other functions, especially a function to draw a tree and be completely parametrable
 
-### Feel free to use, please just cite this package if used (and the references associated to the used functions, if relevant) and let me know it (jacob.maugoust@montpellier.fr)
+### Feel free to use, please just cite this package if used (and the references associated to the used functions, if relevant) and let me know it (jacob.maugoust@umontpellier.fr)
