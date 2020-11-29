@@ -13,7 +13,7 @@ extract.from.factor(factor_vector, factor_levels, x = NA, output)
 
 \item{x}{Optional. The data (of any kind) whose values are to be extracted from the factor_vector}
 
-\item{output}{Optional. The type of output of the function. See Value section below.}
+\item{output}{Optional. The type of output of the function. See value section below.}
 }
 \value{
 If output is "factor", the function will return a shorter factor vector with the levels specified in the factor_levels argument only.

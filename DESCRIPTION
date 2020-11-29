@@ -14,7 +14,12 @@ Imports:
     scales,
     lattice,
     Matrix,
-    Rdpack
+    Rdpack,
+    DescTools,
+    ape,
+    foreach,
+    gtools,
+    rlang
 Suggests: 
     knitr,
     rmarkdown
