@@ -4,14 +4,16 @@
 \alias{morphospace}
 \title{Function to create a "morphospace"}
 \usage{
-morphospace(data, plot.function, output = "plot", ...)
+morphospace(x, y, plot.function, output = "plot", ...)
 }
 \arguments{
-\item{data}{Data frame with two vectors}
-
 \item{plot.function}{Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".}
 
+\item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
+
 \item{...}{graphical arguments, depend of the plot.function choosed}
+
+\item{data}{Data frame with two vectors}
 }
 \description{
 This functions performs a "morphospace" of a dataset of two vectors: it connects extremal points to plot the largest polygon possible. This is a rather generic function and can be applied on datasets no matter of which are the vectors. The dataset just needs two vectors: firstly, plot the two vectors against each other (second vector in y-axis; first vector in x-axis), then run morphospace to superimpose a polygon to the plot.
@@ -26,8 +28,7 @@ At the end, the function creates another data.frame of two vectors which each po
 
 vec1_test<-sample.int(15,replace=TRUE)
 vec2_test<-sample.int(15,replace=TRUE)
-df_test<-data.frame(vec1_test,vec2_test)
-plot(df_test)
-morphospace(df_test)
+plot(vec1_test,vec2_test)
+morphospace(vec1_test,vec2_test)
 
 }

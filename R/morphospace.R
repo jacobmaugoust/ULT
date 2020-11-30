@@ -14,19 +14,31 @@
 #'
 #' vec1_test<-sample.int(15,replace=TRUE)
 #' vec2_test<-sample.int(15,replace=TRUE)
-#' df_test<-data.frame(vec1_test,vec2_test)
-#' plot(df_test)
-#' morphospace(df_test)
+#' plot(vec1_test,vec2_test)
+#' morphospace(vec1_test,vec2_test)
 #'
 #' @param data Data frame with two vectors
 #' @param plot.function Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".
+#' @param output Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.
 #' @param ... graphical arguments, depend of the plot.function choosed
 #'
 #' @importFrom graphics polygon
 #' @importFrom stats na.omit
+#' @importFrom rlang is_formula
 #'
 #' @export
-morphospace<-function(data,plot.function,output="plot",...){
+morphospace<-function(x,y,plot.function,output="plot",...){
+  if(missing(y)){
+    if(is_formula(x)){
+      data<-data.frame(get_all_vars(x))
+    }
+    else{
+      data<-as.data.frame(x)
+    }
+  }
+  else{
+    data<-data.frame(x,y)
+  }
   data<-na.omit(data)
   points<-data.frame(c(NA),c(NA))
   temp<-data[data[,1]==min(data[,1]),]
@@ -127,7 +139,7 @@ morphospace<-function(data,plot.function,output="plot",...){
     }
   }
 
-  if(output!="plot"){
+  if(output!="plot"|is.na(output)){
     return(points)
   }
 
