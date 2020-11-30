@@ -26,7 +26,7 @@
 #' @importFrom stats na.omit
 #'
 #' @export
-morphospace<-function(data,plot.function,...){
+morphospace<-function(data,plot.function,output="plot",...){
   data<-na.omit(data)
   points<-data.frame(c(NA),c(NA))
   temp<-data[data[,1]==min(data[,1]),]
@@ -125,6 +125,10 @@ morphospace<-function(data,plot.function,...){
         }
       }
     }
+  }
+
+  if(output!="plot"){
+    return(points)
   }
 
   if(missing(plot.function)){

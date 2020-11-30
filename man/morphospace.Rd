@@ -4,7 +4,7 @@
 \alias{morphospace}
 \title{Function to create a "morphospace"}
 \usage{
-morphospace(data, plot.function, ...)
+morphospace(data, plot.function, output = "plot", ...)
 }
 \arguments{
 \item{data}{Data frame with two vectors}
