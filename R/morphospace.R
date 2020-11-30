@@ -10,8 +10,10 @@
 #' Thirdly, the function iteratively calculates the angle (using the same code than the function Angle in the package LearnGeom) between the slopes preceeding and succeeding the i-point (starting from the second defined point): the slope preceeding the i-point is unique (it is defined by the actual i point and the preceeding i-1 point), each slope succeeding the i-point is considered (with all other points). The largest angle is retained together with the associated i+1 point.
 #' At the end, the function creates another data.frame of two vectors which each point surrounding the whole scatterplot; the function creates the polygon based on these points.
 #'
-#' @examples
+#' @seealso
+#' The smoothing of the morphospace is adapted from the StackExchange page \href{https://stackoverflow.com/questions/57305921/rasterizing-coordinates-for-an-irregular-polygon-changes-original-shape}{Rasterizing coordinates for an irregular polygon changes original shape}.
 #'
+#' @examples
 #' vec1_test<-sample.int(15,replace=TRUE)
 #' vec2_test<-sample.int(15,replace=TRUE)
 #' plot(vec1_test,vec2_test)
@@ -20,14 +22,19 @@
 #' @param data Data frame with two vectors
 #' @param plot.function Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".
 #' @param output Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.
+#' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details.
+#' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.
 #' @param ... graphical arguments, depend of the plot.function choosed
 #'
 #' @importFrom graphics polygon
 #' @importFrom stats na.omit
 #' @importFrom rlang is_formula
+#' @importFrom sf st_cast
+#' @importFrom sf st_multipoint
+#' @importFrom smoothr smooth
 #'
 #' @export
-morphospace<-function(x,y,plot.function,output="plot",...){
+morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smoothing.param=NULL,...){
   if(missing(y)){
     if(is_formula(x)){
       data<-data.frame(get_all_vars(x))
@@ -141,6 +148,15 @@ morphospace<-function(x,y,plot.function,output="plot",...){
 
   if(output!="plot"|is.na(output)){
     return(points)
+  }
+
+  if(is.na(smoothing.method)==FALSE){
+    if(any(smoothing.method==c("chaikin", "ksmooth", "spline", "densify"))){
+      points<-as.data.frame(matrix(ncol=2,data=unlist(do.call(smooth,c(list(st_cast(st_multipoint(as.matrix(points)),"POLYGON"), method = smoothing.method),smoothing.param)),recursive=FALSE),byrow=F))
+    }
+    else{
+      errorCondition("The chosen smoothing method is not one of those permitted by the smoothr::smooth function; please read the help page")
+    }
   }
 
   if(missing(plot.function)){

@@ -4,12 +4,24 @@
 \alias{morphospace}
 \title{Function to create a "morphospace"}
 \usage{
-morphospace(x, y, plot.function, output = "plot", ...)
+morphospace(
+  x,
+  y,
+  plot.function,
+  output = "plot",
+  smoothing.method = NA,
+  smoothing.param = NULL,
+  ...
+)
 }
 \arguments{
 \item{plot.function}{Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".}
 
 \item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
+
+\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details.}
+
+\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.}
 
 \item{...}{graphical arguments, depend of the plot.function choosed}
 
@@ -25,10 +37,12 @@ Thirdly, the function iteratively calculates the angle (using the same code than
 At the end, the function creates another data.frame of two vectors which each point surrounding the whole scatterplot; the function creates the polygon based on these points.
 }
 \examples{
-
 vec1_test<-sample.int(15,replace=TRUE)
 vec2_test<-sample.int(15,replace=TRUE)
 plot(vec1_test,vec2_test)
 morphospace(vec1_test,vec2_test)
 
+}
+\seealso{
+The smoothing of the morphospace is adapted from the StackExchange page \href{https://stackoverflow.com/questions/57305921/rasterizing-coordinates-for-an-irregular-polygon-changes-original-shape}{Rasterizing coordinates for an irregular polygon changes original shape}.
 }
