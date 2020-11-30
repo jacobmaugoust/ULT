@@ -15,17 +15,19 @@ morphospace(
 )
 }
 \arguments{
-\item{plot.function}{Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".}
+\item{x}{Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).}
+
+\item{y}{Has to be provided if and only if \code{x} is a single vector.}
+
+\item{plot.function}{Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.}
 
 \item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
 
-\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details.}
+\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details.}
 
-\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.}
+\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.}
 
-\item{...}{graphical arguments, depend of the plot.function choosed}
-
-\item{data}{Data frame with two vectors}
+\item{...}{graphical arguments, depend of the \code{plot.function} choosed}
 }
 \description{
 This functions performs a "morphospace" of a dataset of two vectors: it connects extremal points to plot the largest polygon possible. This is a rather generic function and can be applied on datasets no matter of which are the vectors. The dataset just needs two vectors: firstly, plot the two vectors against each other (second vector in y-axis; first vector in x-axis), then run morphospace to superimpose a polygon to the plot.
@@ -40,7 +42,8 @@ At the end, the function creates another data.frame of two vectors which each po
 vec1_test<-sample.int(15,replace=TRUE)
 vec2_test<-sample.int(15,replace=TRUE)
 plot(vec1_test,vec2_test)
-morphospace(vec1_test,vec2_test)
+morphospace(vec1_test,vec2_test) # For a "raw" morphospace
+morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
 
 }
 \seealso{

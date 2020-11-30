@@ -17,14 +17,16 @@
 #' vec1_test<-sample.int(15,replace=TRUE)
 #' vec2_test<-sample.int(15,replace=TRUE)
 #' plot(vec1_test,vec2_test)
-#' morphospace(vec1_test,vec2_test)
+#' morphospace(vec1_test,vec2_test) # For a "raw" morphospace
+#' morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
 #'
-#' @param data Data frame with two vectors
-#' @param plot.function Type of function used to plot the polygon: "points" or "polygon". Default is "polygon".
+#' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
+#' @param y Has to be provided if and only if \code{x} is a single vector.
+#' @param plot.function Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.
 #' @param output Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.
-#' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details.
-#' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr:smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.
-#' @param ... graphical arguments, depend of the plot.function choosed
+#' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details.
+#' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.
+#' @param ... graphical arguments, depend of the \code{plot.function} choosed
 #'
 #' @importFrom graphics polygon
 #' @importFrom stats na.omit
