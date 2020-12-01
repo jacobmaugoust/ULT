@@ -148,10 +148,6 @@ morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smooth
     }
   }
 
-  if(output!="plot"|is.na(output)){
-    return(points)
-  }
-
   if(is.na(smoothing.method)==FALSE){
     if(any(smoothing.method==c("chaikin", "ksmooth", "spline", "densify"))){
       points<-as.data.frame(matrix(ncol=2,data=unlist(do.call(smooth,c(list(st_cast(st_multipoint(as.matrix(points)),"POLYGON"), method = smoothing.method),smoothing.param)),recursive=FALSE),byrow=F))
@@ -159,6 +155,10 @@ morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smooth
     else{
       errorCondition("The chosen smoothing method is not one of those permitted by the smoothr::smooth function; please read the help page")
     }
+  }
+
+  if(output!="plot"|is.na(output)){
+    return(points)
   }
 
   if(missing(plot.function)){
