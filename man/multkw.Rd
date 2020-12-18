@@ -12,7 +12,7 @@ multkw(group, y)
 \item{y}{The dataset of n numeric(or integer) variables.}
 }
 \value{
-Output is either a list (with "simplify=FALSE") or a vector (with "simplify=TRUE") containing the results of the multivariate Kruskal-Wallis test.
+Output is either a list (with \code{"simplify=FALSE"}) or a vector (with \code{"simplify=TRUE"}) containing the results of the multivariate Kruskal-Wallis test.
 }
 \description{
 This function computes a multivariate Kruskal-Wallis test for n numeric variables relative to one factorial variable (that subsets the dataset in groups)

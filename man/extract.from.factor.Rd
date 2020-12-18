@@ -11,14 +11,14 @@ extract.from.factor(factor_vector, factor_levels, x = NA, output)
 
 \item{factor_levels}{The vector containing the levels to extract}
 
-\item{x}{Optional. The data (of any kind) whose values are to be extracted from the factor_vector}
+\item{x}{Optional. The data (of any kind) whose values are to be extracted from the \code{factor_vector}}
 
 \item{output}{Optional. The type of output of the function. See value section below.}
 }
 \value{
-If output is "factor", the function will return a shorter factor vector with the levels specified in the factor_levels argument only.
-If output is "logical", the function will return a logical vector of same length than the factor_vector specifying if each level is equal to the specified factor_levels. This can be especially useful when subsetting a vector according to multiple factor with (optionally) multiple levels for each.
-If output is "data", the function will return the data in x if the levels of the factor_vector of the same location are aqual to the specified factor_levels.
+If output is \code{"factor"}, the function will return a shorter factor vector with the levels specified in the \code{factor_levels} argument only.
+If output is \code{"logical"}, the function will return a logical vector of same length than the \code{factor_vector} specifying if each level is equal to the specified \code{factor_levels}. This can be especially useful when subsetting a vector according to multiple factor with (optionally) multiple levels for each.
+If output is \code{"data"}, the function will return the data in \code{x} if the levels of the \code{factor_vector} of the same location are aqual to the specified \code{factor_levels}.
 }
 \description{
 The main goal of this function is to return a subset or a vector able to subset a data vector linked to a factor vector according to some levels of this factor vector.

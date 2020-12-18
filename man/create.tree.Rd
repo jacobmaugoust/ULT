@@ -7,24 +7,25 @@
 create.tree(nbtaxa, taxa, age_taxa, nbnodes, nodes, age_nodes, format)
 }
 \arguments{
-\item{nbtaxa}{Desired number of taxa; optional, especially if either \emph{taxa} or \emph{age_taxa} parameters are present}
+\item{nbtaxa}{Desired number of taxa; optional, especially if either \code{taxa} or \code{age_taxa} parameters are present}
 
 \item{taxa}{A vector specifying the name of \strong{all} desired taxa; if not all taxa names are known, rather do not specify the known names yet and specify them by running the function without this parameter}
 
 \item{age_taxa}{A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
 
-\item{nbnodes}{Desired number of nodes; optional, especially if \emph{age_nodes} is present}
+\item{nbnodes}{Desired number of nodes; optional, especially if \code{age_nodes} is present}
 
 \item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.}
 
 \item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
 
-\item{format}{The format of the output; can be an object of class \emph{phylo} by specifying "phylo" or "phylo object" or simply a newick/parenthetic text by specifying "newick", "NEWICK" or "parenthetic"}
+\item{format}{The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}}
 }
 \value{
-Returns either an object of class \emph{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
+Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
 }
 \description{
 This function creates a tree, more a less stepwise, depending on the data in the function.
 The function can be run without arguments.
+If the desired phylogeny is already known and prepared, it is advised to prepare and save the elements used in this function, in case of small errors (yet, the function doesn't allow one to recover inputted data if there is an error).
 }

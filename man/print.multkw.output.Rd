@@ -7,10 +7,10 @@
 \method{print}{multkw.output}(x)
 }
 \arguments{
-\item{x}{An object of class "multkw.output"}
+\item{x}{An object of class \code{multkw.output}}
 }
 \description{
-The multivariate Kruskal-Wallis test functions (multkw, multkw.m and multkw.perm) output an object of multkw.output class.
+The multivariate Kruskal-Wallis test functions (\code{multkw}, \code{multkw.m} and \code{multkw.perm}) output an object of multkw.output class.
 It can be saved to an object, but if not, result is automatically printed using this function.
-If saved, just do print.multkw.output(object) to see its results.
+If saved, just do \code{print.multkw.output(object)} to see its results.
 }

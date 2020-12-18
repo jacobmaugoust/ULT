@@ -13,9 +13,9 @@ multkw.perm(nmc, group, y, r, weight)
 
 \item{y}{The dataset of n numeric(or integer) variables.}
 
-\item{r}{Optional. The missing data pattern to be applied. If dataset has NA and if the missing data pattern is the distribution of the NA's in the dataset, r is optional and is automatically computed.}
+\item{r}{Optional. The missing data pattern to be applied. If dataset has \code{NA} and if the missing data pattern is the distribution of the \code{NA}'s in the dataset, \code{r} is optional and is automatically computed.}
 
-\item{weight}{Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (weight="equal") or the ponderated mean of each statistic relative to the proportion of each missing pattern (weight="prop").}
+\item{weight}{Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (\code{weight="equal"}) or the ponderated mean of each statistic relative to the proportion of each missing pattern (\code{weight="prop"}).}
 }
 \value{
 Returns a list of results of the various multivariate Kruskal-Wallis tests that have been computed.
@@ -27,7 +27,7 @@ This function computes an "extended" multivariate Kruskal-Wallis test for n nume
 }
 \details{
 "Likelihood-based" and "permutation-based" multivariate Kruskal-Wallis tests are computed: in large samples, the distribution of the test statistic approximates that of the khi?, but in smaller samples, a more accurate p-value is obtained by computing an "empirical" distribution of the test statistic by doing a Monte-Carlo sampling with permutations.
-Firstly, the "multivariate Kruskal-Wallis test with missing data" is computed and are the first half of the outputs; they are the "likelihood-based" test results (see documentation of multkw_m for more details).
+Firstly, the "multivariate Kruskal-Wallis test with missing data" is computed and are the first half of the outputs; they are the "likelihood-based" test results (see documentation of \code{multkw.m} for more details).
 Thus, a Monte-Carlo sampling with permutations (by randomly assigning individuals to groups) is computed, and the second half of the outputs are the proportions of results that exceeds the previously observed results (with the likelihood-based test).
 }
 \examples{

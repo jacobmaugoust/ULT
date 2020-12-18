@@ -9,8 +9,8 @@
 #'
 #' @importFrom gtools ask
 #'
-#' @param black.and.white Logical. Choose ot include or not black and white and theend of the list of colors. By default set to TRUE.
-#' @param sequential Logical. If the value is a single number, choose if you want to have all colors between the first and the value, or if you want to have the color at the value. By default set too TRUE.
+#' @param black.and.white Logical. Choose ot include or not black and white and theend of the list of colors. By default set to \code{TRUE}.
+#' @param sequential Logical. If the value is a single number, choose if you want to have all colors between the first and the value, or if you want to have the color at the value. By default set too \code{TRUE}.
 #'
 #' @export
 

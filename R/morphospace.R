@@ -7,7 +7,7 @@
 #' @details
 #' The function firstly identify the most extreme point on the x-axis, which is the starting point of the polygon.
 #' Secondly, the function finds the second point of the polygon which is defined as having the steepest slope with the first point among all other points.
-#' Thirdly, the function iteratively calculates the angle (using the same code than the function Angle in the package LearnGeom) between the slopes preceeding and succeeding the i-point (starting from the second defined point): the slope preceeding the i-point is unique (it is defined by the actual i point and the preceeding i-1 point), each slope succeeding the i-point is considered (with all other points). The largest angle is retained together with the associated i+1 point.
+#' Thirdly, the function iteratively calculates the angle (using the same code than the function \code{Angle} in the package \code{LearnGeom}) between the slopes preceeding and succeeding the i-point (starting from the second defined point): the slope preceeding the i-point is unique (it is defined by the actual i point and the preceeding i-1 point), each slope succeeding the i-point is considered (with all other points). The largest angle is retained together with the associated i+1 point.
 #' At the end, the function creates another data.frame of two vectors which each point surrounding the whole scatterplot; the function creates the polygon based on these points.
 #'
 #' @seealso

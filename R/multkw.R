@@ -11,7 +11,7 @@
 #' @param group The factorial variable that subsets the dataset in groups. Can be a character vector, a factorial vector or an integer/numeric vector.
 #' @param y The dataset of n numeric(or integer) variables.
 #'
-#' @return Output is either a list (with "simplify=FALSE") or a vector (with "simplify=TRUE") containing the results of the multivariate Kruskal-Wallis test.
+#' @return Output is either a list (with \code{"simplify=FALSE"}) or a vector (with \code{"simplify=TRUE"}) containing the results of the multivariate Kruskal-Wallis test.
 #'
 #' @importFrom stats aggregate pchisq
 #' @import lattice

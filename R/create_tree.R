@@ -3,16 +3,17 @@
 #' @description
 #' This function creates a tree, more a less stepwise, depending on the data in the function.
 #' The function can be run without arguments.
+#' If the desired phylogeny is already known and prepared, it is advised to prepare and save the elements used in this function, in case of small errors (yet, the function doesn't allow one to recover inputted data if there is an error).
 #'
-#' @param nbtaxa Desired number of taxa; optional, especially if either \emph{taxa} or \emph{age_taxa} parameters are present
+#' @param nbtaxa Desired number of taxa; optional, especially if either \code{taxa} or \code{age_taxa} parameters are present
 #' @param taxa A vector specifying the name of \strong{all} desired taxa; if not all taxa names are known, rather do not specify the known names yet and specify them by running the function without this parameter
 #' @param age_taxa A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
-#' @param nbnodes Desired number of nodes; optional, especially if \emph{age_nodes} is present
+#' @param nbnodes Desired number of nodes; optional, especially if \code{age_nodes} is present
 #' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.
 #' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
-#' @param format The format of the output; can be an object of class \emph{phylo} by specifying "phylo" or "phylo object" or simply a newick/parenthetic text by specifying "newick", "NEWICK" or "parenthetic"
+#' @param format The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}
 #'
-#' @return Returns either an object of class \emph{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
+#' @return Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
 #'
 #' @importFrom graphics points text
 #' @importFrom gtools ask
@@ -23,7 +24,9 @@
 #' @export
 
 create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
-  if(missing(age_taxa)&missing(age_nodes)){
+  if(missing(age_taxa)){age_taxa<-NULL}
+  if(missing(age_nodes)){age_nodes<-NULL}
+  if(is.null(age_taxa)&is.null(age_nodes)){
     aged_tree<-ask("Do you want to give ages to the tips of the tree ? (Y/N)")
     if(aged_tree=="Y"|aged_tree=="y"|aged_tree=="YES"|aged_tree=="yes"|aged_tree=="Yes"){
       aged_tree<-TRUE
@@ -35,9 +38,21 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
   else{
     aged_tree<-TRUE
   }
+  ultra<-FALSE
+  if(aged_tree==FALSE){
+    ultra<-TRUE
+  }
+  else{
+    if(is.null(age_nodes)){
+      ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+      if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+        ultra<-TRUE
+      }
+    }
+  }
+
   if (missing(taxa)) {
     taxa <- c()
-    if(aged_tree){age_taxa <- c()}
     if (missing(nbtaxa)) {
       loop <- "go"
       nbtaxa <- 0
@@ -110,9 +125,6 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     taxa <- as.character(taxa)
     nbtaxa <- length(taxa)
     if(aged_tree){
-      if (missing(age_taxa)) {
-        age_taxa <- "nothing"
-      }
       if (all(suppressWarnings(is.na(as.numeric(age_taxa))))) {
         for (i in 1:length(taxa)) {
           temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
@@ -134,7 +146,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
   }
   if(missing(nodes)==TRUE){
     temp_phylo <- c()
-    plot_depth <- max(age_taxa,if(missing(age_nodes)==FALSE){age_nodes})
+    plot_depth <- max(age_taxa,if(is.null(age_nodes)==FALSE){age_nodes})
     for (i in 1:nbtaxa) {
       temp_phylo[i] <- paste0(taxa[i], ":", plot_depth - age_taxa[i], ",", collapse = "")
     }
@@ -157,6 +169,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     }
     temp$tip.label <- taxa_short
     x_gap<-(plot_depth - min(age_taxa))/10
+    if(x_gap==0){x_gap<-1}
     if(log10(x_gap)+1<1){
       x_gap_magnitude<-0
       x_gap_temp<-0
@@ -180,33 +193,17 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     loop <- "go"
     node <- 0
     nodemax<--1
-    if(missing(age_nodes)==FALSE|missing(nbnodes)==FALSE){
+    if(is.null(age_nodes)==FALSE|missing(nbnodes)==FALSE){
       if(missing(nbnodes)){
         nbnodes<-length(age_nodes)
       }
       nodemax<-nbnodes
     }
     else{
-      age_nodes<-c()
       nbnodes<-c()
     }
-    ultra<-c()
     while (loop != "end" & node != nodemax) {
       node <- node + 1
-      if(aged_tree==FALSE){
-        ultra<-TRUE
-      }
-      else{
-        if(is.null(age_nodes)){
-          ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
-          if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
-            ultra<-TRUE
-          }
-          else{
-            ultra<-FALSE
-          }
-        }
-      }
       node_nb_ends[[node]] <- ask(paste0(
         if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
         else{"I"},
@@ -362,6 +359,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     nbnodes<-length(nodes)
     node_nb_ends<-foreach(i=1:length(nodes))%do%length(nodes[[i]])
     node_ends<-nodes
+    if(is.null(names(node_ends))){
+      names(node_ends)<-rep("NA",length(node_ends))
+    }
     for (i in 1:nbnodes){
       for (j in 1:node_nb_ends[[i]]){
         if (suppressWarnings(is.na(as.numeric(paste(strsplit(node_ends[[i]][j], "")[[1]][-1],collapse=""))))==TRUE) {
@@ -370,6 +370,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
       }
       if(paste0("N",i)!=names(node_ends)[[i]]){
         names(node_ends)[[i]]<-paste0("N",i)
+      }
+      if(ultra){
+        age_nodes[i] <- max(c(suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[i]]))])), suppressWarnings(max(age_nodes[unlist(foreach(j=1:as.numeric(node_nb_ends[[i]]))%do%which((names(node_ends)==node_ends[[i]][j])))])))) + 1
       }
     }
   }
@@ -431,6 +434,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     if (format == "phylo object" | format == "phylo"){
       output <- output
     }
+    if(format=="")
     return(output)
   }
   else{

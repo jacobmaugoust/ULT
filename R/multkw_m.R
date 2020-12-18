@@ -16,8 +16,8 @@
 #'
 #' @param group The factorial variable that subsets the dataset in groups. Can be a character vector, a factorial vector or an integer/numeric vector.
 #' @param y The dataset of n numeric(or integer) variables.
-#' @param r Optional. The missing data pattern to be applied. If dataset has NA and if the missing data pattern is the distribution of the NA's in the dataset, r is optional and is automatically computed.
-#' @param weight Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (weight="equal") or the ponderated mean of each statistic relative to the proportion of each missing pattern (weight="prop").
+#' @param r Optional. The missing data pattern to be applied. If dataset has \code{NA} and if the missing data pattern is the distribution of the \code{NA}'s in the dataset, \code{r} is optional and is automatically computed.
+#' @param weight Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (\code{weight="equal"}) or the ponderated mean of each statistic relative to the proportion of each missing pattern (\code{weight="prop"}).
 #'
 #' @importFrom stats aggregate pchisq
 #' @import lattice

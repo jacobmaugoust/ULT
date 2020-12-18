@@ -11,9 +11,9 @@ multkw.m(group, y, r, weight)
 
 \item{y}{The dataset of n numeric(or integer) variables.}
 
-\item{r}{Optional. The missing data pattern to be applied. If dataset has NA and if the missing data pattern is the distribution of the NA's in the dataset, r is optional and is automatically computed.}
+\item{r}{Optional. The missing data pattern to be applied. If dataset has \code{NA} and if the missing data pattern is the distribution of the \code{NA}'s in the dataset, \code{r} is optional and is automatically computed.}
 
-\item{weight}{Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (weight="equal") or the ponderated mean of each statistic relative to the proportion of each missing pattern (weight="prop").}
+\item{weight}{Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (\code{weight="equal"}) or the ponderated mean of each statistic relative to the proportion of each missing pattern (\code{weight="prop"}).}
 }
 \value{
 Returns a list of results of the various multivariate Kruskal-Wallis tests that have been computed.

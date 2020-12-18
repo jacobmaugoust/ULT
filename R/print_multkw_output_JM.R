@@ -1,11 +1,11 @@
 #' @title Print function for results of multkw functions (multkw, multkw.m and multkw.perm)
 #'
 #' @description
-#' The multivariate Kruskal-Wallis test functions (multkw, multkw.m and multkw.perm) output an object of multkw.output class.
+#' The multivariate Kruskal-Wallis test functions (\code{multkw}, \code{multkw.m} and \code{multkw.perm}) output an object of multkw.output class.
 #' It can be saved to an object, but if not, result is automatically printed using this function.
-#' If saved, just do print.multkw.output(object) to see its results.
+#' If saved, just do \code{print.multkw.output(object)} to see its results.
 #'
-#' @param x An object of class "multkw.output"
+#' @param x An object of class \code{multkw.output}
 #'
 #' @method print multkw.output
 #' @export
