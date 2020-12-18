@@ -8,7 +8,8 @@ morphospace(
   x,
   y,
   plot.function,
-  output = "plot",
+  plot.type,
+  output,
   smoothing.method = NA,
   smoothing.param = NULL,
   ...
@@ -39,11 +40,23 @@ Thirdly, the function iteratively calculates the angle (using the same code than
 At the end, the function creates another data.frame of two vectors which each point surrounding the whole scatterplot; the function creates the polygon based on these points.
 }
 \examples{
+# For a simple morphospace
 vec1_test<-sample.int(15,replace=TRUE)
 vec2_test<-sample.int(15,replace=TRUE)
 plot(vec1_test,vec2_test)
 morphospace(vec1_test,vec2_test) # For a "raw" morphospace
 morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
+# For a morphospace with several subgroups
+vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
+vec2_test<-sample.int(60,replace=TRUE)
+groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
+plot(vec1_test,vec2_test,type="n")
+for (i in 1:length(levels(groups_test))){ # For a "raw" morphospace
+  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full")
+}
+for (i in 1:length(levels(groups_test))){ # For an example of smoothed (here, using splines) morphospace
+  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full",smoothing.method="spline")
+}
 
 }
 \seealso{

@@ -14,11 +14,23 @@
 #' The smoothing of the morphospace is adapted from the StackExchange page \href{https://stackoverflow.com/questions/57305921/rasterizing-coordinates-for-an-irregular-polygon-changes-original-shape}{Rasterizing coordinates for an irregular polygon changes original shape}.
 #'
 #' @examples
+#' # For a simple morphospace
 #' vec1_test<-sample.int(15,replace=TRUE)
 #' vec2_test<-sample.int(15,replace=TRUE)
 #' plot(vec1_test,vec2_test)
 #' morphospace(vec1_test,vec2_test) # For a "raw" morphospace
 #' morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
+#' # For a morphospace with several subgroups
+#' vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
+#' vec2_test<-sample.int(60,replace=TRUE)
+#' groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
+#' plot(vec1_test,vec2_test,type="n")
+#' for (i in 1:length(levels(groups_test))){ # For a "raw" morphospace
+#'   morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full")
+#' }
+#' for (i in 1:length(levels(groups_test))){ # For an example of smoothed (here, using splines) morphospace
+#'   morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full",smoothing.method="spline")
+#' }
 #'
 #' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
 #' @param y Has to be provided if and only if \code{x} is a single vector.
@@ -36,7 +48,7 @@
 #' @importFrom smoothr smooth
 #'
 #' @export
-morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smoothing.param=NULL,...){
+morphospace<-function(x,y,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,...){
   if(missing(y)){
     if(is_formula(x)){
       data<-data.frame(get_all_vars(x))
@@ -157,8 +169,15 @@ morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smooth
     }
   }
 
+  if(missing(output)){
+    output<-"plot"
+  }
   if(output!="plot"|is.na(output)){
     return(points)
+  }
+
+  if(missing(plot.type)){
+    plot.type<-"lines"
   }
 
   if(missing(plot.function)){
@@ -176,6 +195,9 @@ morphospace<-function(x,y,plot.function,output="plot",smoothing.method=NA,smooth
       else{
         points(c(points[i,1],points[1,1]),c(points[i,2],points[1,2]),type="l",...)
       }
+    }
+    if(plot.type!="lines"){
+      points(data[,1],data[,2],...)
     }
   }
 }
