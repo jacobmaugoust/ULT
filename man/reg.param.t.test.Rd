@@ -46,7 +46,7 @@ for (i in 1:length(x)){
   y[i]<-x[i]*slope+intercept+runif(1,-abs(slope)/100,abs(slope)/100)
 }
 parameter<-"slope"
-reg.param.t.test(x,y,slope,parameter)
+reg.param.t.test(x,y,slope,parameter="intercept")
 reg.param.t.test(y~x,slope,"slope")
 reg.param.t.test(lm(y~x),slope,parameter) ## This tests if the function retrieves the original defined slope as equal to the slope of
 reg.param.t.test(lm(y~x),intercept,"intercept") ## This tests if the function retrieves the original defined intercept as equal to the intercept of lm()

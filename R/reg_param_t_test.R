@@ -31,7 +31,7 @@
 #'   y[i]<-x[i]*slope+intercept+runif(1,-abs(slope)/100,abs(slope)/100)
 #' }
 #' parameter<-"slope"
-#' reg.param.t.test(x,y,slope,parameter)
+#' reg.param.t.test(x,y,slope,parameter="intercept")
 #' reg.param.t.test(y~x,slope,"slope")
 #' reg.param.t.test(lm(y~x),slope,parameter) ## This tests if the function retrieves the original defined slope as equal to the slope of
 #' reg.param.t.test(lm(y~x),intercept,"intercept") ## This tests if the function retrieves the original defined intercept as equal to the intercept of lm()
@@ -74,7 +74,7 @@ reg.param.t.test<-function(x,y,factor,x2,y2,object_1,object_2,delta,parameter){
   if(missing(object_2)){object_2<-NULL}
   if(missing(object_1)){object_1<-NULL}
   if(missing(y2)==FALSE){
-    if(y2=="slope"|y2=="intercept"){
+    if(any(y2=="slope"|y2=="intercept")){
       parameter<-y2
       y2<-NULL
     }
@@ -86,7 +86,7 @@ reg.param.t.test<-function(x,y,factor,x2,y2,object_1,object_2,delta,parameter){
       y2<-x2
       x2<-NULL
     }
-    else if(x2=="slope"|x2=="intercept"){
+    else if(any(x2=="slope"|x2=="intercept")){
       parameter<-x2
       x2<-NULL
     }
@@ -237,3 +237,4 @@ reg.param.t.test<-function(x,y,factor,x2,y2,object_1,object_2,delta,parameter){
   names(results)<-c("Estimate","Std. Error","t value","df","p-value")
   return(results)
 }
+
