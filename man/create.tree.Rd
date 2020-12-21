@@ -4,7 +4,17 @@
 \alias{create.tree}
 \title{Create a phylogenetic tree}
 \usage{
-create.tree(nbtaxa, taxa, age_taxa, nbnodes, nodes, age_nodes, format)
+create.tree(
+  nbtaxa,
+  taxa,
+  age_taxa,
+  nbnodes,
+  nodes,
+  age_nodes,
+  tax_selection,
+  ultra,
+  format
+)
 }
 \arguments{
 \item{nbtaxa}{Desired number of taxa; optional, especially if either \code{taxa} or \code{age_taxa} parameters are present}
@@ -18,6 +28,10 @@ create.tree(nbtaxa, taxa, age_taxa, nbnodes, nodes, age_nodes, format)
 \item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.}
 
 \item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
+
+\item{tax_selection}{The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)}
+
+\item{ultra}{Logical; if the tree has to be ultrametric (i.e. without specific node ages)}
 
 \item{format}{The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}}
 }

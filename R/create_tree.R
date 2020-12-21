@@ -11,6 +11,8 @@
 #' @param nbnodes Desired number of nodes; optional, especially if \code{age_nodes} is present
 #' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.
 #' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
+#' @param tax_selection The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)
+#' @param ultra Logical; if the tree has to be ultrametric (i.e. without specific node ages)
 #' @param format The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}
 #'
 #' @return Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
@@ -23,7 +25,7 @@
 #'
 #' @export
 
-create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
+create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format) {
   if(missing(age_taxa)){age_taxa<-NULL}
   if(missing(age_nodes)){age_nodes<-NULL}
   if(is.null(age_taxa)&is.null(age_nodes)){
@@ -38,7 +40,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
   else{
     aged_tree<-TRUE
   }
-  ultra<-FALSE
+  if(missing(ultra)){
+    ultra<-FALSE
+  }
   if(aged_tree==FALSE){
     ultra<-TRUE
   }
@@ -48,6 +52,16 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
       if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
         ultra<-TRUE
       }
+    }
+  }
+  if(ultra==TRUE&is.null(age_nodes)==FALSE){
+    ultra<-ask("You specified both an ultrametric tree and ages to the nodes, which is incompatible. Do you still want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+    if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+      ultra<-TRUE
+      age_nodes<-NULL
+    }
+    else{
+      ultra<-FALSE
     }
   }
 
@@ -204,24 +218,10 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     }
     while (loop != "end" & node != nodemax) {
       node <- node + 1
-      node_nb_ends[[node]] <- ask(paste0(
-        if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
-        else{"I"},
-        "f the ",node,
-        if (node == 1) {"-st"}
-        else{
-          if (node == 2) {"-nd"}
-          else{"-th"}},
-        " node is dichotomic, type 2, or type the number of branches arising from it"))
-      if (node_nb_ends[[node]] == "end") {
-        loop <- "end"
-        node_nb_ends <- node_nb_ends[-node]
-        node <- node - 1
-        nbnodes<-node
-        break
+      if(missing(tax_selection)){
+        tax_selection<-ask(paste0("Do you want to select the terminal taxa and the nodes by their name (type BYNAME) or do you want to select them graphically (type BYGRAPH)?"))
       }
-      if (is.na(suppressWarnings(as.numeric(node_nb_ends[[node]]))) == TRUE) {
-        cat("You did not provide a number of branches, please provide it now or function will stop","\n")
+      if(tax_selection=="BYNAME"){
         node_nb_ends[[node]] <- ask(paste0(
           if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
           else{"I"},
@@ -231,34 +231,88 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
             if (node == 2) {"-nd"}
             else{"-th"}},
           " node is dichotomic, type 2, or type the number of branches arising from it"))
-      }
-      node_ends[[node]] <- as.character(0)
-      for (i in 1:as.numeric(node_nb_ends[[node]])) {
-        node_ends[[node]][i] <- ask(paste0("If the ",i,
-                                           if (i == 1) {"-st"}
-                                           else{
-                                             if (i == 2) {"-nd"}
-                                             else{"-th"}},
-                                           " end is a taxon, type its name; if it is a node, type 'N' and its displayed number"))
-        if (((any(taxa == node_ends[[node]][i])) | (any(names(node_ends) == node_ends[[node]][i]))) == FALSE) {
-          cat("You did not provide the name of the written taxa or nodes, please provide it now or function will stop","\n")
+        if (node_nb_ends[[node]] == "end") {
+          loop <- "end"
+          node_nb_ends <- node_nb_ends[-node]
+          node <- node - 1
+          nbnodes<-node
+          break
+        }
+        if (is.na(suppressWarnings(as.numeric(node_nb_ends[[node]]))) == TRUE) {
+          cat("You did not provide a number of branches, please provide it now or function will stop","\n")
+          node_nb_ends[[node]] <- ask(paste0(
+            if(nodemax<0){"If their are no more nodes, type 'end', otherwise, i"}
+            else{"I"},
+            "f the ",node,
+            if (node == 1) {"-st"}
+            else{
+              if (node == 2) {"-nd"}
+              else{"-th"}},
+            " node is dichotomic, type 2, or type the number of branches arising from it"))
+        }
+        node_ends[[node]] <- as.character(0)
+        for (i in 1:as.numeric(node_nb_ends[[node]])) {
           node_ends[[node]][i] <- ask(paste0("If the ",i,
                                              if (i == 1) {"-st"}
                                              else{
                                                if (i == 2) {"-nd"}
                                                else{"-th"}},
                                              " end is a taxon, type its name; if it is a node, type 'N' and its displayed number"))
+          if (((any(taxa == node_ends[[node]][i])) | (any(names(node_ends) == node_ends[[node]][i]))) == FALSE) {
+            cat("You did not provide the name of the written taxa or nodes, please provide it now or function will stop","\n")
+            node_ends[[node]][i] <- ask(paste0("If the ",i,
+                                               if (i == 1) {"-st"}
+                                               else{
+                                                 if (i == 2) {"-nd"}
+                                                 else{"-th"}},
+                                               " end is a taxon, type its name; if it is a node, type 'N' and its displayed number"))
+          }
+          if (suppressWarnings(is.na(as.numeric(paste(strsplit(node_ends[[node]][i], "")[[1]][-1],collapse=""))))==TRUE) {
+            node_ends[[node]][i] <- which(taxa == node_ends[[node]][i])
+          }
+          names(node_ends)[node] <- paste0("N", node)
         }
-        if (suppressWarnings(is.na(as.numeric(paste(strsplit(node_ends[[node]][i], "")[[1]][-1],collapse=""))))==TRUE) {
-          node_ends[[node]][i] <- which(taxa == node_ends[[node]][i])
+      }
+      if(tax_selection=="BYGRAPH"){
+        if(exists("max_depth")==FALSE){
+          max_depth<-plot_depth
         }
-        names(node_ends)[node] <- paste0("N", node)
+        cat("Please click close to the taxa you want to pick; press Esc when you are done or if there are no more nodes\n")
+        selected_points<-locator()
+        if(is.null(selected_points)){
+          loop<-"end"
+          break
+        }
+        for (i in 1:length(selected_points$x)){
+          x_pos_taxa<-age_taxa
+          y_pos_taxa<-1:nbtaxa
+          list_taxa<-taxa
+          if(exists("node_coords_x")){
+            x_pos_taxa<-c(x_pos_taxa,age_nodes)
+            y_pos_taxa<-c(y_pos_taxa,node_coords_y)
+            list_taxa<-c(taxa,names(node_ends))
+          }
+          x_closest<-abs(as.numeric(x_pos_taxa)-(plot_depth-selected_points$x[i]))
+          y_closest<-abs(as.numeric(y_pos_taxa)-selected_points$y[i])
+          selected_taxa[i]<-intersect(which(x_closest==min(x_closest)),which(y_closest==min(y_closest)))
+        }
+        node_nb_ends[[node]] <- length(selected_taxa)
+        node_ends[[node]]<-"NULL"
+        names(node_ends)[node]<-paste0("N",node)
+        for (i in 1:node_nb_ends[[node]]){
+          if(selected_taxa[i]>nbtaxa){
+            node_ends[[node]][i]<-names(node_ends)[selected_taxa[i]-nbtaxa]
+            }
+          else{
+            node_ends[[node]][i]<-which(taxa==taxa[selected_taxa[i]])
+          }
+        }
       }
       if(nodemax>0){
         age_nodes<-age_nodes
       }
       else{
-        if(ultra){
+        if(ultra==TRUE){
           age_nodes[node] <- max(c(suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[node]]))])), suppressWarnings(max(age_nodes[unlist(foreach(i=1:as.numeric(node_nb_ends[[node]]))%do%which((names(node_ends)==node_ends[[node]][i])))])))) + 1
         }
         else{
@@ -269,7 +323,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
                                                      else{"-th"}},
                                                    " node; if not known, type 0")))
         }
-        if (age_nodes[node] < suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[node]]))]))) {
+        if (age_nodes[node]!=0&age_nodes[node] < suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[node]]))]))) {
           age_nodes[node] <- as.numeric(ask(paste0("Error: node age is more recent than (at least) on of the terminal taxa; please give its age or, if not known, type 0")))
         }
         if (age_nodes[node] == 0) {
@@ -377,6 +431,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,format) {
     }
   }
 
+  if(is.null(nbnodes)){
+    nbnodes<-length(node_ends)
+  }
   numb_branches <- lengths(node_ends)
   branches_temp <- matrix(ncol = 2 * max(numb_branches),nrow = length(node_ends),NA)
   for (i in 1:length(node_ends)) {
