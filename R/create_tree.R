@@ -184,14 +184,14 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
     temp$tip.label <- taxa_short
     x_gap<-(plot_depth - min(age_taxa))/10
     if(x_gap==0){x_gap<-1}
-    if(log10(x_gap)+1<1){
+    if(log10(x_gap)+1<=1){
       x_gap_magnitude<-0
       x_gap_temp<-0
       while(x_gap_temp<1){
         x_gap_temp<-x_gap*10^x_gap_magnitude
         if(x_gap_temp<1){x_gap_magnitude<-x_gap_magnitude+1}
       }
-      x_gap<-RoundTo(round(x_gap,x_gap_magnitude),5/10^x_gap_magnitude)
+      x_gap<-1/10^x_gap_magnitude
     }
     else{
       x_gap<-ceiling(x_gap)
@@ -491,7 +491,6 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
     if (format == "phylo object" | format == "phylo"){
       output <- output
     }
-    if(format=="")
     return(output)
   }
   else{
