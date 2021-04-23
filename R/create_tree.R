@@ -28,36 +28,31 @@
 create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format) {
   if(missing(age_taxa)){age_taxa<-NULL}
   if(missing(age_nodes)){age_nodes<-NULL}
-  if(missing(ultra)){ultra<-NULL}
+  if(missing(ultra)){ultra<-FALSE}
   if(is.null(age_taxa)&is.null(age_nodes)&(is.null(ultra)|ultra==FALSE)){
-    aged_tree<-ask("Do you want to give ages to the tips of the tree ? (Y/N)")
-    if(aged_tree=="Y"|aged_tree=="y"|aged_tree=="YES"|aged_tree=="yes"|aged_tree=="Yes"){
-      aged_tree<-TRUE
+    temp_ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+    if(temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="YES"|temp_ultra=="yes"|temp_ultra=="Yes"){
+      ultra<-TRUE
     }
     else{
-      aged_tree<-FALSE
+      ultra<-FALSE
     }
   }
-  else{
-    aged_tree<-TRUE
-  }
-  if(is.null(ultra)){
-    ultra<-FALSE
-  }
-  if(aged_tree==FALSE){
-    ultra<-TRUE
-  }
-  else{
-    if(is.null(age_nodes)){
-      ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
-      if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
-        ultra<-TRUE
-      }
+
+  if(ultra==TRUE&is.null(age_taxa)==FALSE){
+    temp_ultra<-ask("You specified both an ultrametric tree and ages to the tips, which are incompatible. Do you still want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+    if(temp_ultra=="yes"|temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="Yes"|temp_ultra=="YES"){
+      ultra<-TRUE
+      age_taxa<-NULL
+    }
+    else{
+      ultra<-FALSE
     }
   }
+
   if(ultra==TRUE&is.null(age_nodes)==FALSE){
-    ultra<-ask("You specified both an ultrametric tree and ages to the nodes, which is incompatible. Do you still want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
-    if(ultra=="yes"|ultra=="Y"|ultra=="y"|ultra=="Yes"|ultra=="YES"){
+    temp_ultra<-ask("You specified both an ultrametric tree and ages to the nodes, which are incompatible. Do you still want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
+    if(temp_ultra=="yes"|temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="Yes"|temp_ultra=="YES"){
       ultra<-TRUE
       age_nodes<-NULL
     }
@@ -86,7 +81,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                        if (nbtaxa == 2) {"-nd"}
                                        else{"-th"}},
                                      " taxon; if you finished, please write 'end'"))
-          if(aged_tree){
+          if(ultra==FALSE){
             if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
               cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
               temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
@@ -98,7 +93,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
             }
           }
           taxa[nbtaxa] <- as.character(temp_taxa)
-          if(aged_tree){age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)}
+          if(ultra==FALSE){age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)}
         }
         else{
           loop <- "end"
@@ -120,7 +115,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                       if (i == 2) {"-nd"}
                                       else{"-th"}},
                                     " taxon"))
-        if(aged_tree){
+        if(ultra==FALSE){
           if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
             cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
             temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
@@ -132,14 +127,14 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
           }
         }
         taxa[i] <- as.character(temp_taxa)
-        if(aged_tree){age_taxa[i] <- as.numeric(temp_age_taxa)}
+        if(ultra==FALSE){age_taxa[i] <- as.numeric(temp_age_taxa)}
       }
     }
   }
   else{
     taxa <- as.character(taxa)
     nbtaxa <- length(taxa)
-    if(aged_tree){
+    if(ultra==FALSE){
       if (all(suppressWarnings(is.na(as.numeric(age_taxa))))) {
         for (i in 1:length(taxa)) {
           temp_age_taxa <- ask(paste0("Please give the numeric age of the taxon ", taxa[i]))
@@ -156,7 +151,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
       }
     }
   }
-  if(aged_tree==FALSE){
+  if(ultra){
     age_taxa<-rep(0,length(taxa))
   }
   if(missing(nodes)==TRUE){
@@ -462,7 +457,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   for (i in 1:length(branches[, 1])) {
     age_branches[i] <- age_all[branches[i, 1]] - age_all[branches[i, 2]]
   }
-  if(aged_tree){
+  if(ultra==FALSE){
     output <-list(edge = branches,edge.length = age_branches,Nnode = as.integer(nbnodes),tip.label = taxa)
   }
   else{
