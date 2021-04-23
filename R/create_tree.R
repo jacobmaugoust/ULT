@@ -28,7 +28,8 @@
 create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format) {
   if(missing(age_taxa)){age_taxa<-NULL}
   if(missing(age_nodes)){age_nodes<-NULL}
-  if(is.null(age_taxa)&is.null(age_nodes)){
+  if(missing(ultra)){ultra<-NULL}
+  if(is.null(age_taxa)&is.null(age_nodes)&is.null(ultra)){
     aged_tree<-ask("Do you want to give ages to the tips of the tree ? (Y/N)")
     if(aged_tree=="Y"|aged_tree=="y"|aged_tree=="YES"|aged_tree=="yes"|aged_tree=="Yes"){
       aged_tree<-TRUE
@@ -40,7 +41,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   else{
     aged_tree<-TRUE
   }
-  if(missing(ultra)){
+  if(is.null(ultra)){
     ultra<-FALSE
   }
   if(aged_tree==FALSE){
