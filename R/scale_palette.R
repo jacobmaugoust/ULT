@@ -42,7 +42,7 @@
 #' # Or with by skewing the center at 0.25 (i.e., with more yellows):
 #' plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=user_color_gradient,middle.col=user_color_gradient[2],span=c(0,100)))
 #'
-#' @export
+#' @export scale.palette
 
 scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE){
   if(missing(ncols)){
