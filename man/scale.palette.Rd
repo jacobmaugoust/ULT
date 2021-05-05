@@ -4,20 +4,20 @@
 \alias{scale.palette}
 \title{Function to provide a user-defined scaled color palette}
 \usage{
-\method{scale}{palette}(ncols, cols, middle.col = NA, span = NA, middle = NA, invert = FALSE)
+scale.palette (ncols, cols, middle.col=NA, span=NA, middle=NA, invert=FALSE)
 }
 \arguments{
 \item{ncols}{The number of colors to be outputted. It is scaled linearly according to the given \code{span}.}
 
-\item{cols}{The colors to be used. At least two colors are expected, three if the user wants to give a 'middle'. Without color given, the assumed vector is c("white","black").}
+\item{cols}{Optional. The colors to be used. At least two colors are expected, three if the user wants to give a 'middle'. Without color given, the assumed vector is \code{c("white","black")}.}
 
-\item{middle.col}{The color for the 'center' of the scale. It has to be one of the \code{cols} elements. If not, it is computed as being the middle between the two most extreme given colors, weighted by the \code{middle} of the \code{span} if they are provided.}
+\item{middle.col}{Optional. The color for the 'center' of the scale. It has to be one of the \code{cols} elements. If not, it is computed as being the middle color between the two most extreme given colors, weighted by the \code{middle} of the \code{span} if they are provided.}
 
-\item{span}{A numeric vector of two values that are the extremities of the range of the values used. For instance, it can be the minimal and maximal values of a continuous numeric vector the colors are intended to follow.}
+\item{span}{Optional. A numeric vector of two values that are the extremities of the range of the values used. For instance, it can be the minimal and maximal values of a continuous numeric vector the colors are intended to follow. If not provided, it is set to \code{c(0,1)}.}
 
-\item{middle}{A numeric value that is the 'center' of the color range. This is particularly useful if one wants an asymmetrical range of colors.}
+\item{middle}{Optional. A numeric value that is the 'center' of the color range. This is particularly useful if one wants an asymmetrical range of colors. If not provided, it is the half of the span.}
 
-\item{invert}{Logical. If \code{TRUE}, it flips the color ramp, thus by default set to \code{FALSE}.}
+\item{invert}{Optional. If \code{invert = TRUE}, it flips the color ramp; by default set to \code{FALSE}.}
 }
 \value{
 A vector that contains \code{ncols} color codes.
