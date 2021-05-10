@@ -16,7 +16,10 @@
 #' @param y2 the y-values to be used for the second group.
 #' @param object_1 the output of the linear model for the first group; can be an output of \code{"lm"} or of \code{"summary(lm)"}
 #' @param object_2 the output of the linear model for the second group; can be an output of \code{"lm"} or of \code{"summary(lm)"}
+#' @param delta An optional level value to compare a single slope with.
 #' @param parameter the parameter of the regression line to be tested; by default the \code{"slope"}, otherwise can be the \code{"intercept"}
+#'
+#' @importFrom stats lm pt
 #'
 #' @return Returns an object containing the absolute difference between the two estimated parameters (\code{$Estimate}), the standard error of this difference (\code{$Std. Error}), the t-value of the t-test (\code{$t value}), the degrees of freedom of the test (\code{$df}) and the p-value of the bilateral t-test (\code{$p-value}).
 #'

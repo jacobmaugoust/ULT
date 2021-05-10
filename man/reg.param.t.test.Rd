@@ -21,6 +21,8 @@ reg.param.t.test(x, y, factor, x2, y2, object_1, object_2, delta, parameter)
 
 \item{object_2}{the output of the linear model for the second group; can be an output of \code{"lm"} or of \code{"summary(lm)"}}
 
+\item{delta}{An optional level value to compare a single slope with.}
+
 \item{parameter}{the parameter of the regression line to be tested; by default the \code{"slope"}, otherwise can be the \code{"intercept"}}
 }
 \value{

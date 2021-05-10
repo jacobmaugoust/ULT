@@ -35,9 +35,11 @@
 #' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
 #' @param y Has to be provided if and only if \code{x} is a single vector.
 #' @param plot.function Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.
+#' @param plot.type Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).
 #' @param output Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.
 #' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details.
 #' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.
+#' @param plot.new If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.
 #' @param ... graphical arguments, depend of the \code{plot.function} choosed
 #'
 #' @importFrom graphics polygon
@@ -46,9 +48,10 @@
 #' @importFrom sf st_cast
 #' @importFrom sf st_multipoint
 #' @importFrom smoothr smooth
+#' @importFrom stats get_all_vars
 #'
 #' @export
-morphospace<-function(x,y,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,...){
+morphospace<-function(x,y,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,...){
   if(missing(y)){
     if(is_formula(x)){
       data<-data.frame(get_all_vars(x))
@@ -182,6 +185,10 @@ morphospace<-function(x,y,plot.function,plot.type,output,smoothing.method=NA,smo
 
   if(missing(plot.function)){
     plot.function<-"points"
+  }
+
+  if(plot.new==TRUE|is.na(smoothing.method)==FALSE){
+    plot(data,xlim=c(min(points[,1]),max(points[,1])),ylim=c(min(points[,2]),max(points[,2])),type="n")
   }
 
   if(plot.function=="polygon"){

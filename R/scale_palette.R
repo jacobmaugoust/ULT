@@ -16,6 +16,8 @@
 #' @param middle Optional. A numeric value that is the 'center' of the color range. This is particularly useful if one wants an asymmetrical range of colors. If not provided, it is the half of the span.
 #' @param invert Optional. If \code{invert = TRUE}, it flips the color ramp; by default set to \code{FALSE}.
 #'
+#' @importFrom grDevices colorRampPalette
+#'
 #' @usage scale.palette (ncols, cols, middle.col=NA, span=NA, middle=NA, invert=FALSE)
 #'
 #' @return

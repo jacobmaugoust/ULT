@@ -49,7 +49,7 @@ random_alpha_value<-runif(1,0,1)
 random_color<-rgb(red=runif(1,0,1),green=runif(1,0,1),blue=runif(1,0,1),alpha=random_alpha_value)
 plot(1:1,type="n")
 points(1,1,cex=20,pch=21,col=NA,bg=random_color)
-transparent_colors(front_color=random_color,front_alpha=random_alpha_value, output="RGB 255 code")
+transparent.colors(front_color=random_color,front_alpha=random_alpha_value, output="RGB 255 code")
 # The returning RGB code corresponds to the color in the plot.
 
 }

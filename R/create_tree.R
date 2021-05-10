@@ -17,7 +17,7 @@
 #'
 #' @return Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
 #'
-#' @importFrom graphics points text
+#' @importFrom graphics points text axis locator strwidth
 #' @importFrom gtools ask
 #' @importFrom ape plot.phylo read.tree write.tree
 #' @importFrom foreach foreach %do%

@@ -19,7 +19,11 @@ Imports:
     ape,
     foreach,
     gtools,
-    rlang
+    rlang,
+    phytools,
+    sf,
+    smoothr,
+    RColorBrewer
 Suggests: 
     knitr,
     rmarkdown

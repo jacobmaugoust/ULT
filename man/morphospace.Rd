@@ -12,6 +12,7 @@ morphospace(
   output,
   smoothing.method = NA,
   smoothing.param = NULL,
+  plot.new = FALSE,
   ...
 )
 }
@@ -22,11 +23,15 @@ morphospace(
 
 \item{plot.function}{Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.}
 
+\item{plot.type}{Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).}
+
 \item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
 
 \item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details.}
 
 \item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.}
+
+\item{plot.new}{If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.}
 
 \item{...}{graphical arguments, depend of the \code{plot.function} choosed}
 }
