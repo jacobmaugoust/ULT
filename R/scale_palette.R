@@ -108,12 +108,12 @@ scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE
     rm(old.middle.col)
   }
 
-  if(is.na("span")){
+  if(is.na(span)){
     span<-c(0,1)
   }
 
-  middle<-(middle-span[1])/(span[2]-span[1])
-  span<-(span-span[1])/(span[2]-span[1])
+  middle<-(middle-span[1])/(span[length(span)]-span[1])
+  span<-(span-span[1])/(span[length(span)]-span[1])
 
   if(middle.col%in%cols){
     n_middle_col<-which(middle.col==cols)
@@ -132,7 +132,8 @@ scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE
     }
   }
 
-  final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[2]-middle)))
+  final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
 
   return(final_palette)
 }
+
