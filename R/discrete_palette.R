@@ -23,24 +23,34 @@
 
 discrete.palette<-function(ncols,cols,prop){
   d<-ncols%/%length(cols)+1
-  r<-abs(ncols-d*length(cols))
 
   if(missing(prop)){
-    prop<-round(rescale(d/100*c(1:length(cols)),c(0,1)),2)
+    arethereprop<-FALSE
+    prop<-numeric(length=ncols)
   }
   if(length(cols)!=length(prop)){
-    prop<-round(rescale(d/100*c(1:length(cols)),c(0,1)),2)
-    warning("Number of proportions not equal to the number of colors; rescaled to be all equal")
+    prop<-d/100*c(1:length(cols))
+    if(arethereprop){
+      warning("Number of proportions not equal to the number of colors; rescaled to be all equal")
+    }
   }
-  if(max(prop)<1){
+  if(prop[1]!=0){
+    prop<-c(0,prop)
+    if(arethereprop){
+      warning("First term of prop was not 0 but needs to be; added a zero to the beginning")
+    }
+  }
+  if(max(prop)!=1){
     prop<-round(rescale(prop,c(0,1)),2)
-    warning("Maximal proportion inferior to one; rescaled to be all equal")
+    if(arethereprop){
+      warning("Maximal proportion different from one; rescaled to be all equal")
+    }
   }
 
   discpal<-character(length=ncols)
 
   for (i in 1:(length(prop)-1)){
-    start<-ifelse(i==1,1,prop[i]*100+1)
+    start<-ifelse(i==1,1,prop[i]*ncols+1)
     end<-prop[i+1]*ncols
     discpal[start:end]<-cols[i]
   }
