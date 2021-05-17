@@ -21,5 +21,5 @@ This function aims to give a 'discrete' palette, that is, a palette without grad
 }
 \details{
 The function takes as input the colors the user wants to repeat, and optionally their proportions if it is not intended to distribute them equally.
-The equal distribution may not be fully true: if needed, proportions are rounded to have an integer number of repeats of each color. The goal is rather to output the specified number of colors the user wants.
+The equal distribution may not be fully true: if needed, proportional samples are rounded to have an integer number of repeats of each color. The goal is rather to output the specified number of colors the user wants.
 }

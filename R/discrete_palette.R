@@ -6,7 +6,7 @@
 #'
 #' @details
 #' The function takes as input the colors the user wants to repeat, and optionally their proportions if it is not intended to distribute them equally.
-#' The equal distribution may not be fully true: if needed, proportions are rounded to have an integer number of repeats of each color. The goal is rather to output the specified number of colors the user wants.
+#' The equal distribution may not be fully true: if needed, proportional samples are rounded to have an integer number of repeats of each color. The goal is rather to output the specified number of colors the user wants.
 #'
 #' @param ncols The number of colors to be outputted.
 #' @param cols The colors to be used.
@@ -41,17 +41,19 @@ discrete.palette<-function(ncols,cols,prop){
     }
   }
   if(max(prop)!=1){
-    prop<-round(rescale(prop,c(0,1)),2)
+    prop<-rescale(prop,c(0,1))
     if(arethereprop){
       warning("Maximal proportion different from one; rescaled to be all equal")
     }
   }
 
+  n_prop<-round(prop*ncols)
+
   discpal<-character(length=ncols)
 
   for (i in 1:(length(prop)-1)){
-    start<-ifelse(i==1,1,prop[i]*ncols+1)
-    end<-prop[i+1]*ncols
+    start<-n_prop[i]+1
+    end<-n_prop[i+1]
     discpal[start:end]<-cols[i]
   }
 
