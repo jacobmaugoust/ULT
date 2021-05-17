@@ -54,10 +54,10 @@ binarize<-function(x,zero=NA,one="else",drop){
     ones<-which(x==one)
   }
 
-  if(any((x%in%x[zeros]|x%in%x[ones])==FALSE)){
-    if(missing(drop)){
+  if(missing(drop)){
+    drop<-FALSE
+    if(any((x%in%x[zeros]|x%in%x[ones])==FALSE)){
       warning("There are values in x that not match the zero nor the one patterns; they have been treated as NA and left in the resulting vector. Please specify drop=TRUE in the function if you want to discard them.")
-      drop<-FALSE
     }
   }
 
