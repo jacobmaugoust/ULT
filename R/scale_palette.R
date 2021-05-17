@@ -48,13 +48,25 @@
 #'
 #' @export scale.palette
 
-scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE){
+scale.palette<-function (ncols,cols,middle.col,span,middle,invert=FALSE){
   if(missing(ncols)){
     stop("No desired number of color provided")
   }
   if(missing(cols)){
     warning("No color provided, palette will be from white to black")
     cols<-c("white","black")
+  }
+  if(missing(span)){
+    warning("No range provided to scale the color gradient; 0-1 span taken by default")
+    span<-NA
+  }
+  if(missing(middle)){
+    warning("No middle provided to adjust a middle color; half of the span taken by default")
+    middle<-NA
+  }
+  if(missing(middle.col)){
+    warning("No middle color provided; replacing it by average color between the two extreme color provided")
+    middle.col<-NA
   }
 
   if(is.matrix(cols)==TRUE){
@@ -95,21 +107,16 @@ scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE
     cols<-rev(cols)
   }
 
+  if(all(is.na(span))){
+    span<-c(0,1)
+  }
   if(is.na(middle)){
     middle<-mean(span)
   }
-
-  old.middle.col<-c()
+  default_middle.col<-FALSE
   if(is.na(middle.col)){
     middle.col<-"white"
-    old.middle.col<-NA
-  }
-  else{
-    rm(old.middle.col)
-  }
-
-  if(is.na(span)){
-    span<-c(0,1)
+    default_middle.col<-TRUE
   }
 
   middle<-(middle-span[1])/(span[length(span)]-span[1])
@@ -124,16 +131,20 @@ scale.palette<-function (ncols,cols,middle.col=NA,span=NA,middle=NA,invert=FALSE
     middle.col<-rgb(red=sqrt(firstcol[1]^2*middle+lastcol[1]^2*(1-middle)),green=sqrt(firstcol[2]^2*middle+lastcol[2]^2*(1-middle)),blue=sqrt(firstcol[3]^2*middle+lastcol[3]^2*(1-middle)),maxColorValue = 255)
     cols<-c(cols[1],middle.col,cols[length(cols)])
     n_middle_col<-which(middle.col==cols)
-    if(is.na(old.middle.col)){
-      warning("No middle color provided; replacing it by average color between the two extreme color provided")
-    }
-    else{
+    if(default_middle.col==FALSE){
       warning("Middle color provided is not in the provided vector color; replacing it by average color between the two extreme color provided")
     }
   }
 
   final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
+  if(length(final_palette)!=ncols){
+    final_palette<-final_palette[-which(cols[n_middle_col]==final_palette)[1]]
+  }
 
   return(final_palette)
 }
 
+ncols<-1001
+cols<-c("#AF8DC3","#7FBF7B")
+span<-c(0,1)
+length(scale.palette(ncols=ncols,cols=cols,span=span,middle=NA,middle.col=NA))
