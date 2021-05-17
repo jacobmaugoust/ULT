@@ -44,4 +44,6 @@ discrete.palette<-function(ncols,cols,prop){
     end<-prop[i+1]*ncols
     discpal[start:end]<-cols[i]
   }
+
+  return(discpal)
 }
