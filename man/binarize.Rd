@@ -4,7 +4,7 @@
 \alias{binarize}
 \title{Binarize a vector}
 \usage{
-binarize(x, zero = NA, one = "else", drop)
+binarize(x, zero = NA, one = "else", drop, output = c(0, 1))
 }
 \arguments{
 \item{x}{The vector to binarize}
@@ -14,6 +14,8 @@ binarize(x, zero = NA, one = "else", drop)
 \item{one}{The pattern of ones to be find in \code{x}. By default, set to \code{"else"}, which means all that is not of the \code{zero} pattern. Otherwise, can be anything.}
 
 \item{drop}{If there are values not fitting both previous patterns, theses values are returned to NA. By default (\code{drop=TRUE}), these NA are left in the output vector. If you want to discard them, please specify \code{drop=TRUE}.}
+
+\item{output}{The output of the binarization. By default to 0/1, but it can be changed with a vector of length 2.}
 }
 \value{
 The binarized vector of the input vector, with only 0 and 1 (and NA if applicable).
