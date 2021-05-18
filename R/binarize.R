@@ -62,8 +62,17 @@ binarize<-function(x,zero=NA,one="else",drop,output=c(0,1)){
     }
   }
 
-  binarized[zeros]<-output[1]
-  binarized[ones]<-output[2]
+  if(length(output)>2){
+    warning("There are more than two values in the possible output; please either provide two values, or a list of two vectors; yet, only the two first values provided are used")
+    output<-output[1:2]
+  }
+
+  if(!is.list(output)){
+    output<-list(output[1],output[2])
+  }
+
+  binarized[zeros]<-output[[1]]
+  binarized[ones]<-output[[2]]
 
   if(drop){
     the_NAs<-which((x%in%x[zeros]|x%in%x[ones])==FALSE)
