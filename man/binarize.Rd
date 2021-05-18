@@ -15,7 +15,7 @@ binarize(x, zero = NA, one = "else", drop, output = c(0, 1))
 
 \item{drop}{If there are values not fitting both previous patterns, theses values are returned to NA. By default (\code{drop=TRUE}), these NA are left in the output vector. If you want to discard them, please specify \code{drop=TRUE}.}
 
-\item{output}{The output of the binarization. By default to 0/1, but it can be changed with a vector of length 2.}
+\item{output}{The output of the binarization. By default to 0/1, but it can be changed with a vector or a list of length 2.}
 }
 \value{
 The binarized vector of the input vector, with only 0 and 1 (and NA if applicable).

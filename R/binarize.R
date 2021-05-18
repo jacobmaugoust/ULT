@@ -11,7 +11,7 @@
 #' @param zero The pattern of zeros to be find in x. By default, set to NA. Can be anything.
 #' @param one The pattern of ones to be find in \code{x}. By default, set to \code{"else"}, which means all that is not of the \code{zero} pattern. Otherwise, can be anything.
 #' @param drop If there are values not fitting both previous patterns, theses values are returned to NA. By default (\code{drop=TRUE}), these NA are left in the output vector. If you want to discard them, please specify \code{drop=TRUE}.
-#' @param output The output of the binarization. By default to 0/1, but it can be changed with a vector of length 2.
+#' @param output The output of the binarization. By default to 0/1, but it can be changed with a vector or a list of length 2.
 #'
 #' @return
 #' The binarized vector of the input vector, with only 0 and 1 (and NA if applicable).
@@ -81,5 +81,3 @@ binarize<-function(x,zero=NA,one="else",drop,output=c(0,1)){
 
   return(binarized)
 }
-
-
