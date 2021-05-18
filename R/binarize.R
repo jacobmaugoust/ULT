@@ -71,8 +71,25 @@ binarize<-function(x,zero=NA,one="else",drop,output=c(0,1)){
     output<-list(output[1],output[2])
   }
 
-  binarized[zeros]<-output[[1]]
-  binarized[ones]<-output[[2]]
+  if(length(output[[1]])==1){
+    binarized[zeros]<-output[[1]]
+  }
+  else{
+    if(length(zeros)!=length(output[[1]])){
+      warning("less output values than zero's")
+    }
+    suppressWarnings(binarized[zeros]<-output[[1]])
+  }
+
+  if(length(output[[2]])==1){
+    binarized[ones]<-output[[2]]
+  }
+  else{
+    if(length(ones)!=length(output[[2]])){
+      warning("less output values than one's")
+    }
+    suppressWarnings(binarized[ones]<-output[[2]])
+  }
 
   if(drop){
     the_NAs<-which((x%in%x[zeros]|x%in%x[ones])==FALSE)
