@@ -44,7 +44,7 @@ plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=c("red","green3",
 plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=c("red","green3","blue"),middle.col="green3",span=c(0,100),middle=20))
 
 # For a vector going from -50 to 100, with blues towards -50, reds towards 100, and a white center at 0:
-plot(-50:100,-50:100,pch=21,col=NA,bg=scale.palette(ncol=151,cols=c("blue","white","red"),middle.col="white",span=c(-50,100),middle=0))
+plot(-50:100,-50:100,pch=21,col=NA,bg=scale.palette(ncols=151,cols=c("blue","white","red"),middle.col="white",span=c(-50,100),middle=0))
 
 # For a vector following an already defined-gradient, and by skewing its center at 0.75 (i.e., with more reds at the middle):
 require(RColorBrewer)

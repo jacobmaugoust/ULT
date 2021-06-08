@@ -37,7 +37,7 @@
 #' plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=c("red","green3","blue"),middle.col="green3",span=c(0,100),middle=20))
 #'
 #' # For a vector going from -50 to 100, with blues towards -50, reds towards 100, and a white center at 0:
-#' plot(-50:100,-50:100,pch=21,col=NA,bg=scale.palette(ncol=151,cols=c("blue","white","red"),middle.col="white",span=c(-50,100),middle=0))
+#' plot(-50:100,-50:100,pch=21,col=NA,bg=scale.palette(ncols=151,cols=c("blue","white","red"),middle.col="white",span=c(-50,100),middle=0))
 #'
 #' # For a vector following an already defined-gradient, and by skewing its center at 0.75 (i.e., with more reds at the middle):
 #' require(RColorBrewer)
@@ -138,13 +138,8 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,invert=FALSE){
 
   final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
   if(length(final_palette)!=ncols){
-    final_palette<-final_palette[-which(cols[n_middle_col]==final_palette)[1]]
+    final_palette<-final_palette[-which(rgb(t(col2rgb(cols[n_middle_col])),maxColorValue = 255)==final_palette)[1]]
   }
 
   return(final_palette)
 }
-
-ncols<-1001
-cols<-c("#AF8DC3","#7FBF7B")
-span<-c(0,1)
-length(scale.palette(ncols=ncols,cols=cols,span=span,middle=NA,middle.col=NA))
