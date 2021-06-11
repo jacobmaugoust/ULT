@@ -7,6 +7,7 @@
 morphospace(
   x,
   y,
+  groups,
   plot.function,
   plot.type,
   output,
@@ -21,15 +22,17 @@ morphospace(
 
 \item{y}{Has to be provided if and only if \code{x} is a single vector.}
 
+\item{groups}{Optional. A factor vector defining subsets (or 'groups') in the dataset to plot separate morphospaces at once.}
+
 \item{plot.function}{Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.}
 
 \item{plot.type}{Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).}
 
 \item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
 
-\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details.}
+\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details.}
 
-\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \code{help(smoothr::smooth)} for more details. Must be a list with named elements, the names being the names of the parameters.}
+\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.}
 
 \item{plot.new}{If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.}
 
@@ -51,26 +54,16 @@ vec2_test<-sample.int(15,replace=TRUE)
 plot(vec1_test,vec2_test)
 morphospace(vec1_test,vec2_test) # For a "raw" morphospace
 morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
+morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.type = "points") # Same, with the data
 # For a morphospace with several subgroups
 vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
 vec2_test<-sample.int(60,replace=TRUE)
 groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
 # For a "raw" morphospace
 plot(vec1_test,vec2_test,type="n")
-for (i in 1:length(levels(groups_test))){
-  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full")
-}
+morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),plot.type="points")
 # For an example of smoothed (here, using splines) morphospace
-# 1st defining the points of the splines to adjust the size of the plot
-temp<-matrix(nrow=0,ncol=2,NA)
-for (i in 1:length(levels(groups_test))){
-  temp<-rbind(temp,morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],smoothing.method = "spline",output=NA))
-}
-# 2nd plotting the data and the morphospaces
-plot(vec1_test,vec2_test,type="n",xlim=c(min(temp[,1]),max(temp[,1])),ylim=c(min(temp[,2]),max(temp[,2])))
-for (i in 1:length(levels(groups_test))){ # For an example of smoothed (here, using splines) morphospace
-  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full",smoothing.method = "spline")
-}
+morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline",plot.type="points")
 
 }
 \seealso{

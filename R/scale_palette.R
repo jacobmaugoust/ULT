@@ -18,7 +18,7 @@
 #'
 #' @importFrom grDevices colorRampPalette
 #'
-#' @usage scale.palette (ncols, cols, middle.col=NA, span=NA, middle=NA, invert=FALSE)
+#' @usage scale.palette (ncols, cols, middle.col, span, middle, invert=FALSE)
 #'
 #' @return
 #' A vector that contains \code{ncols} color codes.

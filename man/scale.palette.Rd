@@ -4,7 +4,7 @@
 \alias{scale.palette}
 \title{Function to provide a user-defined scaled color palette}
 \usage{
-scale.palette (ncols, cols, middle.col=NA, span=NA, middle=NA, invert=FALSE)
+scale.palette (ncols, cols, middle.col, span, middle, invert=FALSE)
 }
 \arguments{
 \item{ncols}{The number of colors to be outputted. It is scaled linearly according to the given \code{span}.}
