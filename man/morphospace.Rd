@@ -55,12 +55,21 @@ morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of s
 vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
 vec2_test<-sample.int(60,replace=TRUE)
 groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
+# For a "raw" morphospace
 plot(vec1_test,vec2_test,type="n")
-for (i in 1:length(levels(groups_test))){ # For a "raw" morphospace
+for (i in 1:length(levels(groups_test))){
   morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full")
 }
+# For an example of smoothed (here, using splines) morphospace
+# 1st defining the points of the splines to adjust the size of the plot
+temp<-matrix(nrow=0,ncol=2,NA)
+for (i in 1:length(levels(groups_test))){
+  temp<-rbind(temp,morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],smoothing.method = "spline",output=NA))
+}
+# 2nd plotting the data and the morphospaces
+plot(vec1_test,vec2_test,type="n",xlim=c(min(temp[,1]),max(temp[,1])),ylim=c(min(temp[,2]),max(temp[,2])))
 for (i in 1:length(levels(groups_test))){ # For an example of smoothed (here, using splines) morphospace
-  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full",smoothing.method="spline")
+  morphospace(vec1_test[groups_test==levels(groups_test)[i]],vec2_test[groups_test==levels(groups_test)[i]],pch=21,col=c("red","green3","blue")[i],bg=c("red","green3","blue")[i],plot.type="full",smoothing.method = "spline")
 }
 
 }
