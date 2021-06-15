@@ -173,8 +173,6 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
                   }
                   else{
                     if(k==length(data[,1])&points[[i]][j+1,1]==data[as.numeric(first),1]&data[as.numeric(first),1]==points[[i]][1,1]){
-                      stop<-TRUE
-                      points[[i]]<-points[[i]][-(j+1),]
                       break
                     }
                   }
@@ -254,4 +252,3 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
     }
   }
 }
-
