@@ -414,7 +414,8 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
     }
     for (i in 1:nbnodes){
       for (j in 1:node_nb_ends[[i]]){
-        if (suppressWarnings(is.na(as.numeric(paste(strsplit(node_ends[[i]][j], "")[[1]][-1],collapse=""))))==TRUE) {
+        if (strsplit(node_ends[[i]][j], "")[[1]][1]!="N"|
+             !suppressWarnings(is.na(as.numeric(paste(strsplit(node_ends[[i]][j], "")[[1]][-1],collapse=""))))) {
           node_ends[[i]][j] <- which(taxa == node_ends[[i]][j])
         }
       }
