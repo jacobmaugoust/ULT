@@ -27,7 +27,7 @@ create.tree(
 
 \item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).}
 
-\item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
+\item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter. If \code{nodes} are provided, should be in the same order}
 
 \item{tax_selection}{The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)}
 

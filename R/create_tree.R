@@ -10,7 +10,7 @@
 #' @param age_taxa A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
 #' @param nbnodes Desired number of nodes; optional, especially if \code{age_nodes} is present
 #' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).
-#' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
+#' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter. If \code{nodes} are provided, should be in the same order
 #' @param tax_selection The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)
 #' @param ultra Logical; if the tree has to be ultrametric (i.e. without specific node ages)
 #' @param format The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}
@@ -423,6 +423,15 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
         age_nodes[i] <- max(c(suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[i]]))])), suppressWarnings(max(age_nodes[unlist(foreach(j=1:as.numeric(node_nb_ends[[i]]))%do%which((names(node_ends)==node_ends[[i]][j])))])))) + 1
       }
     }
+    if(any(names(node_ends)!=names(node_ends[paste("N",1:nbnodes,sep="")]))){
+      good_order<-paste("N",1:nbnodes,sep="")
+      if(!ultra){
+        age_nodes<-setNames(age_nodes,names(node_ends))
+        age_nodes<-age_nodes[good_order]
+        age_nodes<-unname(age_nodes)
+      }
+      node_ends<-node_ends[good_order]
+    }
   }
 
   if(is.null(nbnodes)){
@@ -430,7 +439,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   }
   numb_branches <- lengths(node_ends)
   branches_temp <- matrix(ncol = 2 * max(numb_branches),nrow = length(node_ends),NA)
-  for (i in as.numeric(sapply(names(node_ends),function(x){paste(strsplit(x,"")[[1]][-1],collapse="")}))) {
+  for (i in 1:nbnodes) {
     term_unit <- c(node_ends[[i]])
     temp <- c()
     for (j in 1:numb_branches[i]) {
