@@ -25,7 +25,7 @@ create.tree(
 
 \item{nbnodes}{Desired number of nodes; optional, especially if \code{age_nodes} is present}
 
-\item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.}
+\item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).}
 
 \item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter}
 

@@ -9,7 +9,7 @@
 #' @param taxa A vector specifying the name of \strong{all} desired taxa; if not all taxa names are known, rather do not specify the known names yet and specify them by running the function without this parameter
 #' @param age_taxa A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
 #' @param nbnodes Desired number of nodes; optional, especially if \code{age_nodes} is present
-#' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). Each list can be named as Ni (i being the i-th node) or not.
+#' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).
 #' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
 #' @param tax_selection The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)
 #' @param ultra Logical; if the tree has to be ultrametric (i.e. without specific node ages)
@@ -419,9 +419,6 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
           node_ends[[i]][j] <- which(taxa == node_ends[[i]][j])
         }
       }
-      if(paste0("N",i)!=names(node_ends)[[i]]){
-        names(node_ends)[[i]]<-paste0("N",i)
-      }
       if(ultra){
         age_nodes[i] <- max(c(suppressWarnings(max(age_taxa[na.omit(as.numeric(node_ends[[i]]))])), suppressWarnings(max(age_nodes[unlist(foreach(j=1:as.numeric(node_nb_ends[[i]]))%do%which((names(node_ends)==node_ends[[i]][j])))])))) + 1
       }
@@ -433,7 +430,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   }
   numb_branches <- lengths(node_ends)
   branches_temp <- matrix(ncol = 2 * max(numb_branches),nrow = length(node_ends),NA)
-  for (i in 1:length(node_ends)) {
+  for (i in as.numeric(sapply(names(node_ends),function(x){paste(strsplit(x,"")[[1]][-1],collapse="")}))) {
     term_unit <- c(node_ends[[i]])
     temp <- c()
     for (j in 1:numb_branches[i]) {
