@@ -13,7 +13,7 @@
 #' @param black.and.white Logical. Choose ot include or not black and white and theend of the list of colors. By default set to \code{TRUE}.
 #' @param sequential Logical. If the value is a single number, choose if you want to have all colors between the first and the value, or if you want to have the color at the value. By default set too \code{TRUE}.
 #'
-#' @export
+#' @export contrasting.palette
 
 contrasting.palette<-function(value,black.and.white=TRUE,sequential=TRUE){
   colors<-c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000')
