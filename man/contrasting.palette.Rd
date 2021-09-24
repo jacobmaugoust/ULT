@@ -7,7 +7,7 @@
 contrasting.palette(value, black.and.white = TRUE, sequential = TRUE)
 }
 \arguments{
-\item{value}{The number of desired contrasted colors. If missing, it returns all 20 (if \2code{black.and.white==FALSE}) or 22 (if \2code{black.and.white==TRUE}) of the contrasting palette.}
+\item{value}{The number of desired contrasted colors. If missing, it returns all 20 (if \code{black.and.white==FALSE}) or 22 (if \code{black.and.white==TRUE}) of the contrasting palette.}
 
 \item{black.and.white}{Logical. Choose ot include or not black and white and theend of the list of colors. By default set to \code{TRUE}.}
 

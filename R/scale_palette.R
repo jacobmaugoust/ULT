@@ -46,9 +46,20 @@
 #' # Or with by skewing the center at 0.25 (i.e., with more yellows):
 #' plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=user_color_gradient,middle.col=user_color_gradient[2],span=c(0,100)))
 #'
+#' # For a multi-steps gradient
+#'
+#' ncols<-round(runif(1,1000,10000))
+#' cols<-ULT::contrasting.palette(1:round(runif(1,2,18)))
+#' span<-c(-13,17.5)
+#' steps<-seq(span[1],span[2],length.out=(length(cols)))[-c(1,length(cols))]
+#'
+#' plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE))
+#' for (i in 1:length(steps)){
+#'   abline(v=steps[i],lwd=2,col=cols[i+1])
+#' }
 #' @export scale.palette
 
-scale.palette<-function (ncols,cols,middle.col,span,middle,invert=FALSE){
+scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
   if(missing(ncols)){
     stop("No desired number of color provided")
   }
@@ -67,6 +78,13 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,invert=FALSE){
   if(missing(middle.col)){
     warning("No middle color provided; replacing it by average color between the two extreme color provided")
     middle.col<-NA
+  }
+  if(missing(steps)){
+    steps<-NA
+  }
+  if(length(steps)!=(length(cols)-2)){
+    warning("Provided steps are not equal to the number of non-extreme colors; converted to NA")
+    steps<-NA
   }
 
   if(is.matrix(cols)==TRUE){
@@ -110,35 +128,49 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,invert=FALSE){
   if(all(is.na(span))){
     span<-c(0,1)
   }
-  if(is.na(middle)){
-    middle<-mean(span)
-  }
-  default_middle.col<-FALSE
-  if(is.na(middle.col)){
-    middle.col<-"white"
-    default_middle.col<-TRUE
-  }
 
-  middle<-(middle-span[1])/(span[length(span)]-span[1])
-  span<-(span-span[1])/(span[length(span)]-span[1])
+  if(any(is.na(steps))){
+    if(is.na(middle)){
+      middle<-mean(span)
+    }
+    default_middle.col<-FALSE
+    if(is.na(middle.col)){
+      middle.col<-"white"
+      default_middle.col<-TRUE
+    }
 
-  if(middle.col%in%cols){
-    n_middle_col<-which(middle.col==cols)
-  }
-  else{
-    firstcol<-col2rgb(cols[1])
-    lastcol<-col2rgb(cols[length(cols)])
-    middle.col<-rgb(red=sqrt(firstcol[1]^2*middle+lastcol[1]^2*(1-middle)),green=sqrt(firstcol[2]^2*middle+lastcol[2]^2*(1-middle)),blue=sqrt(firstcol[3]^2*middle+lastcol[3]^2*(1-middle)),maxColorValue = 255)
-    cols<-c(cols[1],middle.col,cols[length(cols)])
-    n_middle_col<-which(middle.col==cols)
-    if(default_middle.col==FALSE){
-      warning("Middle color provided is not in the provided vector color; replacing it by average color between the two extreme color provided")
+    middle<-(middle-span[1])/(span[length(span)]-span[1])
+    span<-(span-span[1])/(span[length(span)]-span[1])
+
+    if(middle.col%in%cols){
+      n_middle_col<-which(middle.col==cols)
+    }
+    else{
+      firstcol<-col2rgb(cols[1])
+      lastcol<-col2rgb(cols[length(cols)])
+      middle.col<-rgb(red=sqrt(firstcol[1]^2*middle+lastcol[1]^2*(1-middle)),green=sqrt(firstcol[2]^2*middle+lastcol[2]^2*(1-middle)),blue=sqrt(firstcol[3]^2*middle+lastcol[3]^2*(1-middle)),maxColorValue = 255)
+      cols<-c(cols[1],middle.col,cols[length(cols)])
+      n_middle_col<-which(middle.col==cols)
+      if(default_middle.col==FALSE){
+        warning("Middle color provided is not in the provided vector color; replacing it by average color between the two extreme color provided")
+      }
+    }
+
+    final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
+    if(length(final_palette)!=ncols){
+      final_palette<-final_palette[-which(rgb(t(col2rgb(cols[n_middle_col])),maxColorValue = 255)==final_palette)[1]]
     }
   }
 
-  final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
-  if(length(final_palette)!=ncols){
-    final_palette<-final_palette[-which(rgb(t(col2rgb(cols[n_middle_col])),maxColorValue = 255)==final_palette)[1]]
+  else{
+    final_palette<-c()
+    steps<-c(span[1],steps,span[2])
+    steps<-(steps-steps[1])/(steps[length(steps)]-steps[1])
+    for (i in 1:(length(steps)-1)){
+      local_palette<-c(colorRampPalette(cols[i:(i+1)])(ncols*(steps[i+1]-steps[i])))
+      if(i!=1){local_palette<-local_palette[-1]}
+      final_palette<-c(final_palette,local_palette)
+    }
   }
 
   return(final_palette)

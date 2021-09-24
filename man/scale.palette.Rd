@@ -53,4 +53,15 @@ plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=user_color_gradie
 # Or with by skewing the center at 0.25 (i.e., with more yellows):
 plot(1:100,1:100,pch=21,col=NA,bg=scale.palette(ncols=100,cols=user_color_gradient,middle.col=user_color_gradient[2],span=c(0,100)))
 
+# For a multi-steps gradient
+
+ncols<-round(runif(1,1000,10000))
+cols<-ULT::contrasting.palette(1:round(runif(1,2,18)))
+span<-c(-13,17.5)
+steps<-seq(span[1],span[2],length.out=(length(cols)))[-c(1,length(cols))]
+
+plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE))
+for (i in 1:length(steps)){
+  abline(v=steps[i],lwd=2,col=cols[i+1])
+}
 }

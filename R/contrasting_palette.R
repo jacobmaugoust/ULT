@@ -9,7 +9,7 @@
 #'
 #' @importFrom gtools ask
 #'
-#' @param value The number of desired contrasted colors. If missing, it returns all 20 (if \2code{black.and.white==FALSE}) or 22 (if \2code{black.and.white==TRUE}) of the contrasting palette.
+#' @param value The number of desired contrasted colors. If missing, it returns all 20 (if \code{black.and.white==FALSE}) or 22 (if \code{black.and.white==TRUE}) of the contrasting palette.
 #' @param black.and.white Logical. Choose ot include or not black and white and theend of the list of colors. By default set to \code{TRUE}.
 #' @param sequential Logical. If the value is a single number, choose if you want to have all colors between the first and the value, or if you want to have the color at the value. By default set too \code{TRUE}.
 #'
