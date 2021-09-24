@@ -12,6 +12,8 @@ discrete.palette (ncols, cols, prop)
 \item{cols}{The colors to be used.}
 
 \item{prop}{Optional. The proportions for the repartition of the colors. By default, proportions are all equal.}
+
+\item{prop.type}{Optional. The type of desired proportion. If \code{prop.type="freq"} (the default), one has to provide a vector of same length than the vector \code{cols} with the frequencies of each color. If \code{prop.type="step"}, one has to provide a vector of the length of \code{cols} + 1 with all steps before to after the considered numeric series (i.e., for two colors, the vector is \code{c(x,y,z)}, having the first color between \code{x} and \code{y} and the second between \code{y} and \code{z}).}
 }
 \value{
 A vector that contains \code{ncols} color codes, with all \code{cols} repeated.

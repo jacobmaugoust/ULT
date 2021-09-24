@@ -11,6 +11,7 @@
 #' @param ncols The number of colors to be outputted.
 #' @param cols The colors to be used.
 #' @param prop Optional. The proportions for the repartition of the colors. By default, proportions are all equal.
+#' @param prop.type Optional. The type of desired proportion. If \code{prop.type="freq"} (the default), one has to provide a vector of same length than the vector \code{cols} with the frequencies of each color. If \code{prop.type="step"}, one has to provide a vector of the length of \code{cols} + 1 with all steps before to after the considered numeric series (i.e., for two colors, the vector is \code{c(x,y,z)}, having the first color between \code{x} and \code{y} and the second between \code{y} and \code{z}).
 #'
 #' @importFrom scales rescale
 #'
@@ -21,39 +22,59 @@
 #'
 #' @export discrete.palette
 
-discrete.palette<-function(ncols,cols,prop){
-  d<-ncols%/%length(cols)+1
-
-  if(missing(prop)){
-    arethereprop<-FALSE
-    prop<-numeric(length=ncols)
+discrete.palette<-function(ncols,cols,prop,prop.type="freq"){
+  if(prop.type=="step"){
+    if((length(cols)+1)!=length(prop)){
+      if(length(prop)<length(cols)){
+        warning("Number of proportions inferior to the number of colors; rescaled to be all equal")
+        prop<-c(0,rep(ncols%/%length(cols),length(cols)))
+      }
+      else{
+        if(length(prop)==length(cols)){
+          warning("Number of proportions equal to the number of colors; considered them as frequencies")
+          prop.type<-"freq"
+        }
+        else{
+          warning("Number of proportions not equal to the number of colors; only kept the steps corresponding to the given colors")
+          prop<-prop[1:(length(cols)+1)]
+        }
+      }
+    }
+    if(prop.type=="step"){
+      prop<-cumsum(prop)
+      prop<-(prop-min(prop))/max(prop)
+      n_prop<-round((prop[2:length(prop)]-prop[1:(length(prop)-1)])*ncols)
+    }
   }
-  if(length(cols)!=length(prop)){
-    prop<-d/100*c(1:length(cols))
-    if(arethereprop){
+  if(prop.type=="freq"){
+    if(missing(prop)){
+      prop<-rep(ncols%/%length(cols),length(cols))
+    }
+    if(length(cols)!=length(prop)){
       warning("Number of proportions not equal to the number of colors; rescaled to be all equal")
+      prop<-rep(ncols%/%length(cols),length(cols))
     }
-  }
-  if(prop[1]!=0){
-    prop<-c(0,prop)
-    if(arethereprop){
-      warning("First term of prop was not 0 but needs to be; added a zero to the beginning")
+    if(sum(prop)!=1){
+      prop<-prop/sum(prop)
     }
-  }
-  if(max(prop)!=1){
-    prop<-rescale(prop,c(0,1))
-    if(arethereprop){
-      warning("Maximal proportion different from one; rescaled to be all equal")
-    }
+    n_prop<-round(prop*ncols)
   }
 
-  n_prop<-round(prop*ncols)
+  if(sum(n_prop)!=ncols){
+    if(length(which(prop==min(prop)))==1){
+      med_n_prop<-which(prop==min(prop))
+    }
+    else{
+      med_n_prop<-round(median(1:length(n_prop)))
+    }
+    n_prop[med_n_prop]<-n_prop[med_n_prop]+1*ifelse(sum(n_prop)>ncols,-1,1)
+  }
 
   discpal<-character(length=ncols)
 
-  for (i in 1:(length(prop)-1)){
-    start<-n_prop[i]+1
-    end<-n_prop[i+1]
+  for (i in 1:length(n_prop)){
+    start<-ifelse(i==1,1,end+1)
+    end<-start+n_prop[i]-1
     discpal[start:end]<-cols[i]
   }
 
