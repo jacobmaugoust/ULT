@@ -40,8 +40,11 @@ discrete.palette<-function(ncols,cols,freqs,steps){
       steps<-sort(steps)
     }
     steps<-(steps-min(steps))/(max(steps)-min(steps))
-    n_steps<-round(steps*ncols)
-    n_steps[2:length(n_steps)]<-n_steps[2:length(n_steps)]-n_steps[1:(length(n_steps)-1)]
+    n_steps<-numeric(length=length(steps))
+    for (i in 1:length(n_steps)){
+      n_steps[i]<-ifelse(i==length(n_steps),max(steps),mean(c(steps[i+1],steps[i])))-ifelse(i==1,min(steps),mean(c(steps[i-1],steps[i])))
+    }
+    n_steps<-round(n_steps*ncols)
     if(sum(n_steps)!=ncols){
       med_n_steps<-round(median(1:length(n_steps)))
       n_steps[med_n_steps]<-n_steps[med_n_steps]+1*ifelse(sum(n_steps)>ncols,-1,1)
@@ -83,8 +86,3 @@ discrete.palette<-function(ncols,cols,freqs,steps){
 
   return(discpal)
 }
-
-ncols<-10
-cols<-c("blue","red","green","orange")
-steps<-c(0,1,2,3)
-discrete.palette(ncols=ncols,cols=cols,steps=steps)
