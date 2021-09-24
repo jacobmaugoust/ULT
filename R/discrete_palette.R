@@ -25,7 +25,6 @@
 discrete.palette<-function(ncols,cols,freqs,steps){
   if(!missing(steps)){
     discpal<-c()
-
     if(length(cols)!=length(steps)){
       if(length(steps)<length(cols)){
         warning("Number of steps inferior to the number of colors; rescaled to be all equal")
@@ -40,6 +39,7 @@ discrete.palette<-function(ncols,cols,freqs,steps){
       warning("Steps unordered; automatically reordered them")
       steps<-sort(steps)
     }
+    steps<-(steps-min(steps))/(max(steps)-min(steps))
     n_steps<-round(steps*ncols)
     n_steps[2:length(n_steps)]<-n_steps[2:length(n_steps)]-n_steps[1:(length(n_steps)-1)]
     if(sum(n_steps)!=ncols){
@@ -53,7 +53,6 @@ discrete.palette<-function(ncols,cols,freqs,steps){
   }
   if(!missing(freqs)){
     discpal<-character(length=ncols)
-
     if(missing(freqs)){
       freqs<-rep(ncols%/%length(cols),length(cols))
     }
@@ -84,3 +83,8 @@ discrete.palette<-function(ncols,cols,freqs,steps){
 
   return(discpal)
 }
+
+ncols<-10
+cols<-c("blue","red","green","orange")
+steps<-c(0,1,2,3)
+discrete.palette(ncols=ncols,cols=cols,steps=steps)
