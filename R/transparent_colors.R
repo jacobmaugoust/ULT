@@ -31,6 +31,56 @@
 #' points(1,1,cex=20,pch=21,col=NA,bg=random_color)
 #' transparent.colors(front_color=random_color,front_alpha=random_alpha_value, output="RGB 255 code")
 #' # The returning RGB code corresponds to the color in the plot.
+#' # For two colors overlapping
+#' random_alpha_value<-runif(1,0,1)
+#' random_colors<-c()
+#' for(i in 1:2){random_colors<-c(random_colors,rgb(red=runif(1,0,1),green=runif(1,0,1),blue=runif(1,0,1),alpha=random_alpha_value))}
+#' plot(1:8,1:8,type="n")
+#' points(4:5,4:5,cex=20,pch=21,col=NA,bg=random_colors)
+#' # The code for all colors
+#' transparent.colors(front_color=random_colors,front_alpha=random_alpha_value,output = "RGB 255 code",simple_multicol_output = FALSE)
+#' # For several colors successively overlapping
+#' random_alpha_value<-runif(1,0,1)
+#' random_colors<-c()
+#' for(i in 1:5){random_colors<-c(random_colors,rgb(red=runif(1,0,1),green=runif(1,0,1),blue=runif(1,0,1),alpha=random_alpha_value))}
+#' dev.new(width=8.958333,height=6.479167,unit="in",noRStudioGD = TRUE)
+#' plot(1:1,1:1,type="n")
+#' for(i in 1:5){points((1+(i-1)/15),1,cex=c(60-8*i),pch=21,col=NA,bg=random_colors[i])}
+#' only_colors<-matrix(nrow=3,ncol=0,NA)
+#' superimposed_colors<-matrix(nrow=3,ncol=0,NA)
+#' for(i in 1:5){
+#'   only_colors<-cbind(only_colors,transparent.colors(front_color = random_colors[i],front_alpha=random_alpha_value,output="RGB 255 code"))
+#'   if(i>1){
+#'     superimposed_colors<-cbind(superimposed_colors,transparent.colors(front_color=random_colors[i],front_alpha=random_alpha_value,back_color=rgb(t(superimposed_colors[,i-1]/255)),back_alpha = 1,output="RGB 255 code"))
+#'   }
+#'   else{
+#'     superimposed_colors<-cbind(superimposed_colors,only_colors[,1])
+#'   }
+#' }
+#' # Each transparent color (visible on the top right of each circle, on the top of the first one and the right side of the last one)
+#' only_colors
+#' # Each successive superimposed color (the aggregation of all colors)
+#' superimposed_colors
+#' # Demonstrating the interest of transparent.colors, especially while dealing with superimposed transparent colors one has to legend
+#' cols<-c("black","gray10","gray20","gray30","gray40","gray50","gray60","pink","magenta","red")
+#' alpha<-0.2
+#' new_cols<-character(length=10)
+#' new_cols[10]<-transparent.colors(front_color = cols[10],front_alpha=alpha)
+#' for(i in 9:1){
+#'   new_cols[i]<-transparent.colors(front_color=cols[i],front_alpha=alpha,back_color=new_cols[i+1],back_alpha=1)
+#' }
+#' par(mfrow=c(1,2))
+#' plot(1:10,1:10,type="n",main="using 'transparent.colors'",axes=FALSE,bty="n",xlab="",ylab="")
+#' for (i in 10:1){
+#'   polygon(c(1,1:10,10),c(1,seq(from=(5+i/2),to=4,length.out = 10),1),col=new_cols[i],border=NA)
+#' }
+#' legend("topright",legend=letters[1:10],pch=21,pt.cex=1.5,col=NA,pt.bg=new_cols,text.col="black",bty="n")
+#' plot(1:10,1:10,type="n",main="using 'alpha' in the plot, not\nbeing able to correct this in the legend",axes=FALSE,bty="n",xlab="",ylab="")
+#' for (i in 10:1){
+#'   polygon(c(1,1:10,10),c(1,seq(from=(5+i/2),to=4,length.out = 10),1),col=scales::alpha(cols[i],alpha),border=NA)
+#' }
+#' legend("topright",legend=letters[1:10],pch=21,pt.cex=1.5,col=NA,pt.bg=cols,text.col="black",bty="n")
+
 #'
 #' @importFrom grDevices col2rgb rgb
 #'
