@@ -75,13 +75,15 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                   else{"-th"}},
                                 " taxon; if you finished, please write 'end'"))
         if (temp_taxa != "end") {
-          temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
-                                     if (nbtaxa == 1) {"-st"}
-                                     else{
-                                       if (nbtaxa == 2) {"-nd"}
-                                       else{"-th"}},
-                                     " taxon; if you finished, please write 'end'"))
           if(ultra==FALSE){
+
+            temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
+                                        if (nbtaxa == 1) {"-st"}
+                                        else{
+                                          if (nbtaxa == 2) {"-nd"}
+                                          else{"-th"}},
+                                        " taxon; if you finished, please write 'end'"))
+
             if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
               cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
               temp_age_taxa <- ask(paste0("Please give the numeric age of the ",nbtaxa,
@@ -91,9 +93,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                             else{"-th"}},
                                           " taxon; if you finished, please write 'end'"))
             }
+            age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)
           }
           taxa[nbtaxa] <- as.character(temp_taxa)
-          if(ultra==FALSE){age_taxa[nbtaxa] <- as.numeric(temp_age_taxa)}
         }
         else{
           loop <- "end"
@@ -109,13 +111,17 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                   if (i == 2) {"-nd"}
                                   else{"-th"}},
                                 " taxon"))
-        temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
-                                    if (i == 1) {"-st"}
-                                    else{
-                                      if (i == 2) {"-nd"}
-                                      else{"-th"}},
-                                    " taxon"))
+        taxa[i] <- as.character(temp_taxa)
+
+
         if(ultra==FALSE){
+          temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
+                                      if (i == 1) {"-st"}
+                                      else{
+                                        if (i == 2) {"-nd"}
+                                        else{"-th"}},
+                                      " taxon"))
+
           if (is.na(suppressWarnings(as.numeric(temp_age_taxa))) == TRUE) {
             cat("You did not provide an age for this taxon, please provide it now or function will stop","\n")
             temp_age_taxa <- ask(paste0("Please give the numeric age of the ",i,
@@ -123,11 +129,10 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
                                         else{
                                           if (i == 2) {"-nd"}
                                           else{"-th"}},
-                                        " taxon; if you finished, please write 'end'"))
+                                        " taxon"))
           }
+          age_taxa[i] <- as.numeric(temp_age_taxa)
         }
-        taxa[i] <- as.character(temp_taxa)
-        if(ultra==FALSE){age_taxa[i] <- as.numeric(temp_age_taxa)}
       }
     }
   }
@@ -279,6 +284,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
           loop<-"end"
           break
         }
+        selected_taxa<-numeric(length = length(selected_points))
         for (i in 1:length(selected_points$x)){
           x_pos_taxa<-age_taxa
           y_pos_taxa<-1:nbtaxa
@@ -288,9 +294,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
             y_pos_taxa<-c(y_pos_taxa,node_coords_y)
             list_taxa<-c(taxa,names(node_ends))
           }
-          x_closest<-abs(as.numeric(x_pos_taxa)-(plot_depth-selected_points$x[i]))
-          y_closest<-abs(as.numeric(y_pos_taxa)-selected_points$y[i])
-          selected_taxa[i]<-intersect(which(x_closest==min(x_closest)),which(y_closest==min(y_closest)))
+          selected_taxa[i]<-which.min(sqrt((as.numeric(x_pos_taxa)-(plot_depth-selected_points$x[i]))^2+(as.numeric(y_pos_taxa)-selected_points$y[i])^2))
         }
         node_nb_ends[[node]] <- length(selected_taxa)
         node_ends[[node]]<-"NULL"
