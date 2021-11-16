@@ -38,21 +38,21 @@
 binarize<-function(x,zero=NA,one="else",drop,output=c(0,1)){
   binarized<-rep(NA,length(x))
 
-  if(is.null(zero)){
+  if(all(is.null(zero))){
     zeros<-which(is.null(x))
   }
-  if(is.na(zero)){
+  if(all(is.na(zero))){
     zeros<-which(is.na(x))
   }
   else{
-    zeros<-which(x==zero)
+    zeros<-which(x%in%zero)
   }
 
-  if(one=="else"){
+  if(length(one)==1&&one=="else"){
     ones<-which(x%in%x[-zeros])
   }
   else{
-    ones<-which(x==one)
+    ones<-which(x%in%one)
   }
 
   if(missing(drop)){
