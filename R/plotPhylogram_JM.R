@@ -46,7 +46,7 @@ plotPhylogram.JM<-function (x,
   colors<-x$cols
   ftype<-which(c("off", "reg", "b", "i", "bi") == ftype) - 1
 
-  xlim<-if(direction=="leftwards"){c(-x_gap,max(nodeHeights(tree)))}else{c(0,max(nodeHeights(tree))+x_gap)}
+  xlim<-if(ftype>0){if(direction=="leftwards"){c(-x_gap,max(nodeHeights(tree)))}else{c(0,max(nodeHeights(tree))+x_gap)}}else{xlim<-NULL}
 
   if (split.vertical && !setEnv) {
     cat("split.vertical requires setEnv=TRUE. Setting split.vertical to FALSE.\n")
