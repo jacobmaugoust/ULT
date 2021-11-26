@@ -14,3 +14,4 @@ The multivariate Kruskal-Wallis test functions (\code{multkw}, \code{multkw.m} a
 It can be saved to an object, but if not, result is automatically printed using this function.
 If saved, just do \code{print.multkw.output(object)} to see its results.
 }
+\keyword{internal}

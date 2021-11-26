@@ -8,7 +8,7 @@
 #' @param x An object of class \code{multkw.output}
 #'
 #' @method print multkw.output
-#' @export
+#' @keywords internal
 
 print.multkw.output<-function(x){
   type<-NULL
