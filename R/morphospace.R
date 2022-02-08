@@ -64,17 +64,50 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
   else{
     orig_data<-data.frame(x,y)
   }
-  orig_data<-na.omit(orig_data)
+
+  na_data<-FALSE
+  if(any(is.na(orig_data))){
+    na_data<-TRUE
+  }
 
   if(!missing(groups)){
     groups<-as.factor(groups)
-    if(length(groups)!=length(orig_data[,1])){
+    if(length(groups)!=length(orig_data[,1])&!na_data){
       warning("group vector is not the same length than the quantitative data; groups discarded, please provide a vector of same length")
       groups<-rep(as.factor("one"),length(orig_data[,1]))
     }
   }
   else{
     groups<-rep(as.factor("one"),length(orig_data[,1]))
+  }
+
+  if(na_data){
+    orig_data<-na.omit(orig_data)
+    if(length(groups)!=length(orig_data[,1])){
+      groups<-groups[-attr(orig_data,"na.action")]
+    }
+  }
+
+  repeats<-c()
+  for (i in 2:length(orig_data[,1])){
+    if(all(orig_data[i,]==orig_data[i-1,])){
+      repeats<-c(repeats,i)
+    }
+  }
+  if(length(repeats)>0){
+    orig_data<-orig_data[-repeats,]
+    groups<-groups[-repeats]
+  }
+
+  singleton<-c()
+  if(any(table(groups)==1)){
+    singleton<-names(table(groups))[which(table(groups)==1)]
+    warning(paste0("The following groups have not been represented because they consist of a single point: ",ifelse(length(singleton)>1,paste0(singleton,collapse=", "),singleton)))
+  }
+  if(length(singleton)>0){
+    orig_data<-orig_data[-which(groups%in%singleton),]
+    groups<-groups[-which(groups%in%singleton)]
+    groups<-factor(groups)
   }
 
   ngroups<-nlevels(groups)
@@ -112,10 +145,9 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
       }
     }
 
-    stop<-FALSE
-    for (j in 2:length(data[,1])){
-      if(stop==TRUE){break}
-      else{
+    if(length(data[,1])>2){
+      stop<-FALSE
+      for (j in 2:length(data[,1])){
         vector1<-c()
         vector2<-c()
         num<-c()
@@ -123,61 +155,32 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
         angle1<-c()
         first<-c()
         angletemp<-c()
-        mark<-FALSE
-        for (k in 1:length(data[,1])){
-          if(stop==TRUE){break}
-          else{
-            if(stop==FALSE){
-              if(k==length(data[,1])&mark==TRUE){
-                stop<-TRUE
-                points[[i]]<-points[[i]][-(j+1),]
-                break
+        if(stop){break}else{
+          for (k in 1:length(data[,1])){
+            if(!all(data[k,]==points[[i]][j,])&!all(data[k,]==points[[i]][j-1,])){
+              if(is.null(angle1)){
+                vector1<-c(points[[i]][j-1,1]-points[[i]][j,1],points[[i]][j-1,2]-points[[i]][j,2])
+                vector2<-c(data[k,1]-points[[i]][j,1],data[k,2]-points[[i]][j,2])
+                num<-(vector1[1]*vector2[1]+vector1[2]*vector2[2])
+                den<-sqrt(vector1[1]^2+vector1[2]^2)*sqrt(vector2[1]^2+vector2[2]^2)
+                angle1<-(360*(acos(num/den)))/(2*pi)
+                points[[i]][j+1,]<-data[k,]
               }
-              if((data[k,1]!=points[[i]][j,1]|data[k,2]!=points[[i]][j,2])&(data[k,1]!=points[[i]][j-1,1]|data[k,2]!=points[[i]][j-1,2])){
-                if(is.null(angle1)==TRUE){
-                  vector1<-c(points[[i]][j-1,1]-points[[i]][j,1],points[[i]][j-1,2]-points[[i]][j,2])
-                  vector2<-c(data[k,1]-points[[i]][j,1],data[k,2]-points[[i]][j,2])
-                  num<-(vector1[1]*vector2[1]+vector1[2]*vector2[2])
-                  den<-sqrt(vector1[1]^2+vector1[2]^2)*sqrt(vector2[1]^2+vector2[2]^2)
-                  angle1<-(360*(acos(num/den)))/(2*pi)
+              else{
+                vector2<-c(data[k,1]-points[[i]][j,1],data[k,2]-points[[i]][j,2])
+                num<-(vector1[1]*vector2[1]+vector1[2]*vector2[2])
+                den<-sqrt(vector1[1]^2+vector1[2]^2)*sqrt(vector2[1]^2+vector2[2]^2)
+                angletemp<-(360*(acos(num/den)))/(2*pi)
+                if(angletemp>angle1){
+                  angle1<-angletemp
                   points[[i]][j+1,]<-data[k,]
-                  first<-k
-                }
-                else{
-                  vector2<-c(data[k,1]-points[[i]][j,1],data[k,2]-points[[i]][j,2])
-                  num<-(vector1[1]*vector2[1]+vector1[2]*vector2[2])
-                  den<-sqrt(vector1[1]^2+vector1[2]^2)*sqrt(vector2[1]^2+vector2[2]^2)
-                  angletemp<-(360*(acos(num/den)))/(2*pi)
-                  if(angletemp>angle1){
-                    if(data[k,1]==points[[i]][1,1]&data[k,2]==points[[i]][1,2]){
-                      mark<-TRUE
-                      angle1<-angletemp
-                      points[[i]][j+1,]<-data[k,]
-                    }
-                    else{
-                      if(mark==TRUE){
-                        mark<-FALSE
-                        angle1<-angletemp
-                        points[[i]][j+1,]<-data[k,]
-                      }
-                      else{
-                        angle1<-angletemp
-                        points[[i]][j+1,]<-data[k,]
-                      }
-                    }
-                    if(k==length(data[,1])&mark==TRUE){
-                      stop<-TRUE
-                      points[[i]]<-points[[i]][-(j+1),]
-                      break
-                    }
-                  }
-                  else{
-                    if(k==length(data[,1])&points[[i]][j+1,1]==data[as.numeric(first),1]&data[as.numeric(first),1]==points[[i]][1,1]){
-                      break
-                    }
-                  }
                 }
               }
+            }
+            if(k==length(data[,1])&all(points[[i]][j+1,]==points[[i]][1,])){
+              points[[i]]<-points[[i]][-(j+1),]
+              stop<-TRUE
+              break
             }
           }
         }
@@ -186,7 +189,7 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
 
     if(is.na(smoothing.method)==FALSE){
       if(any(smoothing.method==c("chaikin", "ksmooth", "spline", "densify"))){
-        points[[i]]<-as.data.frame(matrix(ncol=2,data=unlist(do.call(smooth,c(list(st_cast(st_multipoint(as.matrix(points[[i]])),"POLYGON"), method = smoothing.method),smoothing.param)),recursive=FALSE),byrow=F))
+        points[[i]]<-as.data.frame(matrix(ncol=2,data=unlist(do.call(smoothr::smooth,c(list(st_cast(st_multipoint(as.matrix(points[[i]])),"POLYGON"), method = smoothing.method),smoothing.param)),recursive=FALSE),byrow=F))
       }
       else{
         errorCondition("The chosen smoothing method is not one of those permitted by the smoothr::smooth function; please read the help page")
