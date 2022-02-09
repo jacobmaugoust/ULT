@@ -23,6 +23,10 @@
 #' @export discrete.palette
 
 discrete.palette<-function(ncols,cols,freqs,steps){
+  if(missing(freqs)&missing(steps)){
+    freqs<-rep(ncols%/%length(cols),length(cols))
+  }
+
   if(!missing(steps)){
     discpal<-c()
     if(length(cols)!=length(steps)){
@@ -56,9 +60,6 @@ discrete.palette<-function(ncols,cols,freqs,steps){
   }
   if(!missing(freqs)){
     discpal<-character(length=ncols)
-    if(missing(freqs)){
-      freqs<-rep(ncols%/%length(cols),length(cols))
-    }
     if(length(cols)!=length(freqs)){
       warning("Number of proportions not equal to the number of colors; rescaled to be all equal")
       freqs<-rep(ncols%/%length(cols),length(cols))
