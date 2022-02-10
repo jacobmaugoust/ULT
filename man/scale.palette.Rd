@@ -61,7 +61,8 @@ cols<-contrasting.palette(1:round(runif(1,2,18)))
 span<-c(-13,17.5)
 steps<-seq(span[1],span[2],length.out=(length(cols)))[-c(1,length(cols))]
 
-plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE))
+bg_cols<-scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE)
+plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=bg_cols)
 for (i in 1:length(steps)){
   abline(v=steps[i],lwd=2,col=cols[i+1])
 }

@@ -23,7 +23,8 @@ Imports:
     phytools,
     sf,
     smoothr,
-    RColorBrewer
+    RColorBrewer,
+	RRphylo
 Suggests: 
     knitr,
     rmarkdown
