@@ -40,6 +40,7 @@
 #' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details.
 #' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.
 #' @param plot.new If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.
+#' @param plot.new.opt The options to be used if a new plot is added (if requested or if drawing smoothed morphospaces). Only works for the general frame of the plot (axis, labels etc). Must be a list of arguments.
 #' @param ... graphical arguments, depend of the \code{plot.function} choosed
 #'
 #' @importFrom graphics polygon
@@ -52,7 +53,7 @@
 #' @importFrom foreach foreach
 #'
 #' @export
-morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,...){
+morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){
   if(missing(y)){
     if(is_formula(x)){
       orig_data<-data.frame(get_all_vars(x))
@@ -219,7 +220,7 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
     }
 
     if(plot.new==TRUE|is.na(smoothing.method)==FALSE){
-      plot(data,xlim=c(min(min_x),max(max_x)),ylim=c(min(min_y),max(max_y)),type="n")
+      do.call(plot,c(list(data,xlim=c(min(min_x),max(max_x)),ylim=c(min(min_y),max(max_y))),plot.new.opt))
     }
 
     args<-list(...)
