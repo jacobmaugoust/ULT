@@ -6,6 +6,7 @@
 #'
 #' @details
 #' This function heavy relies on the function \code{getDescendants} from the package phytools, which give all phylogenetical units (i.e., tips and nodes) that are contained in a given clade.
+#' By specifying only some of the descendants of a node, the function returns the apicalmost node uniting them (i.e., the crown group node).
 #'
 #' @param tree The phylogenetic tree to provide
 #' @param taxa The taxa (tips only) forming the monophyletic group (i.e., a monophyletic group is at least composed of two tips).
@@ -49,17 +50,21 @@ getClade<-function(tree,taxa,output="number"){
   }
 
   n_taxa<-Ntip(tree)
-  that_node<-NA
+  that_node<-c()
   for (i in 1:tree$Nnode){
     n_node<-n_taxa+i
     n_desc<-getDescendants(tree,n_node)
     desc<-tree$tip.label[n_desc[n_desc<=n_taxa]]
-    if(all(desc%in%taxa)){
-      if(all(taxa%in%desc)){
-        that_node<-n_node
-        break
-      }
+    if(all(taxa%in%desc)){
+      that_node<-c(that_node,n_node)
     }
+  }
+  if(length(that_node)>1){
+    l_desc<-c()
+    for (i in 1:length(that_node)){
+      l_desc<-c(l_desc,length(!getDescendants(tree,that_node[i])%in%taxa))
+    }
+    that_node<-that_node[which.min(l_desc)]
   }
 
   if(output=="number"){
