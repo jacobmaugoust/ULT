@@ -21,6 +21,7 @@ This function aims to output the monophyletic group (node number or name) that c
 }
 \details{
 This function heavy relies on the function \code{getDescendants} from the package phytools, which give all phylogenetical units (i.e., tips and nodes) that are contained in a given clade.
+By specifying only some of the descendants of a node, the function returns the apicalmost node uniting them (i.e., the crown group node).
 }
 \examples{
 newick_tree<-c("((((A,B),C),(D,E)),F);") # Create a simple tree in NEWICk format

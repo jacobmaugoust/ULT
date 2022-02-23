@@ -14,6 +14,7 @@ morphospace(
   smoothing.method = NA,
   smoothing.param = NULL,
   plot.new = FALSE,
+  plot.new.opt = NULL,
   ...
 )
 }
@@ -35,6 +36,8 @@ morphospace(
 \item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.}
 
 \item{plot.new}{If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.}
+
+\item{plot.new.opt}{The options to be used if a new plot is added (if requested or if drawing smoothed morphospaces). Only works for the general frame of the plot (axis, labels etc). Must be a list of arguments.}
 
 \item{...}{graphical arguments, depend of the \code{plot.function} choosed}
 }
