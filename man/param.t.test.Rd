@@ -60,8 +60,8 @@ t.test(A)
 param.t.test(mean_x=mean_x,var_x=var_x,n_x=n_x)
 
 ## Two sample t-test with equal variances
-t.test(A,B,var.equal=T)
-param.t.test(mean_x,var_x,n_x,mean_y,var_y,n_y,var.equal=T)
+t.test(A,B,var.equal=TRUE)
+param.t.test(mean_x,var_x,n_x,mean_y,var_y,n_y,var.equal=TRUE)
 
 ## Two sample t-test with unequal variances
 t.test(A,B)
