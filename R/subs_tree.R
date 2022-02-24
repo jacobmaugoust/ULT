@@ -33,6 +33,8 @@
 #' @import ape
 #' @importFrom gtools ask
 #' @importFrom phytools getDescendants nodeHeights
+#'
+#' @export
 
 subs.tree<-function(back.tree,fore.tree,where,drop.where=TRUE,poly.where=FALSE,stem.edge.length=NULL,node.age=NULL){
   if(missing(back.tree)|missing(fore.tree)|missing(where)){
