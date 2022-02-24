@@ -38,13 +38,13 @@
 
 subs.tree<-function(back.tree,fore.tree,where,drop.where=TRUE,poly.where=FALSE,stem.edge.length=NULL,node.age=NULL){
   if(missing(back.tree)|missing(fore.tree)|missing(where)){
-    error("Please specifiy 'back' and 'fore' trees and a point on the 'back' tree to insert the 'fore' one")
+    stop("Please specifiy 'back' and 'fore' trees and a point on the 'back' tree to insert the 'fore' one")
   }
 
   where<-ifelse(length(where)>1,ULT::getClade(back.tree,where),where)
   where<-ifelse(is.character(where),ifelse(where%in%back.tree$tip.label,which(back.tree$tip.label==where),which(back.tree$where.label==where)),where)
   if(where>(Ntip(back.tree)+Nnode(back.tree))){
-    error("Number provided is neither that of a tip nor that of a node")
+    stop("Number provided is neither that of a tip nor that of a node")
   }
 
   if(!missing(stem.edge.length)&!missing(node.age)){
