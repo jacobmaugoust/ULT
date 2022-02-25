@@ -42,8 +42,16 @@ getClade<-function(tree,taxa,output="number"){
   if(missing(taxa)){
     stop("No taxa provided")
   }
-  if(all(taxa%in%tree$tip.label)==FALSE){
-    taxa<-taxa[taxa%in%tree$tip.label]
+  if(is.numeric(taxa)){
+    if(any(!taxa%in%c(1:Ntip(tree)))){
+      stop("You provided taxa number that are exceeding the number of tips; please provide only tip numbers or names")
+    }
+    taxa<-tree$tip.label[taxa]
+  }
+  else if (is.character(taxa)){
+    if(all(taxa%in%tree$tip.label)==FALSE){
+      taxa<-taxa[taxa%in%tree$tip.label]
+    }
   }
   if(output=="name"&exists('node.label',where=tree)==FALSE){
     stop("No node names provided in the tree but a named node has been required; please change the output option or give names to the tree nodes")
