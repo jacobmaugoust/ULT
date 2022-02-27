@@ -41,7 +41,7 @@ param.t.test(
 
 \item{alternative}{A character indicating the alternative hypothesis. By default, the t-test is bilateral and H1 is that there is a difference no matter its sign (\code{"two.sided"}). Otherwise, can be an unilateral test with H1 being that the difference is negative (\code{"less"}) or positive (\code{"greater"})}
 
-\item{conf.level}{The confidence level of the interval. By default set to 95%}
+\item{conf.level}{The confidence level of the interval. By default set to 95\%}
 
 \item{name_x}{The name of the x data to be outputted in the test result}
 
@@ -50,24 +50,20 @@ param.t.test(
 \value{
 As for \code{\link[stats]{t.test}}, a list with class \code{"htest"} containing the following components:
 \describe{
-\item{\code{statistic}}{the value of the t-statistic}
-\item{\code{parameter}}{the degrees of freedom of the t-statistic}
-\item{\code{p.value}}{the p-value for the test}
-\item{\code{conf.int}}{a confidence interval for the mean appropriate to the specified alternative hypothesis}
-\item{\code{estimate}}{the (inputted) estimated mean or means depending on whether it was a one-sample or a two-sample test}
-\item{\code{null.value}}{the specified hypothesized value of the mean or mean difference depending on whether it was a one-sample or a two-sample test}
-\item{\code{stderr}}{the standard error of the mean/difference, used as denominator in the t-statistic formula}
-\item{\code{alternative}}{a character string describing the alternative hypothesis}
-\item{\code{method}}{a character string indicating what type of t-test was performed}
-\item{\code{data.name}}{a character string giving the (inputted) name(s) of the data}
+ \item{\code{statistic}}{the value of the t-statistic}
+ \item{\code{parameter}}{the degrees of freedom of the t-statistic}
+ \item{\code{p.value}}{the p-value for the test}
+ \item{\code{conf.int}}{a confidence interval for the mean appropriate to the specified alternative hypothesis}
+ \item{\code{estimate}}{the (inputted) estimated mean or means depending on whether it was a one-sample or a two-sample test}
+ \item{\code{null.value}}{the specified hypothesized value of the mean or mean difference depending on whether it was a one-sample or a two-sample test}
+ \item{\code{stderr}}{the standard error of the mean/difference, used as denominator in the t-statistic formula}
+ \item{\code{alternative}}{a character string describing the alternative hypothesis}
+ \item{\code{method}}{a character string indicating what type of t-test was performed}
+ \item{\code{data.name}}{a character string giving the (inputted) name(s) of the data}
 }
 }
 \description{
 Performs one and two sample t-tests using describing parameters (i.e., mean, variance, length) of data
-}
-\details{
-\code{alternative = "greater"} is the alternative that \code{x} has a larger mean than \code{y}. For the one-sample case: that the mean is positive.
-If \code{paired} is \code{TRUE}, an error is returned because a paired t-test can only be done using original data, and the user should perform a t-test using the \code{\link[stats]{t.test}} function
 }
 \examples{
 ## Define data
@@ -93,6 +89,7 @@ param.t.test(mean_x,var_x,n_x,mean_y,var_y,n_y,var.equal=TRUE)
 ## Two sample t-test with unequal variances
 t.test(A,B)
 param.t.test(mean_x,var_x,n_x,mean_y,var_y,n_y)
+
 }
 \seealso{
 \code{\link[stats]{t.test}}
