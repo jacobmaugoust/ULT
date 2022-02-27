@@ -7,25 +7,19 @@
 phyMap3ax(tree, data, method, method.opt, anc.states, res, plot.opt)
 }
 \arguments{
-\item{x}{Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).}
+\item{tree}{The tree of format \code{phylo} to map the data on}
 
-\item{y}{Has to be provided if and only if \code{x} is a single vector.}
+\item{data}{The data to map on the tree. Must be a data frame or a matrix with three columns.}
 
-\item{groups}{Optional. A factor vector defining subsets (or 'groups') in the dataset to plot separate morphospaces at once.}
+\item{method}{Optional. The method to use to reconstruct the ancestral states, if those are not provided. Available methods are: \code{RRphylo} (the default), \code{ace}, \code{anc.ML}, \code{anc.trend}, \code{anc.Bayes}, and \code{fastAnc}. See details for these methods.}
 
-\item{plot.function}{Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.}
+\item{method.opt}{Optional. The options to the method used if some customization is desired. Must be a list of named elements, and these names should be the options of the previously called method.}
 
-\item{plot.type}{Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).}
+\item{anc.states}{Optional. The ancestral states to the data. As for \code{data}, must be a three-columned data frame or matrix.}
 
-\item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
+\item{res}{Optional. The resolution of the coloring of the tree edges (i.e., the highest the resolution, the smoothest the color gradient). Default is 1000.}
 
-\item{smoothing.method}{The smoothing method to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details.}
-
-\item{smoothing.param}{The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.}
-
-\item{plot.new}{If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.}
-
-\item{...}{graphical arguments, depend of the \code{plot.function} choosed}
+\item{plot.opt}{Optional. Options to be passed for the plot. See \code{\link[phytools]{contMap}} and \code{\link[phytools]{plot.contMap}} help pages.}
 }
 \description{
 This functions first rescales three given traits are RGB color codes, then map them on a phylogeny, estimating or using given ancestral estimates.
@@ -35,9 +29,16 @@ The aim of this function is to provide a visually intuitive summary of the infor
 To do this, the three variables are rescaled as 0-255 RGB values to summarize each point as a color code.
 Then, the aim is to give the color information of each taxon on a phylogeny, to be able to visually compare the phylogenetic (i.e., according to branches) and the statistical (i.e., according to colours) clusterings.
 To have a smooth effect, it is better to also have ancestral estimates. These can be given as parameters of the function, or they can be estimated using different methods.
+\cr
+The method for reconstructing ancestral states (if not provided) is by default the phylogenetic ridge regression (see \code{\link[RRphylo]{RRphylo}}).
+Other methods are available, especially those relying on maximum lilkelihood estimations, such as \code{\link[ape]{ace}} (ML estimation under Brownian motion model),
+\code{\link[phytools]{fastAnc}} (ML estimation using Felsenstein's contrasts),
+\code{\link[phytools]{anc.ML}} (ML estimation under various models such as Brownian motion, Ornstein-Uhlenbeck process, "early burst" model...),
+\code{\link[phytools]{anc.trend}} (ML estimation under Brownian motion model with a trend),
+\code{\link[phytools]{anc.Bayes}} (using Bayesian MCMC under adjustable Brownian motion model).
 }
 \examples{
-Simulate three traits, then summarize and map then on a phylogeny
+# Simulate three traits, then summarize and map then on a phylogeny
 
 n<-50 # Number of tips
 tree<-rtree(n) # Generating random tree
@@ -90,6 +91,6 @@ data<-data.frame(a,b,c) # Generating dataset
 method<-"fastAnc" # Choosing a method for reconstructing ancestral states
 
 phyMap3ax(tree,data,method) # Here is the plot of the three traits
-if(require(ULT){tiplabels(ULT::binarize(c(1:n)\%in\%conv,zero=FALSE,one=TRUE,output=c("","< HERE")),adj=-0.5,frame="none",col="red",font=2)} # And here are the convergent taxa
+if(require(ULT)){tiplabels(ULT::binarize(c(1:n)\%in\%conv,zero=FALSE,one=TRUE,output=c("","< HERE")),adj=-0.5,frame="none",col="red",font=2)} # And here are the convergent taxa
 
 }

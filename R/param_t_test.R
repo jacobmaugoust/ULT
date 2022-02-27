@@ -11,6 +11,20 @@
 #' \code{alternative = "greater"} is the alternative that \code{x} has a larger mean than \code{y}. For the one-sample case: that the mean is positive.
 #' If \code{paired} is \code{TRUE}, an error is returned because a paired t-test can only be done using original data, and the user should perform a t-test using the \code{\link[stats]{t.test}} function
 #'
+#' @param mean_x The mean of the x data
+#' @param var_x The variance of the x data
+#' @param n_x The number of observations of the x data
+#' @param mean_y Optional. The mean of the y data
+#' @param var_y Optional. The variance of the y data
+#' @param n_y Optional. The number of observations of the y data
+#' @param mu The value of the true mean of x (if only x is provided) of the value of the differences between the true means of x and y (if both x and y are provided). By default set to \code{0}
+#' @param paired A logical indicating whether one wants a paired t-test. By default set to \code{FALSE}
+#' @param var.equal A logical indicating whether the variances of x and y are assumed to be equal or not. By default set to \code{FALSE}
+#' @param alternative A character indicating the alternative hypothesis. By default, the t-test is bilateral and H1 is that there is a difference no matter its sign (\code{"two.sided"}). Otherwise, can be an unilateral test with H1 being that the difference is negative (\code{"less"}) or positive (\code{"greater"})
+#' @param conf.level The confidence level of the interval. By default set to 95%
+#' @param name_x The name of the x data to be outputted in the test result
+#' @param name_y The name of the y data to be outputted in the test result
+#'
 #' @return
 #' As for \code{\link[stats]{t.test}}, a list with class \code{"htest"} containing the following components:
 #' \describe{

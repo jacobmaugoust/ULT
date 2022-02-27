@@ -20,6 +20,33 @@ param.t.test(
   name_y = "y"
 )
 }
+\arguments{
+\item{mean_x}{The mean of the x data}
+
+\item{var_x}{The variance of the x data}
+
+\item{n_x}{The number of observations of the x data}
+
+\item{mean_y}{Optional. The mean of the y data}
+
+\item{var_y}{Optional. The variance of the y data}
+
+\item{n_y}{Optional. The number of observations of the y data}
+
+\item{mu}{The value of the true mean of x (if only x is provided) of the value of the differences between the true means of x and y (if both x and y are provided). By default set to \code{0}}
+
+\item{paired}{A logical indicating whether one wants a paired t-test. By default set to \code{FALSE}}
+
+\item{var.equal}{A logical indicating whether the variances of x and y are assumed to be equal or not. By default set to \code{FALSE}}
+
+\item{alternative}{A character indicating the alternative hypothesis. By default, the t-test is bilateral and H1 is that there is a difference no matter its sign (\code{"two.sided"}). Otherwise, can be an unilateral test with H1 being that the difference is negative (\code{"less"}) or positive (\code{"greater"})}
+
+\item{conf.level}{The confidence level of the interval. By default set to 95%}
+
+\item{name_x}{The name of the x data to be outputted in the test result}
+
+\item{name_y}{The name of the y data to be outputted in the test result}
+}
 \value{
 As for \code{\link[stats]{t.test}}, a list with class \code{"htest"} containing the following components:
 \describe{
