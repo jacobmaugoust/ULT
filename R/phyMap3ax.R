@@ -113,7 +113,17 @@ phyMap3ax<-function(tree,data,method,method.opt,anc.states,res,plot.opt){
   if(missing(anc.states)){
     anc.states<-matrix(ncol=3,nrow=Nnode(tree),NA)
     for (i in 1:3){
-      x<-if(length(names(data[,i]))==0){setNames(data[,i],tree$tip.label)}else{data[,i]}
+      if(length(names(data[,i]))==0){
+        if(length(rownames(data))==Ntip(tree)){
+          x<-setNames(data[,i],rownames(data))
+        }
+        else{
+          x<-setNames(data[,i],tree$tip.label)
+        }
+      }
+      else{
+        x<-data[,i]
+      }
       x<-x[order(match(names(x),tree$tip.label))]
       basics<-list("tree"=tree,"x"=x)
       if(method=="RRphylo"){names(basics)[2]<-"y"}
