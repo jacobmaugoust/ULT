@@ -111,20 +111,23 @@ phyMap3ax<-function(tree,data,method,method.opt,anc.states,res,plot.opt){
   if(missing(method.opt)){method.opt<-NULL}
 
   if(missing(anc.states)){
+    old_data<-data
+    data<-matrix(nrow=Ntip(tree),ncol=3,NA)
     anc.states<-matrix(ncol=3,nrow=Nnode(tree),NA)
     for (i in 1:3){
-      if(length(names(data[,i]))==0){
-        if(length(rownames(data))==Ntip(tree)){
-          x<-setNames(data[,i],rownames(data))
+      if(length(names(old_data[,i]))==0){
+        if(all(rownames(old_data)%in%tree$tip.label)&length(rownames(old_data))==Ntip(tree)){
+          x<-setNames(old_data[,i],rownames(old_data))
         }
         else{
-          x<-setNames(data[,i],tree$tip.label)
+          x<-setNames(old_data[,i],tree$tip.label)
         }
       }
       else{
-        x<-data[,i]
+        x<-old_data[,i]
       }
       x<-x[order(match(names(x),tree$tip.label))]
+      data[,i]<-x
       basics<-list("tree"=tree,"x"=x)
       if(method=="RRphylo"){names(basics)[2]<-"y"}
       if(method=="ace"){names(basics)[1]<-"phy"}
@@ -168,7 +171,7 @@ phyMap3ax<-function(tree,data,method,method.opt,anc.states,res,plot.opt){
   }
   steps<-steps[-length(steps)]
   names<-names[-length(names)]
-  custom_cols<-scale.palette(ncols=max(steps),cols=ord_cols,middle.col=NA,middle=NA,span=c(1,max(steps)),steps=steps[-length(steps)]+1)
+  custom_cols<-ULT::scale.palette(ncols=max(steps),cols=ord_cols,middle.col=NA,middle=NA,span=c(1,max(steps)),steps=steps[-length(steps)]+1)
   names(custom_cols)<-names
   custom_cols<-custom_cols[-which(names(custom_cols)=="RM")]
   temp_CM$cols<-custom_cols
