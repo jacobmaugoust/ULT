@@ -16,6 +16,7 @@
 #' @param r Optional. The missing data pattern to be applied. If dataset has \code{NA} and if the missing data pattern is the distribution of the \code{NA}'s in the dataset, \code{r} is optional and is automatically computed.
 #' @param weight Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (\code{weight="equal"}) or the ponderated mean of each statistic relative to the proportion of each missing pattern (\code{weight="prop"}).
 #' @param nmc Number of Monte-Carlo permutations to do.
+#' @param print Whether the test should be printed (\code{TRUE}, the default) or not (e.g., to be stored in an object)
 #'
 #' @importFrom stats aggregate pchisq
 #' @import lattice
@@ -41,7 +42,7 @@
 #'
 #' @export
 
-multkw.perm<-function(nmc,group,y,r,weight){
+multkw.perm<-function(nmc,group,y,r,weight,print=TRUE){
   group.var.name<-deparse(substitute(group))
   y.var.name<-deparse(substitute(y))
   if(missing(weight)){weight<-"prop"}
@@ -91,5 +92,6 @@ multkw.perm<-function(nmc,group,y,r,weight){
   p.multkw.c.perm<-sum(W2.c<W2.c.perm)/nmc
   multkw.perm.results<-list(y=y.var.name,group=group.var.name,weight=weight,nmc=nmc,pattern.number=pattern.number,W2.c=W2.c,nu.c=nu.c,p.multkw.c.chi2=p.multkw.c.chi2,W2.m=W2.m,nu.m=nu.m,p.multkw.m.chi2=p.multkw.m.chi2,p.multkw.c.perm=p.multkw.c.perm,p.multkw.m.perm=p.multkw.m.perm)
   class(multkw.perm.results)<-"multkw.output"
-  return(multkw.perm.results)
+  if(print){print(multkw.perm.results)}
+  else{return(multkw.perm.results)}
 }

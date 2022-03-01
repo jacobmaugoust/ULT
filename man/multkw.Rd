@@ -4,12 +4,14 @@
 \alias{multkw}
 \title{Multivariate Kruskal-Wallis test}
 \usage{
-multkw(group, y)
+multkw(group, y, print = TRUE)
 }
 \arguments{
 \item{group}{The factorial variable that subsets the dataset in groups. Can be a character vector, a factorial vector or an integer/numeric vector.}
 
 \item{y}{The dataset of n numeric(or integer) variables.}
+
+\item{print}{Whether the test should be printed (\code{TRUE}, the default) or not (e.g., to be stored in an object)}
 }
 \value{
 Output is either a list (with \code{"simplify=FALSE"}) or a vector (with \code{"simplify=TRUE"}) containing the results of the multivariate Kruskal-Wallis test.

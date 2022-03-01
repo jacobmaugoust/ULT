@@ -7,7 +7,7 @@
 #'
 #' @param x An object of class \code{multkw.output}
 #'
-#' @method print multkw.output
+#' @exportS3Method print multkw.output
 #' @keywords internal
 
 print.multkw.output<-function(x){

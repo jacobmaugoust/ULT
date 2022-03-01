@@ -18,6 +18,7 @@
 #' @param y The dataset of n numeric(or integer) variables.
 #' @param r Optional. The missing data pattern to be applied. If dataset has \code{NA} and if the missing data pattern is the distribution of the \code{NA}'s in the dataset, \code{r} is optional and is automatically computed.
 #' @param weight Optional. The weighting scheme to be used to compute the final value of the test statistic. As test statistics are calculated for each pattern of missingness, there are as statistics as patterns. The final test statistic can thus be the arithmetic mean of each statistic (\code{weight="equal"}) or the ponderated mean of each statistic relative to the proportion of each missing pattern (\code{weight="prop"}).
+#' @param print Whether the test should be printed (\code{TRUE}, the default) or not (e.g., to be stored in an object)
 #'
 #' @importFrom stats aggregate pchisq
 #' @import lattice
@@ -40,7 +41,7 @@
 #'
 #' @export
 
-multkw.m<-function(group,y,r,weight){
+multkw.m<-function(group,y,r,weight,print=TRUE){
   group.var.name<-deparse(substitute(group))
   y.var.name<-deparse(substitute(y))
   if(missing(weight)){weight<-"prop"}
@@ -98,5 +99,6 @@ multkw.m<-function(group,y,r,weight){
   p.multkw.c.chi2<-pchisq(W2.c,nu.c,lower.tail=FALSE)
   multkw.m.results<-list(y=y.var.name,group=group.var.name,weight=weight,pattern.number=length(pi),W2.c=W2.c,nu.c=nu.c,p.multkw.c.chi2=p.multkw.c.chi2,W2.m=W2.m,nu.m=nu.m,p.multkw.m.chi2=p.multkw.m.chi2)
   class(multkw.m.results)<-"multkw.output"
-  return(multkw.m.results)
+  if(print){print(multkw.m.results)}
+  else{return(multkw.m.results)}
 }

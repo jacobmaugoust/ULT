@@ -10,6 +10,7 @@
 #'
 #' @param group The factorial variable that subsets the dataset in groups. Can be a character vector, a factorial vector or an integer/numeric vector.
 #' @param y The dataset of n numeric(or integer) variables.
+#' @param print Whether the test should be printed (\code{TRUE}, the default) or not (e.g., to be stored in an object)
 #'
 #' @return Output is either a list (with \code{"simplify=FALSE"}) or a vector (with \code{"simplify=TRUE"}) containing the results of the multivariate Kruskal-Wallis test.
 #'
@@ -27,7 +28,7 @@
 #'
 #' @export
 
-multkw<- function(group,y){
+multkw<- function(group,y,print=TRUE){
   group.var.name<-deparse(substitute(group))
   y.var.name<-deparse(substitute(y))
   # sort and rank data by group #
@@ -57,5 +58,6 @@ multkw<- function(group,y){
 
   multkw.results<-list(y=y.var.name,group=group.var.name,test.statistic=W2,df=df,p.value=pv)
   class(multkw.results)<-"multkw.output"
-  return(multkw.results)
+  if(print){print(multkw.results)}
+  else{return(multkw.results)}
 }
