@@ -81,7 +81,7 @@ multkw.m<-function(group,y,r,weight,print=TRUE){
     ii<-mc[j,1:p]==FALSE
     if(sum(as.numeric(ii))>0){
       yy1<-as.matrix(yy[,ii])
-      if(mi[j]>pi[j]){W2[j]<-multkw(gg,yy1)$test.statistic} # if mi[j]>p needs to dig more
+      if(mi[j]>pi[j]){W2[j]<-multkw(gg,yy1,print=FALSE)$test.statistic} # if mi[j]>p needs to dig more
     }
     if(prod(as.numeric(ii))==1){W2.c<-W2[j]}
     i.st<-i.end+1

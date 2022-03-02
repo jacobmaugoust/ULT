@@ -71,7 +71,7 @@ multkw.perm<-function(nmc,group,y,r,weight,print=TRUE){
   W2.m.perm<-rep(0,nmc)
   W2.c.perm<-rep(0,nmc)
 
-  stats0<-invisible(multkw.m(group,y,r,weight))
+  stats0<-invisible(multkw.m(group,y,r,weight,print=FALSE))
   W2.c<-stats0$W2.c
   nu.c<-stats0$nu.c
   p.multkw.c.chi2<-stats0$p.multkw.c.chi2
@@ -84,7 +84,7 @@ multkw.perm<-function(nmc,group,y,r,weight,print=TRUE){
     i.st<-1
     group.perm<-rep(0,n)
     group.perm<-sample(group,size=n)
-    stats<-invisible(multkw.m(group.perm,y,r,weight))
+    stats<-invisible(multkw.m(group.perm,y,r,weight,print=FALSE))
     W2.c.perm[i]<-stats$W2.c
     W2.m.perm[i]<-stats$W2.m
   }
