@@ -8,6 +8,9 @@
 #' Firstly, the "multivariate Kruskal-Wallis test with missing data" is computed and are the first half of the outputs; they are the "likelihood-based" test results (see documentation of \code{multkw.m} for more details).
 #' Thus, a Monte-Carlo sampling with permutations (by randomly assigning individuals to groups) is computed, and the second half of the outputs are the proportions of results that exceeds the previously observed results (with the likelihood-based test).
 #'
+#' @author Fanyin He (most of the statistical function)
+#' @author Jacob Maugoust (packaging)
+#'
 #' @seealso
 #' See chapter 2.2.2 and 4.2 of the \href{http://d-scholarship.pitt.edu/19411/1/Fanyin_ETD_draft_08-06-2013.pdf}{PhD manuscript of Fanyin He} and 'Methodology' of \insertCite{He.etal.2017;textual}{ULT} for more details.
 #'

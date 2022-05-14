@@ -39,6 +39,9 @@
 #' multkw(y=datamkw,airquality$Month)
 #' multkw.m(y=datamkw,airquality$Month)
 #'
+#' @author Fanyin He (most of the statistical function)
+#' @author Jacob Maugoust (packaging)
+#'
 #' @export
 
 multkw.m<-function(group,y,r,weight,print=TRUE){
