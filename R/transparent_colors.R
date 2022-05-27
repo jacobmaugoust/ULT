@@ -160,6 +160,9 @@ transparent.colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA
     if(missing(whole_background)){
       bg<-c(1,1,1)
     }
+    else{
+      bg<-col2rgb(whole_background)/255
+    }
     {
       if(output=="color name"){
         transparent_color<-rgb(t((1-alpha)*bg+alpha*color))
@@ -260,6 +263,9 @@ transparent.colors<-function(front_color,back_color=NA,front_alpha,back_alpha=NA
     }
     if(missing(whole_background)){
       bg<-c(1,1,1)
+    }
+    else{
+      bg<-col2rgb(whole_background)/255
     }
     transparent_front_color<-(1-alpha[1])*bg+alpha[1]*colors[[1]]
     transparent_back_color<-(1-alpha[2])*bg+alpha[2]*colors[[2]]
