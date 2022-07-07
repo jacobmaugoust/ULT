@@ -14,6 +14,7 @@ boxgroups(
   group.plot.type = c("b", "l"),
   names = NA,
   ticks = FALSE,
+  x.gap = c(0, 0),
   prop = FALSE,
   range = NA
 )
@@ -36,6 +37,8 @@ boxgroups(
 \item{names}{The names to be displayed under each boxplot + lines. Can be the names of the columns of \code{data}. If nothing is provided, will be alphabetical letters.}
 
 \item{ticks}{Logical. Should the ticks be displayed above each name? By default, \code{ticks=FALSE}.}
+
+\item{x.gap}{Gap between the plotted data and the left and right axes. Default set to \code{c(0,0)}; if a single number is provided, automatically meant as left gap only.}
 
 \item{prop}{Logical. Do the boxplots need to be proportional with each other? By default, natural values are plotted (\code{prop=FALSE}).}
 

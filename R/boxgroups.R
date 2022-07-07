@@ -24,6 +24,7 @@
 #' @param group.plot The type of points to be drawn to represent the variation of each subgroup in each variable. By default set to the minimal and maximal range of the subgroup to show its entire range.
 #' @param group.plot.type The type of plot to be drawn for the plot of each group alongside each boxplot. See \code{plot} argument of the \code{\link[graphics]{plot.default}} function.
 #' @param names The names to be displayed under each boxplot + lines. Can be the names of the columns of \code{data}. If nothing is provided, will be alphabetical letters.
+#' @param x.gap Gap between the plotted data and the left and right axes. Default set to \code{c(0,0)}; if a single number is provided, automatically meant as left gap only.
 #' @param ticks Logical. Should the ticks be displayed above each name? By default, \code{ticks=FALSE}.
 #' @param prop Logical. Do the boxplots need to be proportional with each other? By default, natural values are plotted (\code{prop=FALSE}).
 #' @param range If \code{prop=TRUE}, the range of values for rescaling the variables. By default set to 0-1.
@@ -41,7 +42,7 @@
 #'
 #' @export
 
-boxgroups<-function(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,group.plot=c("min","max"),group.plot.type=c("b","l"),names=NA,ticks=FALSE,prop=FALSE,range=NA){
+boxgroups<-function(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,group.plot=c("min","max"),group.plot.type=c("b","l"),names=NA,ticks=FALSE,x.gap=c(0,0),prop=FALSE,range=NA){
   groups<-factor(groups)
   ng<-nlevels(groups)
   nvar<-dim(data)[2]
@@ -55,7 +56,10 @@ boxgroups<-function(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,group
   }
 
   boxwex<-rep(box.width,nvar)
-  xlim<-c(1-box.width*3/2,nvar+box.width/2)
+  if(length(x.gap)<2){
+    x.gap<-c(x.gap,0)
+  }
+  xlim<-c(1-box.width*3/2-x.gap[1],nvar+box.width/2+x.gap[2])
   do.call("boxplot",c(list("x"=data,"boxwex"=boxwex,"xlim"=xlim,"xaxt"="n"),box.opt))
 
   for (i in 1:nvar){
