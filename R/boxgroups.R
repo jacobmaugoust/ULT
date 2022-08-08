@@ -66,6 +66,9 @@ boxgroups<-function(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,group
     if(!is.null(points.opt)){
       var.opt<-names(points.opt)[mapply(function(x){length(x)},points.opt)==ng]
     }
+    else{
+      var.opt<-NULL
+    }
     for (j in 1:ng){
       temp_data<-na.omit(data[groups==levels(groups)[j],i])
       y<-c()

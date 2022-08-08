@@ -21,6 +21,7 @@
 #' # Simulate three traits, then summarize and map then on a phylogeny
 #'
 #' n<-50 # Number of tips
+#' require(ape)
 #' tree<-rtree(n) # Generating random tree
 #' a<-runif(n,min=10,max=50) # Generating three different trait within a given range
 #' b<-runif(n,min=1,max=5)
@@ -50,7 +51,7 @@
 #' method<-"fastAnc" # Choosing a method for reconstructing ancestral states
 #'
 #' phyMap3ax(tree,data,method) # Here is the plot of the three traits
-#' if(require(ULT){tiplabels(ULT::binarize(c(1:n)%in%out,zero=FALSE,one=TRUE,output=c("","< HERE")),adj=-0.5,frame="none",col="red",font=2)} # And here are the 'weird taxa'
+#' if(require(ULT)){tiplabels(ULT::binarize(c(1:n)%in%out,zero=FALSE,one=TRUE,output=c("","< HERE")),adj=-0.5,frame="none",col="red",font=2)} # And here are the 'weird taxa'
 #'
 #' # Simulate a general phylogenetic effect with some convergent taxa
 #'
