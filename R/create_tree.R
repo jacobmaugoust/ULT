@@ -464,6 +464,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
     branches[, i] <- rev(branches[, i])
   }
   age_all <- c(age_taxa, age_nodes)
+  if(!ultra){
+    root.time<-max(age_all)
+  }
   age_branches <- c()
   for (i in 1:length(branches[, 1])) {
     age_branches[i] <- age_all[branches[i, 1]] - age_all[branches[i, 2]]
@@ -477,6 +480,9 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   attributes(output)$class <- "phylo"
   attributes(output)$order <- "cladewise"
   output <- read.tree(text = write.tree(output))
+  if(!ultra){
+    output$root.time<-root.time
+  }
   if(suppressWarnings(is.null(plot.phylo(output)))==FALSE){
     if (missing(format)) {
       format <- "phylo object"
