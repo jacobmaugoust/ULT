@@ -4,7 +4,7 @@
 \alias{add.ages.phylo}
 \title{Adding taxa and/or node ages to a phylogeny}
 \usage{
-add.ages.phylo(tree, tip.ages = NULL, node.ages = NULL)
+add.ages.phylo(tree, tip.ages = NULL, node.ages = NULL, plot = TRUE)
 }
 \arguments{
 \item{tree}{A phylogenetic tree.}
@@ -12,6 +12,8 @@ add.ages.phylo(tree, tip.ages = NULL, node.ages = NULL)
 \item{tip.ages}{Optional. A numeric vector with ages of the terminal tips. Must be of same length than the number of tree tips. By default, values are considered to be in the order of the tree tips; this is bypassed if the vector is named with the tip labels.}
 
 \item{node.ages}{Optional. A numeric vector with ages of the internal nodes. By default, values are considered to be in the order of the tree nodes; this is bypassed if the tree has node labels and if this vector is named with these node labels.}
+
+\item{plot}{Optional. Turned to \code{TRUE} by default, meaning that the phylogeny is plotted at the end of the execution of the function. Turn to \code{FALSE} if not desired.}
 }
 \description{
 This function transforms a \code{phylo} object to add to it taxa ages at the nodes and/or at the terminal tips

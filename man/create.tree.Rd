@@ -13,7 +13,8 @@ create.tree(
   age_nodes,
   tax_selection,
   ultra,
-  format
+  format,
+  plot
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ create.tree(
 \item{ultra}{Logical; if the tree has to be ultrametric (i.e. without specific node ages)}
 
 \item{format}{The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}}
+
+\item{plot}{Optional. Turned to \code{TRUE} by default, meaning that the final phylogeny is plotted at the end of the execution of the function. Turn to \code{FALSE} if not desired.}
 }
 \value{
 Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.

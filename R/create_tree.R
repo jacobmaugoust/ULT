@@ -14,6 +14,7 @@
 #' @param tax_selection The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)
 #' @param ultra Logical; if the tree has to be ultrametric (i.e. without specific node ages)
 #' @param format The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}
+#' @param plot Optional. Turned to \code{TRUE} by default, meaning that the final phylogeny is plotted at the end of the execution of the function. Turn to \code{FALSE} if not desired.
 #'
 #' @return Returns either an object of class \code{phylo} or a text in newick/parenthetic format. If the latter, the tree can also be saved during performing the function.
 #'
@@ -25,7 +26,7 @@
 #'
 #' @export
 
-create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format) {
+create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format,plot) {
   if(missing(age_taxa)){age_taxa<-NULL}
   if(missing(age_nodes)){age_nodes<-NULL}
   if(missing(ultra)){ultra<-FALSE}
@@ -483,7 +484,14 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
   if(!ultra){
     output$root.time<-root.time
   }
-  if(suppressWarnings(is.null(plot.phylo(output)))==FALSE){
+
+  noplot.phylo<-function(x){
+    pdf(file=NULL)
+    plot.phylo(x)
+    dev.off()
+  }
+
+  if(suppressWarnings(is.null(noplot.phylo(output)))==FALSE){
     if (missing(format)) {
       format <- "phylo object"
     }

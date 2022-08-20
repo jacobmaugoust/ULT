@@ -5,6 +5,7 @@
 #' @param tree A phylogenetic tree.
 #' @param tip.ages Optional. A numeric vector with ages of the terminal tips. Must be of same length than the number of tree tips. By default, values are considered to be in the order of the tree tips; this is bypassed if the vector is named with the tip labels.
 #' @param node.ages Optional. A numeric vector with ages of the internal nodes. By default, values are considered to be in the order of the tree nodes; this is bypassed if the tree has node labels and if this vector is named with these node labels.
+#' @param plot Optional. Turned to \code{TRUE} by default, meaning that the phylogeny is plotted at the end of the execution of the function. Turn to \code{FALSE} if not desired.
 #'
 #' @importFrom phytools nodeHeights
 #' @import ape
@@ -24,7 +25,7 @@
 #'
 #' @export
 
-add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL){
+add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL,plot=TRUE){
   if(!is.null(tip.ages)){
     if(all(is.null(names(tip.ages)))){
       names(tip.ages)<-tree$tip.label
@@ -67,7 +68,8 @@ add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL){
   names(nodes)<-tree$node.label
 
   NT_arguments<-list(taxa=tree$tip.label,
-                     nodes=nodes)
+                     nodes=nodes,
+                     plot=plot)
   if(!is.null(tip.ages)){
     NT_arguments<-c(NT_arguments,list(age_taxa=tip.ages[match(tree$tip.label,names(tip.ages))]))
   }
@@ -75,6 +77,8 @@ add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL){
     NT_arguments<-c(NT_arguments,list(age_nodes=node.ages[match(tree$node.label,names(node.ages))]))
   }
   new.tree<-do.call("create.tree",NT_arguments)
-  axisPhylo()
+  if(plot){
+    axisPhylo()
+  }
   return(new.tree)
 }
