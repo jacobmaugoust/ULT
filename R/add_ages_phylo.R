@@ -47,25 +47,33 @@ add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL,plot=TRUE){
   named.edge<-tree$edge
   for(i in 1:nrow(tree$edge)){
     for(j in 1:ncol(tree$edge)){
-      for(k in 1:Nnode(tree)){
-        if(tree$edge[i,j]==(Ntip(tree)+k)){
-          named.edge[i,j]<-tree$node.label[k]
-        }
-      }
+      named.edge[i,j]<-c(tree$tip.label,tree$node.label)[tree$edge[i,j]]
     }
   }
 
   nodes<-list()
   for(i in 1:Nnode(tree)){
-    nodes[[i]]<-named.edge[which(named.edge[,1]==tree$node.label[i]),2]
-    term.br<-which(!is.na(suppressWarnings(as.numeric(nodes[[i]]))))
+    rev_i<-Nnode(tree)+1-i
+    nodes[[rev_i]]<-named.edge[which(named.edge[,1]==tree$node.label[i]),2]
+    term.br<-which(!is.na(suppressWarnings(as.numeric(nodes[[rev_i]]))))
     if(length(term.br)>0){
       for(j in 1:length(term.br)){
-        nodes[[i]][term.br[j]]<-tree$tip.label[as.numeric(nodes[[i]][term.br[j]])]
+        nodes[[rev_i]][term.br[j]]<-tree$tip.label[as.numeric(nodes[[rev_i]][term.br[j]])]
       }
     }
   }
   names(nodes)<-tree$node.label
+  anc.nodes<-nodes
+  for(i in 1:Nnode(tree)){
+    int.br<-which(anc.nodes[[i]]%in%tree$node.label)
+    if(length(int.br)>0){
+      for(j in 1:length(int.br)){
+        nodes[[i]][int.br[j]]<-names(anc.nodes)[which(mapply(function(x){all(x==c(tree$tip.label,tree$node.label)[tree$edge[tree$edge[,1]==Ntip(tree)+which(tree$node.label==anc.nodes[[i]][int.br[j]]),2]])},anc.nodes))]
+      }
+    }
+  }
+  names(nodes)<-tree$node.label
+  nodes<-lapply(nodes,function(x){rev(x)})
 
   NT_arguments<-list(taxa=tree$tip.label,
                      nodes=nodes,

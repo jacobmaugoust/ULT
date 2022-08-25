@@ -11,6 +11,7 @@
 #' @param nbnodes Desired number of nodes; optional, especially if \code{age_nodes} is present
 #' @param nodes A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).
 #' @param age_nodes A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter. If \code{nodes} are provided, should be in the same order
+#' @param node.labels A vector specifying the labels of the tree nodes, if there are. Can be set to \code{NA}, \code{NULL}, or \code{FALSE} for no node labels (the default), to \code{TRUE} for node labels set while creating the tree (node names in the parameter \code{nodes} if present, else default node names with prefix Node), or to a vector of same length than the nodes for user-defined names.
 #' @param tax_selection The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)
 #' @param ultra Logical; if the tree has to be ultrametric (i.e. without specific node ages)
 #' @param format The format of the output; can be an object of class \code{phylo} by specifying \code{"phylo"} or \code{"phylo object"} or simply a newick/parenthetic text by specifying \code{"newick"}, \code{"NEWICK"} or \code{"parenthetic"}
@@ -26,11 +27,8 @@
 #'
 #' @export
 
-create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selection,ultra,format,plot) {
-  if(missing(age_taxa)){age_taxa<-NULL}
-  if(missing(age_nodes)){age_nodes<-NULL}
-  if(missing(ultra)){ultra<-FALSE}
-  if(is.null(age_taxa)&is.null(age_nodes)&(is.null(ultra)|ultra==FALSE)){
+create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,ultra="false",format,plot=FALSE) {
+    if(is.null(age_taxa)&is.null(age_nodes)&(is.null(ultra)|ultra==FALSE)){
     temp_ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
     if(temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="YES"|temp_ultra=="yes"|temp_ultra=="Yes"){
       ultra<-TRUE
@@ -511,6 +509,23 @@ create.tree <- function(nbtaxa,taxa,age_taxa,nbnodes,nodes,age_nodes,tax_selecti
     }
     if (format == "phylo object" | format == "phylo"){
       output <- output
+    }
+    if(!all(is.na(node.labels))||!all(is.null(node.labels))||node.labels){
+      if(length(node.labels)==1&&node.labels){
+        if(!missing(nodes)){
+          output$node.label<-names(nodes)
+        }
+        else{
+          output<-makeNodeLabel(output)
+        }
+      }
+      else if(length(node.labels)==Nnode(output)){
+        output$node.label<-node.labels
+      }
+    }
+
+    if(plot){
+      plot.phylo(output)
     }
     return(output)
   }

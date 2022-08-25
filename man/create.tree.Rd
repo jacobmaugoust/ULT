@@ -7,14 +7,15 @@
 create.tree(
   nbtaxa,
   taxa,
-  age_taxa,
+  age_taxa = NULL,
   nbnodes,
   nodes,
-  age_nodes,
+  age_nodes = NULL,
+  node.labels = NA,
   tax_selection,
-  ultra,
+  ultra = "false",
   format,
-  plot
+  plot = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ create.tree(
 \item{nodes}{A list of vectors; each vector is a node and must contains the names of the "targets", either the taxa (full name) or other nodes (Ni, i being the i-th node). It is advised to name each vector of the list "Ni" (i being the i-th node); if not, nodes are assumed to be hierarchized from oldest to youngest (while by naming nodes, the order does not matter).}
 
 \item{age_nodes}{A vector specifying the age of \strong{all} nodes; if not all node ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter. If \code{nodes} are provided, should be in the same order}
+
+\item{node.labels}{A vector specifying the labels of the tree nodes, if there are. Can be set to \code{NA}, \code{NULL}, or \code{FALSE} for no node labels (the default), to \code{TRUE} for node labels set while creating the tree (node names in the parameter \code{nodes} if present, else default node names with prefix Node), or to a vector of same length than the nodes for user-defined names.}
 
 \item{tax_selection}{The method to choose taxa if \code{taxa} and/or \code{nodes} are not specified. Can be either \code{BYNAME} (choose taxa by their name) or \code{BYGRAPH} (choose taxa by clicking them)}
 
