@@ -151,7 +151,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,n
         age_taxa <- as.numeric(age_taxa)
       }
       else{
-        age_taxa <- as.numeric(age_taxa)
+        age_taxa <- setNames(as.numeric(age_taxa),names(age_taxa))
       }
     }
   }
@@ -461,6 +461,16 @@ create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,n
   branches <- na.omit(matrix(ncol = 2,nrow = prod(dim(branches_temp)) / 2,t(branches_temp),byrow = TRUE))
   for (i in 1:2) {
     branches[, i] <- rev(branches[, i])
+  }
+  if(!is.null(names(age_taxa))){
+    if(all(names(age_taxa)%in%taxa)){
+      age_taxa<-age_taxa[match(taxa,names(age_taxa))]
+    }
+  }
+  if(!is.null(names(age_nodes))){
+    if(all(names(age_nodes)%in%names(nodes))){
+      age_nodes<-age_nodes[match(names(nodes),names(age_nodes))]
+    }
   }
   age_all <- c(age_taxa, age_nodes)
   if(!ultra){
