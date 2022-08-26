@@ -27,7 +27,7 @@
 #'
 #' @export
 
-create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,ultra="false",format,plot=FALSE) {
+create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,ultra=FALSE,format,plot=FALSE) {
     if(is.null(age_taxa)&is.null(age_nodes)&(is.null(ultra)|ultra==FALSE)){
     temp_ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
     if(temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="YES"|temp_ultra=="yes"|temp_ultra=="Yes"){
@@ -510,7 +510,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,n
     if (format == "phylo object" | format == "phylo"){
       output <- output
     }
-    if(!all(is.na(node.labels))||!all(is.null(node.labels))||node.labels){
+    if(!(all(is.null(node.labels))||all(is.na(node.labels))||!node.labels)){
       if(length(node.labels)==1&&node.labels){
         if(!missing(nodes)){
           output$node.label<-names(nodes)
