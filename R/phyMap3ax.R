@@ -37,6 +37,7 @@
 #'
 #' # Simulate a general phylogenetic effect with some "outliers"
 #'
+#' require(RRphylo)
 #' n<-50 # Number of tips
 #' tree<-rtree(n) # Generating random tree
 #' a<-setBM(tree,s2=2,a=10,type="brown") # Generating three different traits with phylogenetic effect under Brownian motion regime
@@ -55,6 +56,7 @@
 #'
 #' # Simulate a general phylogenetic effect with some convergent taxa
 #'
+#' require(RRphylo)
 #' n<-50 # Number of tips
 #' tree<-rtree(n) # Generating random tree
 #' a<-setBM(tree,s2=2,a=10,type="brown") # Generating three different traits with phylogenetic effect under Brownian motion regime

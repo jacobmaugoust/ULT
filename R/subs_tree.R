@@ -17,12 +17,13 @@
 #' @return A tree of class \code{phylo} with both the \code{back.tree} and the \code{fore.tree} merged together.
 #'
 #' @examples
+#' require(ape)
 #' back.tree<-read.tree(text="((((A:1,B:2):0.5,(C:3,(D:4,E:1):2):5):1,(F:3,(G:2.5,(H:2.5,(I:1.5,J:1):1):1):2):1):4,K:10);")
-#' plot(ref_tree)
+#' plot(back.tree)
 #' nodelabels()
 #'
 #' fore.tree<-read.tree(text="((x:0.5,y:1.5):5,z:11);")
-#' plot(toswap_tree)
+#' plot(fore.tree)
 #'
 #' where<-c("C","E")
 #'

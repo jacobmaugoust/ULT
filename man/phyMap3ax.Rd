@@ -57,6 +57,7 @@ phyMap3ax(tree,data,method) # And here is the phylogram with the branches colour
 
 # Simulate a general phylogenetic effect with some "outliers"
 
+require(RRphylo)
 n<-50 # Number of tips
 tree<-rtree(n) # Generating random tree
 a<-setBM(tree,s2=2,a=10,type="brown") # Generating three different traits with phylogenetic effect under Brownian motion regime
@@ -75,6 +76,7 @@ if(require(ULT)){tiplabels(ULT::binarize(c(1:n)\%in\%out,zero=FALSE,one=TRUE,out
 
 # Simulate a general phylogenetic effect with some convergent taxa
 
+require(RRphylo)
 n<-50 # Number of tips
 tree<-rtree(n) # Generating random tree
 a<-setBM(tree,s2=2,a=10,type="brown") # Generating three different traits with phylogenetic effect under Brownian motion regime

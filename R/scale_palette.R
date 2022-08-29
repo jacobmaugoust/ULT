@@ -86,8 +86,8 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
   if(missing(steps)){
     steps<-NA
   }
-  if(length(steps)!=(length(cols)-2)){
-    warning("Provided steps are not equal to the number of non-extreme colors; converted to NA")
+  if(all(!is.na(steps))&(length(steps)!=(length(cols)-2))){
+    warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
     steps<-NA
   }
 
@@ -180,3 +180,4 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
 
   return(final_palette)
 }
+

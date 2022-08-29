@@ -13,7 +13,7 @@ create.tree(
   age_nodes = NULL,
   node.labels = NA,
   tax_selection,
-  ultra = "false",
+  ultra = FALSE,
   format,
   plot = FALSE
 )

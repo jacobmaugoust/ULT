@@ -40,12 +40,13 @@ This function replaces a taxon of a given "background" tree, be it a single tip 
 The age of the node of the "foreground" tree is not necessarily the same than the age of the taxon to replace in the "background" tree; there are therefore options allowing for specifying its age.
 }
 \examples{
+require(ape)
 back.tree<-read.tree(text="((((A:1,B:2):0.5,(C:3,(D:4,E:1):2):5):1,(F:3,(G:2.5,(H:2.5,(I:1.5,J:1):1):1):2):1):4,K:10);")
-plot(ref_tree)
+plot(back.tree)
 nodelabels()
 
 fore.tree<-read.tree(text="((x:0.5,y:1.5):5,z:11);")
-plot(toswap_tree)
+plot(fore.tree)
 
 where<-c("C","E")
 
