@@ -19,6 +19,7 @@
 #' for(i in 1:5){x<-c(x,rnorm(100,means[i],sds[i]))}
 #' g<-as.factor(rep(letters[1:5],each=100))
 #' densgroups(x,g) # Default plot
+#' densgroups(x,g,legend.opt=list(x="topright")) # Default plot changing location of legend
 #' densgroups(x,g, # With some customization
 #'            cols=c("red","blue","brown","pink","cyan"),
 #'            plot.opt=list(xlab="value",ylab=NA,yaxt="n"),
@@ -27,7 +28,7 @@
 #'
 #' @export
 
-densgroups<-function(x,g,cols,g.levels.order,plot.opt,curve.opt,legend=TRUE,legend.opt){
+densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,legend=TRUE,legend.opt){
   if(!is.factor(g)){
     if(missing(g.levels.order)){
       g<-as.factor(g)
@@ -36,26 +37,54 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,curve.opt,legend=TRUE,lege
       g<-factor(g,g.levels.order)
     }
   }
+
   max.d<-c()
   for(i in 1:nlevels(g)){
     max.d<-c(max.d,max(hist(x[g==levels(g)[i]],plot=FALSE)$density))
   }
+
   if(missing(cols)){
     cols<-contrasting.palette(nlevels(g))
   }
+  else if(length(cols)<nlevels(g)){
+    cols<-c(cols,contrasting.palette(nlevels(g)-length(cols)))
+  }
+
   if(missing(plot.opt)){
     plot.opt<-list(xlab=NA,ylab=NA)
   }
+  else{
+    plot.opt<-c(plot.opt,
+                if(!"xlab"%in%names(plot.opt)){xlab=NA},
+                if(!"ylab"%in%names(plot.opt)){ylab=NA})
+  }
+
+  if(missing(density.opt)){density.opt<-NULL}
+
   if(missing(curve.opt)){
     curve.opt<-list(lwd=2)
   }
-  do.call("plot",c(list(x=1,y=1,type="n",xlim=range(x),ylim=c(0,max(max.d))),plot.opt))
-  for(i in 1:nlevels(g)){
-    do.call("lines",c(list(x=density(x[g==levels(g)[i]]),col=cols[i]),curve.opt))
+  else{
+    curve.opt<-c(curve.opt,
+                 if(!"lwd"%in%names(curve.opt)){lwd=2})
   }
+
+  do.call("plot",c(list(x=1,y=1,type="n",xlim=range(x),ylim=c(0,max(max.d))),plot.opt))
+
+  for(i in 1:nlevels(g)){
+    do.call("lines",c(list(x=do.call("density",c(list(x=x[g==levels(g)[i]]),density.opt)),col=cols[i]),curve.opt))
+  }
+
   if(legend){
     if(missing(legend.opt)){
       legend.opt<-list("x"="topleft",lwd=2,bty="n",legend=levels(g))
+    }
+    else{
+      legend.opt<-c(legend.opt,
+                    if(!"x"%in%names(legend.opt)){list(x="topleft")},
+                    if(!"lwd"%in%names(legend.opt)){list(lwd=2)},
+                    if(!"bty"%in%names(legend.opt)){list(bty="n")},
+                    if(!"legend"%in%names(legend.opt)){list(legend=levels(g))})
     }
     do.call("legend",c(list(col=cols),legend.opt))
   }
