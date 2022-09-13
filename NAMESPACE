@@ -2,6 +2,7 @@
 
 S3method(print,multkw.output)
 export(add.ages.phylo)
+export(best.leg.pos)
 export(binarize)
 export(boxgroups)
 export(chardist)
