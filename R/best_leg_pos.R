@@ -6,7 +6,7 @@
 #' @keywords internal
 
 best.leg.pos<-function(x,y){
-  if(missing(y)&ncol(x)==2){
+  if(missing(y)&&ncol(x)==2){
     y<-x[,2]
     x<-x[,1]
   }

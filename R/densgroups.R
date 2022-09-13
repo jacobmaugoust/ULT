@@ -19,7 +19,7 @@
 #' for(i in 1:5){x<-c(x,rnorm(100,means[i],sds[i]))}
 #' g<-as.factor(rep(letters[1:5],each=100))
 #' densgroups(x,g) # Default plot
-#' densgroups(x,g,legend.opt=list(x="topright")) # Default plot changing location of legend
+#' densgroups(x,g,legend.opt=list(x="toleft")) # Default plot changing location of legend
 #' densgroups(x,g, # With some customization
 #'            cols=c("red","blue","brown","pink","cyan"),
 #'            plot.opt=list(xlab="value",ylab=NA,yaxt="n"),
@@ -76,12 +76,14 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,lege
   }
 
   if(legend){
+    pos<-ULT:::best.leg.pos(c(sapply(levels(g),function(y){do.call("density",c(list(x=x[g==y]),density.opt))$x})),
+                      c(sapply(levels(g),function(y){do.call("density",c(list(x=x[g==y]),density.opt))$y})))
     if(missing(legend.opt)){
-      legend.opt<-list("x"="topleft",lwd=2,bty="n",legend=levels(g))
+      legend.opt<-list("x"=pos,lwd=2,bty="n",legend=levels(g))
     }
     else{
       legend.opt<-c(legend.opt,
-                    if(!"x"%in%names(legend.opt)){list(x="topleft")},
+                    if(!"x"%in%names(legend.opt)){list(x=pos)},
                     if(!"lwd"%in%names(legend.opt)){list(lwd=2)},
                     if(!"bty"%in%names(legend.opt)){list(bty="n")},
                     if(!"legend"%in%names(legend.opt)){list(legend=levels(g))})
