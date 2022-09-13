@@ -55,8 +55,8 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,lege
   }
   else{
     plot.opt<-c(plot.opt,
-                if(!"xlab"%in%names(plot.opt)){xlab=NA},
-                if(!"ylab"%in%names(plot.opt)){ylab=NA})
+                if(!"xlab"%in%names(plot.opt)){list(xlab=NA)},
+                if(!"ylab"%in%names(plot.opt)){list(ylab=NA)})
   }
 
   if(missing(density.opt)){density.opt<-NULL}
