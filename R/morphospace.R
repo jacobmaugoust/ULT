@@ -220,7 +220,13 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
     }
 
     if(plot.new==TRUE|is.na(smoothing.method)==FALSE){
-      do.call(plot,c(list(data,xlim=c(min(min_x),max(max_x)),ylim=c(min(min_y),max(max_y))),plot.new.opt))
+      if(!"xlim"%in%names(plot.new.opt)){
+        plot.new.opt<-c(plot.new.opt,list(xlim=c(min(min_x),max(max_x))))
+      }
+      if(!"ylim"%in%names(plot.new.opt)){
+        plot.new.opt<-c(plot.new.opt,list(ylim=c(min(min_y),max(max_y))))
+      }
+      do.call(plot,c(list(data),plot.new.opt))
     }
 
     args<-list(...)
