@@ -19,23 +19,23 @@
 #' vec2_test<-sample.int(15,replace=TRUE)
 #' plot(vec1_test,vec2_test)
 #' morphospace(vec1_test,vec2_test) # For a "raw" morphospace
-#' morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
-#' morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.type = "points") # Same, with the data
+#' morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.points = FALSE) # For an example of smoothed (here, using splines) morphospace
+#' morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.points = TRUE) # Same, with the data
 #' # For a morphospace with several subgroups
 #' vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
 #' vec2_test<-sample.int(60,replace=TRUE)
 #' groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
 #' # For a "raw" morphospace
 #' plot(vec1_test,vec2_test,type="n")
-#' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),plot.type="points")
+#' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"))
 #' # For an example of smoothed (here, using splines) morphospace
-#' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline",plot.type="points")
+#' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline")
 #'
 #' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
 #' @param y Has to be provided if and only if \code{x} is a single vector.
 #' @param groups Optional. A factor vector defining subsets (or 'groups') in the dataset to plot separate morphospaces at once.
 #' @param plot.function Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.
-#' @param plot.type Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).
+#' @param plot.points Logical. If the data points have to be plotted. Default is \code{TRUE}.
 #' @param output Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.
 #' @param smoothing.method The smoothing method to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details.
 #' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.
@@ -53,7 +53,7 @@
 #' @importFrom foreach foreach
 #'
 #' @export
-morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){
+morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){
   if(missing(y)){
     if(is_formula(x)){
       orig_data<-data.frame(get_all_vars(x))
@@ -100,15 +100,21 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
     groups<-groups[-repeats]
   }
 
+  old_groups<-groups
+  oldngroups<-nlevels(old_groups)
+
   singleton<-c()
   if(any(table(groups)==1)){
     singleton<-names(table(groups))[which(table(groups)==1)]
     warning(paste0("The following groups have not been represented because they consist of a single point: ",ifelse(length(singleton)>1,paste0(singleton,collapse=", "),singleton)))
   }
   if(length(singleton)>0){
-    orig_data<-orig_data[-which(groups%in%singleton),]
+    groups_data<-orig_data[-which(groups%in%singleton),]
     groups<-groups[-which(groups%in%singleton)]
     groups<-factor(groups)
+  }
+  else{
+    groups_data<-orig_data
   }
 
   ngroups<-nlevels(groups)
@@ -121,7 +127,7 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
 
   for (i in 1:ngroups){
     points[[i]]<-data.frame(c(NA),c(NA))
-    data<-orig_data[groups==groupslevels[i],]
+    data<-groups_data[groups==groupslevels[i],]
     temp<-data[data[,1]==min(data[,1]),]
     if(is.null(dim(temp))==TRUE){
       points[[i]][1,]<-temp
@@ -211,10 +217,6 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
   }
 
   else{
-    if(missing(plot.type)){
-      plot.type<-"lines"
-    }
-
     if(missing(plot.function)){
       plot.function<-"points"
     }
@@ -226,7 +228,10 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
       if(!"ylim"%in%names(plot.new.opt)){
         plot.new.opt<-c(plot.new.opt,list(ylim=c(min(min_y),max(max_y))))
       }
-      do.call(plot,c(list(data),plot.new.opt))
+      if(plot.points==FALSE){
+        plot.new.opt<-c(plot.new.opt,list("type"="n"))
+      }
+      do.call(plot,c(list(orig_data),plot.new.opt))
     }
 
     args<-list(...)
@@ -243,22 +248,25 @@ morphospace<-function(x,y,groups,plot.function,plot.type,output,smoothing.method
       }
     }
 
-    for (i in 1:ngroups){
-      if(plot.function=="polygon"){
-        data_to_plot<-points[[i]]
+    for (i in 1:oldngroups){
+      if(length(args)>0){
+        i_args<-c(setNames(foreach(j=multiples)%do%args[[j]][i],names(args)[multiples]),args[singles])
       }
-      if(plot.function=="points"){
-        data_to_plot<-rbind(points[[i]],points[[i]][1,])
-        if(plot.type!="lines"){
-          do.call(plot.function,c(list(x=orig_data[groups==groupslevels[i],1]),list(y=orig_data[groups==groupslevels[i],2]),
-                                  if(length(args)>0){setNames(foreach(j=multiples)%do%args[[j]][i],names(args)[multiples])},
-                                  if(length(args)>0){args[singles]}))
-        }
+      else{
+        i_args<-NULL
       }
-      do.call(plot.function,c(list("x"=data_to_plot[,1]),list("y"=data_to_plot[,2]),
-                              if(plot.function=="points"){list(type="l")},
-                              if(length(args)>0){setNames(foreach(j=multiples)%do%args[[j]][i],names(args)[multiples])},
-                              if(length(args)>0){args[singles]}))
+      if(levels(old_groups)[i]%in%groupslevels){
+        ig<-which(levels(old_groups)[i]==groupslevels)
+        do.call(plot.function,c(list("x"=c(points[[ig]][,1],if(plot.function=="points"){points[[ig]][1,1]})),
+                                list("y"=c(points[[ig]][,2],if(plot.function=="points"){points[[ig]][1,2]})),
+                                i_args,
+                                ifelse(plot.function=="points",list("type"="l"),NULL)))
+      }
+
+      if(plot.points){
+        toplot_data<-orig_data[old_groups==levels(old_groups)[i],]
+        do.call("points",c(list("x"=toplot_data[,1]),list("y"=toplot_data[,2]),i_args))
+      }
     }
   }
 }

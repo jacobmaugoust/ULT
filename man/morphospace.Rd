@@ -9,7 +9,7 @@ morphospace(
   y,
   groups,
   plot.function,
-  plot.type,
+  plot.points = TRUE,
   output,
   smoothing.method = NA,
   smoothing.param = NULL,
@@ -27,7 +27,7 @@ morphospace(
 
 \item{plot.function}{Type of function used to plot the polygon: \code{"points"} or \code{"polygon"}. Default is \code{"points"}.}
 
-\item{plot.type}{Type of function used to plot the original data if no data has been plotted. By default \code{"lines"}, meaning that no points are plotted; otherwise, \code{"points"} plots the data as points (as in the \code{plot} function).}
+\item{plot.points}{Logical. If the data points have to be plotted. Default is \code{TRUE}.}
 
 \item{output}{Type of output, either the plot of the current dataset (\code{output="plot"}, the default) or the data allowing to plot the morphospace (\code{output=NA} or any other value) in a little easier way than using \code{chull} function.}
 
@@ -56,17 +56,17 @@ vec1_test<-sample.int(15,replace=TRUE)
 vec2_test<-sample.int(15,replace=TRUE)
 plot(vec1_test,vec2_test)
 morphospace(vec1_test,vec2_test) # For a "raw" morphospace
-morphospace(vec1_test,vec2_test,smoothing.method="spline") # For an example of smoothed (here, using splines) morphospace
-morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.type = "points") # Same, with the data
+morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.points = FALSE) # For an example of smoothed (here, using splines) morphospace
+morphospace(vec1_test,vec2_test,smoothing.method="spline",plot.points = TRUE) # Same, with the data
 # For a morphospace with several subgroups
 vec1_test<-c(runif(20,0,10),runif(20,10,20),runif(20,20,30))
 vec2_test<-sample.int(60,replace=TRUE)
 groups_test<-as.factor(c(rep("a",20),rep("b",20),rep("c",20)))
 # For a "raw" morphospace
 plot(vec1_test,vec2_test,type="n")
-morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),plot.type="points")
+morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"))
 # For an example of smoothed (here, using splines) morphospace
-morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline",plot.type="points")
+morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline")
 
 }
 \seealso{
