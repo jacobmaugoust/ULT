@@ -7,6 +7,7 @@
 #' @param cols The colors of the different variable lines. By default using the first colors of the [ULT:contrasting.palette] function
 #' @param g.levels.order Optional. The order of the levels for the variable \code{g} if different from the default one
 #' @param plot.opt Options (as a list) to be passed to the initial \code{plot} function, that sets the global plot frame. By default set to \code{list(xlab=NA,ylab=NA)}
+#' @param density.opt Options (as a list) to be passed to the \code{density} function used to compute the density.
 #' @param curve.opt Options (as a list) to be passed to the \code{lines} function used to draw the density lines. By default set to \code{list(lwd=2)}
 #' @param legend Logical indicating whether a legend for each subgroup has to be drawn
 #' @param legend.opt Options (as a list) to be passed to the \code{legennd} function if a legend is called. By default set to \code{list("x"="topleft",lwd=2,bty="n",legend=levels(g))}

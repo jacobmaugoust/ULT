@@ -9,6 +9,7 @@
 #' @import ape
 #'
 #' @examples
+#' require(ape)
 #' set.seed(1)
 #' orig.tree<-rtree(50)
 #' if(!require(foreach)){

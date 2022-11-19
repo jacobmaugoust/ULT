@@ -17,6 +17,7 @@ shared.nodes(trees, own = NULL, shared = NULL)
 This function returns, for each phylogeny, a list of logical vectors for the nodes being shared between different topologies
 }
 \examples{
+require(ape)
 set.seed(1)
 orig.tree<-rtree(50)
 if(!require(foreach)){

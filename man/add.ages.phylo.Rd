@@ -20,6 +20,7 @@ This function transforms a \code{phylo} object to add to it taxa ages at the nod
 }
 \examples{
 require(ape)
+require(phytools)
 ### Define all tip and node ages
 # Create an ultrametric tree
 tree<-rtree(20)

@@ -27,6 +27,8 @@ densgroups(
 
 \item{plot.opt}{Options (as a list) to be passed to the initial \code{plot} function, that sets the global plot frame. By default set to \code{list(xlab=NA,ylab=NA)}}
 
+\item{density.opt}{Options (as a list) to be passed to the \code{density} function used to compute the density.}
+
 \item{curve.opt}{Options (as a list) to be passed to the \code{lines} function used to draw the density lines. By default set to \code{list(lwd=2)}}
 
 \item{legend}{Logical indicating whether a legend for each subgroup has to be drawn}

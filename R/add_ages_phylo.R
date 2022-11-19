@@ -12,6 +12,7 @@
 #'
 #' @examples
 #' require(ape)
+#' require(phytools)
 #' ### Define all tip and node ages
 #' # Create an ultrametric tree
 #' tree<-rtree(20)
