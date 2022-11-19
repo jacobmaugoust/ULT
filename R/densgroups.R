@@ -19,7 +19,7 @@
 #' for(i in 1:5){x<-c(x,rnorm(100,means[i],sds[i]))}
 #' g<-as.factor(rep(letters[1:5],each=100))
 #' densgroups(x,g) # Default plot
-#' densgroups(x,g,legend.opt=list(x="toleft")) # Default plot changing location of legend
+#' densgroups(x,g,legend.opt=list(x="topleft")) # Default plot changing location of legend
 #' densgroups(x,g, # With some customization
 #'            cols=c("red","blue","brown","pink","cyan"),
 #'            plot.opt=list(xlab="value",ylab=NA,yaxt="n"),
@@ -38,10 +38,14 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,lege
     }
   }
 
-  max.d<-c()
+  if(missing(density.opt)){density.opt<-NULL}
+
+  densities<-list()
   for(i in 1:nlevels(g)){
-    max.d<-c(max.d,max(hist(x[g==levels(g)[i]],plot=FALSE)$density))
+    densities[[i]]<-do.call("density",c(list(x=x[g==levels(g)[i]]),density.opt))
   }
+
+  max.d<-max(unlist(lapply(densities,function(x){max(x$y)})))
 
   if(missing(cols)){
     cols<-contrasting.palette(nlevels(g))
@@ -59,8 +63,6 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,lege
                 if(!"ylab"%in%names(plot.opt)){list(ylab=NA)})
   }
 
-  if(missing(density.opt)){density.opt<-NULL}
-
   if(missing(curve.opt)){
     curve.opt<-list(lwd=2)
   }
@@ -69,10 +71,10 @@ densgroups<-function(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,lege
                  if(!"lwd"%in%names(curve.opt)){lwd=2})
   }
 
-  do.call("plot",c(list(x=1,y=1,type="n",xlim=range(x),ylim=c(0,max(max.d))),plot.opt))
+  do.call("plot",c(list(x=1,y=1,type="n",xlim=range(x),ylim=c(0,max.d)),plot.opt))
 
   for(i in 1:nlevels(g)){
-    do.call("lines",c(list(x=do.call("density",c(list(x=x[g==levels(g)[i]]),density.opt)),col=cols[i]),curve.opt))
+    do.call("lines",c(list(x=densities[[i]],col=cols[i]),curve.opt))
   }
 
   if(legend){

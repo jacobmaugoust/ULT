@@ -44,7 +44,7 @@ x<-c()
 for(i in 1:5){x<-c(x,rnorm(100,means[i],sds[i]))}
 g<-as.factor(rep(letters[1:5],each=100))
 densgroups(x,g) # Default plot
-densgroups(x,g,legend.opt=list(x="toleft")) # Default plot changing location of legend
+densgroups(x,g,legend.opt=list(x="topleft")) # Default plot changing location of legend
 densgroups(x,g, # With some customization
            cols=c("red","blue","brown","pink","cyan"),
            plot.opt=list(xlab="value",ylab=NA,yaxt="n"),
