@@ -30,6 +30,10 @@
 #' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"))
 #' # For an example of smoothed (here, using splines) morphospace
 #' morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline")
+#' # The same morphospace using the polygon function and its options to draw dotted semi-transparent lines
+#' morphospace(vec1_test,vec2_test,groups_test,plot.function="polygon",pch=21,col=scales::alpha(c("red","green3","blue"),0.25),density=15,border=c("red","green3","blue"),col.points=c("red","green3","blue"),bg=c("red","green3","blue"),lty=2,plot.new=TRUE)
+#' # The same morphospace using the polygon function and its options to draw semi-transparent convex hulls
+#' morphospace(vec1_test,vec2_test,groups_test,plot.function="polygon",pch=21,col=scales::alpha(c("red","green3","blue"),0.1),border=c("red","green3","blue"),col.points=c("red","green3","blue"),bg=c("red","green3","blue"),lty=2,plot.new=TRUE)
 #'
 #' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
 #' @param y Has to be provided if and only if \code{x} is a single vector.
@@ -41,7 +45,7 @@
 #' @param smoothing.param The smoothing parameters to use if the user wants a smoothed morphospace. See \link[smoothr]{smooth} for more details. Must be a list with named elements, the names being the names of the parameters.
 #' @param plot.new If there has to be a new plot or if morphospace adds to a current plot. By default, it adds to the previous plot.
 #' @param plot.new.opt The options to be used if a new plot is added (if requested or if drawing smoothed morphospaces). Only works for the general frame of the plot (axis, labels etc). Must be a list of arguments.
-#' @param ... graphical arguments, depend of the \code{plot.function} choosed
+#' @param ... graphical arguments, depend of the \code{plot.function} choosed. If \code{plot.function="polygon"} and \code{plot.points=TRUE} and the user wants to specify the \code{col} arguments for both the polygon (i.e., filling color) and the points (i.e., border points color), it is recommended to specify the polygon \code{col} as \code{col} and the points \code{col} as \code{col.points}.
 #'
 #' @importFrom graphics polygon
 #' @importFrom stats na.omit
@@ -53,7 +57,7 @@
 #' @importFrom foreach foreach
 #'
 #' @export
-morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output,smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){
+morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output="plot",smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){
   if(missing(y)){
     if(is_formula(x)){
       orig_data<-data.frame(get_all_vars(x))
@@ -209,9 +213,8 @@ morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output,smoothing
     max_y<-c(max_y,max(points[[i]][,2]))
   }
 
-  if(missing(output)){
-    output<-"plot"
-  }
+  names(points)<-as.character(c(1:oldngroups)[levels(old_groups)%in%groupslevels])
+
   if(output!="plot"|is.na(output)){
     return(points)
   }
@@ -255,17 +258,37 @@ morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output,smoothing
       else{
         i_args<-NULL
       }
+
       if(levels(old_groups)[i]%in%groupslevels){
-        ig<-which(levels(old_groups)[i]==groupslevels)
-        do.call(plot.function,c(list("x"=c(points[[ig]][,1],if(plot.function=="points"){points[[ig]][1,1]})),
-                                list("y"=c(points[[ig]][,2],if(plot.function=="points"){points[[ig]][1,2]})),
-                                i_args,
-                                ifelse(plot.function=="points",list("type"="l"),NULL)))
+
       }
+
+      lines_i_args<-c(list("x"=points[[as.character(i)]][,1]),list("y"=points[[as.character(i)]][,2]))
+      if(plot.function=="polygon"){
+        lines_i_args<-c(lines_i_args,i_args[names(i_args)%in%c("density","angle","border","col","lty","xpd","lend","ljoin","lmitre","fillOddEven")])
+        if(plot.points){
+          points_i_args<-i_args[!names(i_args)%in%c("density","angle","border","col","lty","xpd","lend","ljoin","lmitre","fillOddEven")]
+        }
+      }
+      else{
+        lines_i_args<-c(lines_i_args,i_args,list("type"="l"))
+        if(!is.null(lines_i_args$x)){
+          lines_i_args$x<-c(lines_i_args$x,points[[as.character(i)]][1,1])
+          lines_i_args$y<-c(lines_i_args$y,points[[as.character(i)]][1,2])
+        }
+        if(plot.points){
+          points_i_args<-i_args
+        }
+      }
+
+      do.call(plot.function,lines_i_args)
 
       if(plot.points){
         toplot_data<-orig_data[old_groups==levels(old_groups)[i],]
-        do.call("points",c(list("x"=toplot_data[,1]),list("y"=toplot_data[,2]),i_args))
+        if(any(names(points_i_args)=="col.points")){
+          names(points_i_args)[names(points_i_args)=="col.points"]<-"col"
+        }
+        do.call("points",c(list("x"=toplot_data[,1]),list("y"=toplot_data[,2]),points_i_args))
       }
     }
   }

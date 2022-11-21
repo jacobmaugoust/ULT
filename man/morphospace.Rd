@@ -10,7 +10,7 @@ morphospace(
   groups,
   plot.function,
   plot.points = TRUE,
-  output,
+  output = "plot",
   smoothing.method = NA,
   smoothing.param = NULL,
   plot.new = FALSE,
@@ -39,7 +39,7 @@ morphospace(
 
 \item{plot.new.opt}{The options to be used if a new plot is added (if requested or if drawing smoothed morphospaces). Only works for the general frame of the plot (axis, labels etc). Must be a list of arguments.}
 
-\item{...}{graphical arguments, depend of the \code{plot.function} choosed}
+\item{...}{graphical arguments, depend of the \code{plot.function} choosed. If \code{plot.function="polygon"} and \code{plot.points=TRUE} and the user wants to specify the \code{col} arguments for both the polygon (i.e., filling color) and the points (i.e., border points color), it is recommended to specify the polygon \code{col} as \code{col} and the points \code{col} as \code{col.points}.}
 }
 \description{
 This functions performs a "morphospace" of a dataset of two vectors: it connects extremal points to plot the largest polygon possible. This is a rather generic function and can be applied on datasets no matter of which are the vectors. The dataset just needs two vectors: firstly, plot the two vectors against each other (second vector in y-axis; first vector in x-axis), then run morphospace to superimpose a polygon to the plot.
@@ -67,6 +67,10 @@ plot(vec1_test,vec2_test,type="n")
 morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"))
 # For an example of smoothed (here, using splines) morphospace
 morphospace(vec1_test,vec2_test,groups_test,pch=21,col=c("red","green3","blue"),bg=c("red","green3","blue"),smoothing.method="spline")
+# The same morphospace using the polygon function and its options to draw dotted semi-transparent lines
+morphospace(vec1_test,vec2_test,groups_test,plot.function="polygon",pch=21,col=scales::alpha(c("red","green3","blue"),0.25),density=15,border=c("red","green3","blue"),col.points=c("red","green3","blue"),bg=c("red","green3","blue"),lty=2,plot.new=TRUE)
+# The same morphospace using the polygon function and its options to draw semi-transparent convex hulls
+morphospace(vec1_test,vec2_test,groups_test,plot.function="polygon",pch=21,col=scales::alpha(c("red","green3","blue"),0.1),border=c("red","green3","blue"),col.points=c("red","green3","blue"),bg=c("red","green3","blue"),lty=2,plot.new=TRUE)
 
 }
 \seealso{
