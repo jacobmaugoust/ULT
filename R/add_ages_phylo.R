@@ -7,6 +7,7 @@
 #' @param node.ages Optional. A numeric vector with ages of the internal nodes. By default, values are considered to be in the order of the tree nodes; this is bypassed if the tree has node labels and if this vector is named with these node labels.
 #' @param plot Optional. Turned to \code{TRUE} by default, meaning that the phylogeny is plotted at the end of the execution of the function. Turn to \code{FALSE} if not desired.
 #'
+#' @importFrom stats setNames
 #' @importFrom phytools nodeHeights
 #' @import ape
 #'

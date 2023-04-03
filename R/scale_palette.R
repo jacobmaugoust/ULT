@@ -80,7 +80,7 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     middle<-NA
   }
   if(missing(middle.col)){
-    warning("No middle color provided; replacing it by average color between the two extreme color provided")
+    warning(paste0("No middle color provided; replacing it by the ",if(length(cols)==2||length(cols)%%2==0){"average color between the two "},if(length(cols)==2){"provided"}else{"closest"}," color",if(length(cols)%%2==0){"s"},if(length(cols)>2){" to the middle of the colors vector"}))
     middle.col<-NA
   }
   if(missing(steps)){
@@ -137,28 +137,28 @@ scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     if(is.na(middle)){
       middle<-mean(span)
     }
-    default_middle.col<-FALSE
-    if(is.na(middle.col)){
-      middle.col<-"white"
-      default_middle.col<-TRUE
-    }
 
     middle<-(middle-span[1])/(span[length(span)]-span[1])
     span<-(span-span[1])/(span[length(span)]-span[1])
 
-    if(middle.col%in%cols){
-      n_middle_col<-which(middle.col==cols)
-    }
-    else{
-      firstcol<-col2rgb(cols[1])
-      lastcol<-col2rgb(cols[length(cols)])
-      middle.col<-rgb(red=sqrt(firstcol[1]^2*middle+lastcol[1]^2*(1-middle)),green=sqrt(firstcol[2]^2*middle+lastcol[2]^2*(1-middle)),blue=sqrt(firstcol[3]^2*middle+lastcol[3]^2*(1-middle)),maxColorValue = 255)
-      cols<-c(cols[1],middle.col,cols[length(cols)])
-      n_middle_col<-which(middle.col==cols)
-      if(default_middle.col==FALSE){
-        warning("Middle color provided is not in the provided vector color; replacing it by average color between the two extreme color provided")
+    if(is.na(middle.col)){
+      if(length(cols)==2){
+        middle.col<-rgb(t(apply(col2rgb(cols),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
+      }
+      else{
+        if(((length(cols)-2)%%2)==1){
+          middle.col<-cols[(length(cols)+1)/2]
+        }
+        else{
+          middle.col<-rgb(t(apply(col2rgb(cols[length(cols)/2+c(0,1)]),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
+        }
       }
     }
+
+    if(!middle.col%in%cols){
+      cols<-c(cols[1:(length(cols)/2)],middle.col,cols[length(cols)/2+(1:(length(cols)/2))])
+    }
+    n_middle_col<-which(middle.col==cols)
 
     final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
     if(length(final_palette)!=ncols){

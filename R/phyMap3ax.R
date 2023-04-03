@@ -17,6 +17,8 @@
 #' \code{\link[phytools]{anc.trend}} (ML estimation under Brownian motion model with a trend),
 #' \code{\link[phytools]{anc.Bayes}} (using Bayesian MCMC under adjustable Brownian motion model).
 #'
+#' @importFrom stats setNames
+#'
 #' @examples
 #' # Simulate three traits, then summarize and map then on a phylogeny
 #'

@@ -24,6 +24,9 @@
 #' @importFrom ape plot.phylo read.tree write.tree
 #' @importFrom foreach foreach %do%
 #' @importFrom DescTools RoundTo
+#' @importFrom stats setNames
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
 #'
 #' @export
 

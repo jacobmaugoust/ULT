@@ -30,6 +30,7 @@
 #' @param range If \code{prop=TRUE}, the range of values for rescaling the variables. By default set to 0-1.
 #'
 #' @importFrom scales rescale
+#' @importFrom stats quantile
 #'
 #' @examples
 #' A<-runif(30,1,10)

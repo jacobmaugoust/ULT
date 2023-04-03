@@ -24,6 +24,7 @@
 #' @import ape
 #' @importFrom RRphylo RRphylo
 #' @importFrom phytools contMap
+#' @importFrom stats residuals
 #'
 #' @examples
 #' require(ape)

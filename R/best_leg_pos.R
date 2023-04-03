@@ -2,6 +2,9 @@
 #' @description Quick function to automatically add a legend in the plot quarter which contains the less points
 #' @param x The x data or the xy dataset
 #' @param y Optional. The y data
+#'
+#' @importFrom graphics par
+#'
 #' @export
 #' @keywords internal
 

@@ -20,6 +20,8 @@
 #' @param asp Aspect ratio. See \code{\link{plot.window}}
 #' @param plot Logical value indicating whether or not to actually plot the tree. (See equivalent argument in \code{\link{plot.phylo}}
 #' @details See \code{\link[phytools]{plotSimmap}} help page for more details
+#' @import graphics
+#' @importFrom stats optimize
 #' @keywords internal
 
 plotPhylogram.JM<-function (x,

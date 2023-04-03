@@ -23,7 +23,7 @@
 #' @export discrete.palette
 
 discrete.palette<-function(ncols,cols,freqs,steps){
-  if(missing(freqs)&missing(steps)){
+  if((missing(freqs)||is.null(freqs)||is.na(freqs))&(missing(steps)||is.null(steps)||is.na(steps))){
     freqs<-rep(ncols%/%length(cols),length(cols))
   }
 

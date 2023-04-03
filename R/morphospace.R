@@ -55,6 +55,7 @@
 #' @importFrom smoothr smooth
 #' @importFrom stats get_all_vars
 #' @importFrom foreach foreach
+#' @importFrom stats setNames
 #'
 #' @export
 morphospace<-function(x,y,groups,plot.function,plot.points=TRUE,output="plot",smoothing.method=NA,smoothing.param=NULL,plot.new=FALSE,plot.new.opt=NULL,...){

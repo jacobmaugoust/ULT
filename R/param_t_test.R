@@ -23,6 +23,8 @@
 #'  \item{\code{data.name}}{a character string giving the (inputted) name(s) of the data}
 #' }
 #'
+#' @importFrom stats setNames
+#' @importFrom stats qt
 #'
 #' @examples
 #' ## Define data

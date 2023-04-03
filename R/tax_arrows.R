@@ -12,6 +12,7 @@
 #' @param arrow.pars A list of arguments to be passed to the arrow function used. See [base::arrows] for the base function arguments; see [shape::Arrows] for the function from the \code{shape} package.
 #'
 #' @import ape
+#' @import graphics
 #' @importFrom phytools nodeHeights
 #'
 #' @examples
