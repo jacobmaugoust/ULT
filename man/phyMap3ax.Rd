@@ -42,6 +42,7 @@ Other methods are available, especially those relying on maximum lilkelihood est
 
 n<-50 # Number of tips
 require(ape)
+require(phytools)
 tree<-rtree(n) # Generating random tree
 a<-runif(n,min=10,max=50) # Generating three different trait within a given range
 b<-runif(n,min=1,max=5)

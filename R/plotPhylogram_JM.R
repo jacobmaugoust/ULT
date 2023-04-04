@@ -22,6 +22,8 @@
 #' @details See \code{\link[phytools]{plotSimmap}} help page for more details
 #' @import graphics
 #' @importFrom stats optimize
+#' @importFrom phytools reorderSimmap
+#' @importFrom phytools splitEdgeColor
 #' @keywords internal
 
 plotPhylogram.JM<-function (x,

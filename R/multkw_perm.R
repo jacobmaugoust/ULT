@@ -23,7 +23,6 @@
 #'
 #' @importFrom stats aggregate pchisq
 #' @import lattice
-#' @import Matrix
 #' @importFrom Rdpack reprompt
 #' @importFrom Rdpack insert_all_ref
 #'

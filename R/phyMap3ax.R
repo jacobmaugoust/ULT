@@ -24,6 +24,7 @@
 #'
 #' n<-50 # Number of tips
 #' require(ape)
+#' require(phytools)
 #' tree<-rtree(n) # Generating random tree
 #' a<-runif(n,min=10,max=50) # Generating three different trait within a given range
 #' b<-runif(n,min=1,max=5)
@@ -87,7 +88,7 @@
 #' @param plot.opt Optional. Options to be passed for the plot. See \code{\link[phytools]{contMap}} and \code{\link[phytools]{plot.contMap}} help pages.
 #'
 #' @importFrom RRphylo RRphylo
-#' @import phytools
+#' @importFrom utils tail
 #'
 #' @export
 phyMap3ax<-function(tree,data,method,method.opt,anc.states,res,plot.opt){

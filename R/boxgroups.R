@@ -52,7 +52,7 @@ boxgroups<-function(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,group
       range<-c(0,1)
     }
     for (i in 1:nvar){
-      data[,i]<-rescale(data[,i],range,c(min(data[,i],na.rm=TRUE),max(data[,i],na.rm=TRUE)))
+      data[,i]<-scales::rescale(data[,i],range,c(min(data[,i],na.rm=TRUE),max(data[,i],na.rm=TRUE)))
     }
   }
 

@@ -10,7 +10,7 @@
 #' @exportS3Method print multkw.output
 #' @keywords internal
 
-print.multkw.output<-function(x){
+print.multkw.output<-function(x,...){
   type<-NULL
   if(length(x)==13){type<-"perm"}
   else{

@@ -4,7 +4,7 @@
 \alias{print.multkw.output}
 \title{Print function for results of multkw functions (multkw, multkw.m and multkw.perm)}
 \usage{
-print.multkw.output(x)
+\method{print}{multkw.output}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{multkw.output}}

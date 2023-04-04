@@ -14,6 +14,7 @@
 #' @import ape
 #' @import graphics
 #' @importFrom phytools nodeHeights
+#' @importFrom shape Arrows
 #'
 #' @examples
 #' require(ape)

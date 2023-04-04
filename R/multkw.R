@@ -18,8 +18,8 @@
 #' @return Output is either a list (with \code{"simplify=FALSE"}) or a vector (with \code{"simplify=TRUE"}) containing the results of the multivariate Kruskal-Wallis test.
 #'
 #' @importFrom stats aggregate pchisq
+#' @importFrom Matrix bdiag
 #' @import lattice
-#' @import Matrix
 #'
 #' @references
 #' \insertRef{He.etal.2017}{ULT}

@@ -13,7 +13,6 @@
 #' @param mapping.args Optional list. List of arguments to take into account for the "mapping". Depending on the \code{type} of trait, these arguments are either to be passed to \link[ape]{plot.phylo} (for discrete trait) or to \link[phytools]{contMap} (for continuous trait)
 #'
 #' @import ape
-#' @import phytools
 #' @importFrom stats setNames
 #' @importFrom graphics par
 #' @importFrom scales rescale
