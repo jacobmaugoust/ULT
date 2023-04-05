@@ -5,6 +5,9 @@
 #' Such arithmetic mean is considered as the "aggregated" method and is displayed by coloring the tree branches.
 #' Additional information about the variation between methods can be displayed by "thermometers" (see also \link[ape]{tiplabels} and \link[ape]{nodelabels}) for each taxon, with a color gradient for the value reconstructed for the array of methods.
 #'
+#' @usage aggr.trait.map(tree,values,type=c("taxa","branch"),cols.args,aggr=TRUE,order=c("phylo","names","edge"),
+#'                lims=c("local","global"),thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
+#'
 #' @param tree The phylogenetic tree to put "thermometers" on
 #' @param values The data the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
 #' @param type Optional character. If \code{mapping=TRUE}, whether the values represent values for branches (hence coloring the edge with a single color; \code{type="discrete"}) or taxa (hence coloring the edges with a gradient from a taxon to another; \code{type="continuous"})

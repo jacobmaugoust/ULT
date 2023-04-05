@@ -4,23 +4,9 @@
 \alias{thermo.var}
 \title{Add "thermometers" of trait variation across reconstruction methods for phylogenetic taxa}
 \usage{
-thermo.var(
-  tree,
-  values,
-  cols.args,
-  thermo.lims = c("global", "local"),
-  resolution = 100,
-  order = c("phylo", "names"),
-  aggr = TRUE,
-  aggr.bar = TRUE,
-  aggr.bar.col = c("adaptative", "blackwhite", "black", "anycolor"),
-  root.value = FALSE,
-  border = FALSE,
-  cex = NULL,
-  width = NULL,
-  height = NULL,
-  adj = c(0.5, 0.5)
-)
+thermo.var(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,order=c("phylo","names"),
+           aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
+           root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5))
 }
 \arguments{
 \item{tree}{The phylogenetic tree to put "thermometers" on}

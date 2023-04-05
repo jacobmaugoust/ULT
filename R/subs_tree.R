@@ -6,6 +6,8 @@
 #' This function replaces a taxon of a given "background" tree, be it a single tip or a node (i.e., part of the tree), by another "foreground" tree.
 #' The age of the node of the "foreground" tree is not necessarily the same than the age of the taxon to replace in the "background" tree; there are therefore options allowing for specifying its age.
 #'
+#' @usage subs.tree(back.tree,fore.tree,where,drop.where=TRUE,poly.where=FALSE,stem.edge.length=NULL,node.age=NULL)
+#'
 #' @param back.tree The tree on which a taxon is substituted by another tree, named "background" tree because it is the general support/scaffold/backbone.
 #' @param fore.tree The tree to put in the "background" tree, named "foreground" tree because it is the one to put on the other tree.
 #' @param where The taxon of \code{back.tree} one wants to replace by the \code{fore.tree}. It can be the number or the name of the taxon (tip or node), but it can also be a vector of some tips (allowing for specifying a node without having to search for it and without having to quote every of its descendants).

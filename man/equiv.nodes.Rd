@@ -4,13 +4,7 @@
 \alias{equiv.nodes}
 \title{Get equivalences of nodes between phylogenies}
 \usage{
-equiv.nodes(
-  trees,
-  nodes,
-  equitips = NULL,
-  out = c("matrix", "vector"),
-  out.collapse = "/"
-)
+equiv.nodes(trees,nodes,equitips=NULL,out=c("matrix","vector"),out.collapse="/")
 }
 \arguments{
 \item{trees}{Phylogenetic trees to consider}

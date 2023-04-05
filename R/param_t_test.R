@@ -4,6 +4,11 @@
 #' @description
 #' Performs one and two sample t-tests using describing parameters (i.e., mean, variance, length) of data
 #'
+#' @usage param.t.test(mean_x,var_x,n_x,mean_y=NA,var_y=NA,n_y=NA,
+#'              mu=0,paired=FALSE,var.equal=FALSE,
+#'              alternative=c("two.sided","less","greater"),conf.level=0.95,
+#'              name_x="x",name_y="y")
+#'
 #' @seealso
 #' \code{\link[stats]{t.test}}
 #'

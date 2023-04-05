@@ -4,20 +4,9 @@
 \alias{boxgroups}
 \title{Multivariate and multi-subgroup boxplots}
 \usage{
-boxgroups(
-  data,
-  groups,
-  box.opt = NULL,
-  points.opt = NULL,
-  box.width = 0.3,
-  group.plot = c("min", "max"),
-  group.plot.type = c("b", "l"),
-  names = NA,
-  ticks = FALSE,
-  x.gap = c(0, 0),
-  prop = FALSE,
-  range = NA
-)
+boxgroups(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,
+          group.plot=c("min","max"),group.plot.type=c("b","l"),
+          names=NA,ticks=FALSE,x.gap=c(0,0),prop=FALSE,range=NA)
 }
 \arguments{
 \item{data}{A matrix or data frame to input.}

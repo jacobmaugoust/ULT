@@ -4,18 +4,8 @@
 \alias{aggr.trait.map}
 \title{Plot the mapping of a reconstructed trait averaging several methods and add "thermometers" of methods variation}
 \usage{
-aggr.trait.map(
-  tree,
-  values,
-  type = c("taxa", "branch"),
-  cols.args,
-  aggr = TRUE,
-  order = c("phylo", "names", "edge"),
-  lims = c("local", "global"),
-  thermo = TRUE,
-  plot.mapping.args = NULL,
-  thermo.var.args = NULL
-)
+aggr.trait.map(tree,values,type=c("taxa","branch"),cols.args,aggr=TRUE,order=c("phylo","names","edge"),
+               lims=c("local","global"),thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
 }
 \arguments{
 \item{tree}{The phylogenetic tree to put "thermometers" on}

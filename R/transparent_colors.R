@@ -10,6 +10,10 @@
 #' The function can return the color code of a single color with a given transparency and a given background.
 #' It can also return the color code of two colors with each a given transparency, and a given background. In this case, it can also return the transparency of the two colors superimposed.
 #'
+#' @usage transparent.colors(front_color, back_color=NA,
+#'                    front_alpha, back_alpha=NA,whole_background=NA,
+#'                    output, simple_multicol_output=TRUE)
+#'
 #' @param front_color The color (without alpha value) to be transparent over the background. Can be a name, a RGB code, and RGB values (between 0 and 1, 0 and 100 or 0 and 255).
 #' @param back_color The color (without alpha value) to be transparent under the front color and over the background. Can be a name, a RGB code, and RGB values (between 0 and 1, 0 and 100 or 0 and 255). Optional.
 #' @param front_alpha The transparency (or alpha value) of the front color. Can be between 0 and 1 and 0 and 100.

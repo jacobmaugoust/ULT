@@ -4,15 +4,9 @@
 \alias{transparent.colors}
 \title{Function to provide the color code of a transparent color}
 \usage{
-transparent.colors(
-  front_color,
-  back_color = NA,
-  front_alpha,
-  back_alpha = NA,
-  whole_background = NA,
-  output,
-  simple_multicol_output = TRUE
-)
+transparent.colors(front_color, back_color=NA,
+                   front_alpha, back_alpha=NA,whole_background=NA,
+                   output, simple_multicol_output=TRUE)
 }
 \arguments{
 \item{front_color}{The color (without alpha value) to be transparent over the background. Can be a name, a RGB code, and RGB values (between 0 and 1, 0 and 100 or 0 and 255).}

@@ -2,6 +2,8 @@
 #'
 #' @description For a given tree and a given node of this tree, this function outputs all pairs (or more if polytomies) of tips whose MRCA (most recent common ancestor) is that node of that tree
 #'
+#' @usage supporting.tips(tree,node,out=c("list","comb"),out.collapse=" - ",mandatory=FALSE)
+#'
 #' @param tree Phylogenetic tree to consider
 #' @param node Node to consider. Can be the node number (from 1 to the number of nodes, or from the number of tips +1 to the number of tips + number of nodes)
 #' @param out The type of output. Can be a list (if \code{out="list"}, the default) containing vectors of tip labels; can be a vector (if \code{out="comb"}) collating tip labels

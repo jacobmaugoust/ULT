@@ -2,6 +2,8 @@
 #'
 #' @description This function outputs an inputted matrix/dataframe/table with splitted given columns provided a token for split and new column names.
 #'
+#' @usage split.cols(x,split.col=NULL,split.char=NULL,split.names=NULL,list.name="variable")
+#'
 #' @param x A (list of) matrix/dataframe/table with columns to split.
 #' @param split.col Numeric. The column number(s) to split. Row names can also be splitted if \code{split.col=0}. If \code{x} is a list, the elements should be consistent and the column number to split should be equal for each element.
 #' @param split.char Character. The token to split values of the given column(s). If several columns are provided, there can either be a single \code{split.char} if all columns are to be splitted with the same token, or as many \code{split.chars} as columns to split with a token for each. Be aware that for several tokens, one may need to use '\\' before (see examples and \link[base]{regex})

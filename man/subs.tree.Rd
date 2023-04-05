@@ -4,15 +4,7 @@
 \alias{subs.tree}
 \title{Substitute a taxon of a given phylogenetic tree by another tree}
 \usage{
-subs.tree(
-  back.tree,
-  fore.tree,
-  where,
-  drop.where = TRUE,
-  poly.where = FALSE,
-  stem.edge.length = NULL,
-  node.age = NULL
-)
+subs.tree(back.tree,fore.tree,where,drop.where=TRUE,poly.where=FALSE,stem.edge.length=NULL,node.age=NULL)
 }
 \arguments{
 \item{back.tree}{The tree on which a taxon is substituted by another tree, named "background" tree because it is the general support/scaffold/backbone.}

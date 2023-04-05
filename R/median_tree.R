@@ -3,6 +3,8 @@
 #' @description For a given list of trees of same structure (same tips, same branching pattern) but of various ages of taxa, this function computes (and returns) a single tree with median node ages.
 #' It also names the nodes by either taking the already provided node labels or by creating new ones.
 #'
+#' @usage median.tree(trees,node.labelling=TRUE,node.label.opt=NULL)
+#'
 #' @param trees The list of phylogenetic trees to consider
 #' @param node.labelling Logical. Whether to set node labels or not.
 #' @param node.label.opt A list of arguments to be passed to the \link[ape]{makeNodeLabel} function

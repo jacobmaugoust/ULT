@@ -3,6 +3,9 @@
 #' @description This function plots continuous and discrete trait onto a phylogenetic tree, with values being either on taxa (tips/nodes) or on branches.
 #' It is largely a wrapper of the function \link[phytools]{contMap} for the continous "mapping" and of the function \link[ape]{plot.phylo} for the discrete "mapping".
 #'
+#' @usage plot.mapping(tree,values,type=c("taxa","branch"),cols.args,title=NULL,lims=NULL,
+#'              order=c("phylo","names","edge"),mapping.args=NULL)
+#'
 #' @param tree The phylogenetic tree to "map" the trait on
 #' @param values The (univariate) data to "map" onto the phylogenetic tree
 #' @param type The unit the values to plot do represent: either these values stand for branches (\code{type="branch"}), or they stand for taxa (\code{type="taxa"}).

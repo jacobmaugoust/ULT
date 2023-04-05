@@ -11,6 +11,9 @@
 #' A supplementary interesting point of this function is that the user can provide a covariate and/or a predictor of the variable with only tip values; the function then runs the whole process.
 #' Additionally, if a predictor is specified, the user can choose whether to plot the original data or the residuals of the variable vs predictor regression.
 #'
+#' @usage plot.anc.RR(RR,tree,y,partial.cov,partial.x1,res.x1=FALSE,
+#'             RR.args=NULL,scale.palette.args=NULL,contMap.args=NULL)
+#'
 #' @param RR Optional. The RRphylo object to work with. If not provided, it is computed (which can take time depending on the data).
 #' @param tree A phylogenetic tree.
 #' @param y A data vector.

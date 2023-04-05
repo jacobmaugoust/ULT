@@ -4,16 +4,8 @@
 \alias{plot.mapping}
 \title{"Map" a trait: plot its distribution over a phylogenetic tree}
 \usage{
-\method{plot}{mapping}(
-  tree,
-  values,
-  type = c("taxa", "branch"),
-  cols.args,
-  title = NULL,
-  lims = NULL,
-  order = c("phylo", "names", "edge"),
-  mapping.args = NULL
-)
+plot.mapping(tree,values,type=c("taxa","branch"),cols.args,title=NULL,lims=NULL,
+             order=c("phylo","names","edge"),mapping.args=NULL)
 }
 \arguments{
 \item{tree}{The phylogenetic tree to "map" the trait on}

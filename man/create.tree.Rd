@@ -4,19 +4,8 @@
 \alias{create.tree}
 \title{Create a phylogenetic tree}
 \usage{
-create.tree(
-  nbtaxa,
-  taxa,
-  age_taxa = NULL,
-  nbnodes,
-  nodes,
-  age_nodes = NULL,
-  node.labels = NA,
-  tax_selection,
-  ultra = FALSE,
-  format,
-  plot = FALSE
-)
+create.tree(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,
+            ultra=FALSE,format,plot=FALSE)
 }
 \arguments{
 \item{nbtaxa}{Desired number of taxa; optional, especially if either \code{taxa} or \code{age_taxa} parameters are present}

@@ -5,6 +5,9 @@
 #' The function can be run without arguments.
 #' If the desired phylogeny is already known and prepared, it is advised to prepare and save the elements used in this function, in case of small errors (yet, the function doesn't allow one to recover inputted data if there is an error).
 #'
+#' @usage create.tree(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,
+#'             ultra=FALSE,format,plot=FALSE)
+#'
 #' @param nbtaxa Desired number of taxa; optional, especially if either \code{taxa} or \code{age_taxa} parameters are present
 #' @param taxa A vector specifying the name of \strong{all} desired taxa; if not all taxa names are known, rather do not specify the known names yet and specify them by running the function without this parameter
 #' @param age_taxa A vector specifying the age of \strong{all} desired taxa; if not all taxa ages are known, rather do not specify the known ages yet and specify them by running the function without this parameter
@@ -30,7 +33,7 @@
 #'
 #' @export
 
-create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,ultra=FALSE,format,plot=FALSE) {
+create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,node.labels=NA,tax_selection,ultra=FALSE,format,plot=FALSE){
     if(is.null(age_taxa)&is.null(age_nodes)&(is.null(ultra)|ultra==FALSE)){
     temp_ultra<-ask("Do you want an ultrametric tree (i.e. without specifying ages of nodes) ? (Y/N)")
     if(temp_ultra=="Y"|temp_ultra=="y"|temp_ultra=="YES"|temp_ultra=="yes"|temp_ultra=="Yes"){

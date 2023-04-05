@@ -4,16 +4,7 @@
 \alias{tax.arrows}
 \title{Draw arrows next to phylogenetic taxa}
 \usage{
-tax.arrows(
-  phy,
-  tax,
-  side = "topleft",
-  angle = 45,
-  length,
-  offset,
-  arrow.fun = "arrows",
-  arrow.pars
-)
+tax.arrows(phy,tax,side="topleft",angle=45,length,offset,arrow.fun="arrows",arrow.pars)
 }
 \arguments{
 \item{phy}{A phylogenetic tree.}

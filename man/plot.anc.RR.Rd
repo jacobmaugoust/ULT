@@ -4,17 +4,8 @@
 \alias{plot.anc.RR}
 \title{Map univariate data on phylogeny following RRphylo method.}
 \usage{
-\method{plot}{anc.RR}(
-  RR,
-  tree,
-  y,
-  partial.cov,
-  partial.x1,
-  res.x1 = FALSE,
-  RR.args = NULL,
-  scale.palette.args = NULL,
-  contMap.args = NULL
-)
+plot.anc.RR(RR,tree,y,partial.cov,partial.x1,res.x1=FALSE,
+            RR.args=NULL,scale.palette.args=NULL,contMap.args=NULL)
 }
 \arguments{
 \item{RR}{Optional. The RRphylo object to work with. If not provided, it is computed (which can take time depending on the data).}

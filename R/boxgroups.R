@@ -16,6 +16,10 @@
 #'  \item{\code{"all"}}{to show all points of the subgroup}
 #' }
 #'
+#' @usage boxgroups(data,groups,box.opt=NULL,points.opt=NULL,box.width=0.3,
+#'           group.plot=c("min","max"),group.plot.type=c("b","l"),
+#'           names=NA,ticks=FALSE,x.gap=c(0,0),prop=FALSE,range=NA)
+#'
 #' @param data A matrix or data frame to input.
 #' @param groups A vector of same length than the number of rows of \code{data} to distinguish subgroups for each variable.
 #' @param box.opt Optional. Plotting options to be passed for the \code{\link[graphics]{boxplot}} function. Must be a list, the names being those of the parameter of this function.

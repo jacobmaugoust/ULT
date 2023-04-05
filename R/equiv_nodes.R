@@ -2,6 +2,8 @@
 #'
 #' @description For a given set of trees of close construction (i.e., tips in common), this function returns the equivalences in node labels (or numbers if no node labels are provided) for each node given the subtaxa of each
 #'
+#' @usage equiv.nodes(trees,nodes,equitips=NULL,out=c("matrix","vector"),out.collapse="/")
+#'
 #' @param trees Phylogenetic trees to consider
 #' @param nodes Optional. The nodes to be compared; without specifying it, all nodes of all trees are compared. Can be the node number (from 1 to the number of nodes, or from the number of tips +1 to the number of tips + number of nodes)
 #' @param equitips Optional. If there are "equivalent tips" between phylogenies (i.e., same tip but not same label for that tip), they should be provided as a list of vectors, each containing the equivalent labels (the first one being to be used)

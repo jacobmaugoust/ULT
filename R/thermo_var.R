@@ -7,6 +7,10 @@
 #' By default, the function considers that a previous mapping has been done and that it aims to do "summarize" various methods; this is considered here by calculating the arithmetic mean value of all methods for each taxon (the median could be inadequate if the number of methods is small).
 #' By default, no thermometer is reconstructed for taxa with values that are equal for each method (like ancestral reconstructions of tips.
 #'
+#' @usage thermo.var(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,order=c("phylo","names"),
+#'            aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
+#'            root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5))
+#'
 #' @param tree The phylogenetic tree to put "thermometers" on
 #' @param values The data the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
 #' @param cols.args Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "blue-yellow-red" palette of resolution 100 is computed.

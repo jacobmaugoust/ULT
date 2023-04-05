@@ -19,7 +19,7 @@
 #'
 #' @importFrom grDevices colorRampPalette
 #'
-#' @usage scale.palette (ncols, cols, middle.col, span, middle, steps, invert=FALSE)
+#' @usage scale.palette(ncols, cols, middle.col, span, middle, steps, invert=FALSE)
 #'
 #' @return
 #' A vector that contains \code{ncols} color codes.
@@ -63,7 +63,7 @@
 #'
 #' @export scale.palette
 
-scale.palette<-function (ncols,cols,middle.col,span,middle,steps,invert=FALSE){
+scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
   if(missing(ncols)){
     stop("No desired number of color provided")
   }

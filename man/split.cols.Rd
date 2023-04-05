@@ -4,13 +4,7 @@
 \alias{split.cols}
 \title{Split character columns of a matrix/dataframe/table (or a list of it)}
 \usage{
-\method{split}{cols}(
-  x,
-  split.col = NULL,
-  split.char = NULL,
-  split.names = NULL,
-  list.name = "variable"
-)
+split.cols(x,split.col=NULL,split.char=NULL,split.names=NULL,list.name="variable")
 }
 \arguments{
 \item{x}{A (list of) matrix/dataframe/table with columns to split.}

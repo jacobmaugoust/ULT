@@ -4,21 +4,10 @@
 \alias{param.t.test}
 \title{T-test using describing parameters of data}
 \usage{
-param.t.test(
-  mean_x,
-  var_x,
-  n_x,
-  mean_y = NA,
-  var_y = NA,
-  n_y = NA,
-  mu = 0,
-  paired = FALSE,
-  var.equal = FALSE,
-  alternative = c("two.sided", "less", "greater"),
-  conf.level = 0.95,
-  name_x = "x",
-  name_y = "y"
-)
+param.t.test(mean_x,var_x,n_x,mean_y=NA,var_y=NA,n_y=NA,
+             mu=0,paired=FALSE,var.equal=FALSE,
+             alternative=c("two.sided","less","greater"),conf.level=0.95,
+             name_x="x",name_y="y")
 }
 \arguments{
 \item{mean_x}{The mean of the x data}

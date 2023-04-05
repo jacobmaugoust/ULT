@@ -4,17 +4,7 @@
 \alias{densgroups}
 \title{Multi-subgroup density lines}
 \usage{
-densgroups(
-  x,
-  g,
-  cols,
-  g.levels.order,
-  plot.opt,
-  density.opt,
-  curve.opt,
-  legend = TRUE,
-  legend.opt
-)
+densgroups(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,legend=TRUE,legend.opt)
 }
 \arguments{
 \item{x}{The initial variable}

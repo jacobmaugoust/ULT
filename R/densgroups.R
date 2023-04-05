@@ -2,6 +2,8 @@
 #'
 #' @description This function plots density lines of subgroups for a given variable
 #'
+#' @usage densgroups(x,g,cols,g.levels.order,plot.opt,density.opt,curve.opt,legend=TRUE,legend.opt)
+#'
 #' @param x The initial variable
 #' @param g The groups variable, must be of same length than \code{x}
 #' @param cols The colors of the different variable lines. By default using the first colors of the [ULT:contrasting.palette] function

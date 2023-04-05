@@ -4,13 +4,7 @@
 \alias{supporting.tips}
 \title{Get all pairs of tips defining a node}
 \usage{
-supporting.tips(
-  tree,
-  node,
-  out = c("list", "comb"),
-  out.collapse = " - ",
-  mandatory = FALSE
-)
+supporting.tips(tree,node,out=c("list","comb"),out.collapse=" - ",mandatory=FALSE)
 }
 \arguments{
 \item{tree}{Phylogenetic tree to consider}

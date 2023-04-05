@@ -4,19 +4,9 @@
 \alias{morphospace}
 \title{Function to create a "morphospace"}
 \usage{
-morphospace(
-  x,
-  y,
-  groups,
-  plot.function,
-  plot.points = TRUE,
-  output = "plot",
-  smoothing.method = NA,
-  smoothing.param = NULL,
-  plot.new = FALSE,
-  plot.new.opt = NULL,
-  ...
-)
+morphospace(x,y,groups,plot.function,plot.points=TRUE,output="plot",
+            smoothing.method=NA,smoothing.param=NULL,
+            plot.new=FALSE,plot.new.opt=NULL,...)
 }
 \arguments{
 \item{x}{Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).}

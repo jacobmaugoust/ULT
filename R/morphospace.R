@@ -35,6 +35,10 @@
 #' # The same morphospace using the polygon function and its options to draw semi-transparent convex hulls
 #' morphospace(vec1_test,vec2_test,groups_test,plot.function="polygon",pch=21,col=scales::alpha(c("red","green3","blue"),0.1),border=c("red","green3","blue"),col.points=c("red","green3","blue"),bg=c("red","green3","blue"),lty=2,plot.new=TRUE)
 #'
+#' @usage morphospace(x,y,groups,plot.function,plot.points=TRUE,output="plot",
+#'             smoothing.method=NA,smoothing.param=NULL,
+#'             plot.new=FALSE,plot.new.opt=NULL,...)
+#'
 #' @param x Either the \code{x} values of the dataset or the whole dataset (in \code{matrix}, \code{data.frame} or \code{function} format).
 #' @param y Has to be provided if and only if \code{x} is a single vector.
 #' @param groups Optional. A factor vector defining subsets (or 'groups') in the dataset to plot separate morphospaces at once.

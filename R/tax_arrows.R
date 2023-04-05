@@ -2,6 +2,8 @@
 #'
 #' @description By giving taxon numbers of a phylogenetic tree and graphical parameters, the function plots the phylogeny (if not already plotted) and arrows next to taxa for graphical purposes.
 #'
+#' @usage tax.arrows(phy,tax,side="topleft",angle=45,length,offset,arrow.fun="arrows",arrow.pars)
+#'
 #' @param phy A phylogenetic tree.
 #' @param tax A vector with the name or the number of the taxa (tips and/or nodes) for plotting the arrows next to.
 #' @param side A vector to specify the side for plotting the arrows. Can be one \code{1} or \code{"topleft"} (the default), \code{2} or \code{"topright"}, \code{3} or \code{"bottomleft"}, or \code{4} or \code{"bottomright"}.
