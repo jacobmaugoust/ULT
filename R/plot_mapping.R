@@ -4,7 +4,8 @@
 #' It is largely a wrapper of the function \link[phytools]{contMap} for the continous "mapping" and of the function \link[ape]{plot.phylo} for the discrete "mapping".
 #'
 #' @usage plot.mapping(tree,values,type=c("taxa","branch"),cols.args,title=NULL,lims=NULL,
-#'              order=c("phylo","names","edge"),mapping.args=NULL)
+#'              order=c("phylo","names","edge"),branch.col.freqs=NULL,branch.col.freqs.type=c("width","proportion"),
+#'              mapping.args=NULL)
 #'
 #' @param tree The phylogenetic tree to "map" the trait on
 #' @param values The (univariate) data to "map" onto the phylogenetic tree
@@ -13,6 +14,8 @@
 #' @param title Optional character. To provide a title to the plot.
 #' @param lims Optional numeric. In the case of a continuous trait, the value limits to consider (two values: the inferior and superior bounds).
 #' @param order Optional character. To specify the order of the \code{values} to take into account for the "mapping". Default is to consider that \code{values} are sorted in the tips/nodes order (\code{order="phylo"}; 1-Ntip rows of \code{values} being for tips 1-N, and so on for the nodes). Values can also be sorted depending on their names (\code{order="names"}; if the tree AND the values have names for tips AND nodes), according to the tree branches construction (\code{order="edge"}; branches construction is available by asking tree$edge, the numbers refering to tips and nodes), or given a custom order (\code{order} being a vector of the names or of the number of all tips/nodes and of same length than the length of \code{values})
+#' @param branch.col.freqs Optional. If \code{type="branch"}, the user may want to define custom frequencies for the colors of the branches. If \code{branch.col.freqs="equal"} (or \code{"even"} or \code{"e"}), the frequencies are equal for all colors. Otherwise, it can be a numeric specifying the proportions for each color (the sum must be equal to 1) or the values serving as steps/quantiles to define the range of values for each color.
+#' @param branch.col.freqs.type Optional. If \code{type="branch"} and non-null \code{branch.col.freqs}, if the frequencies are relative (not values serving as limits/quantiles), the user may want to have ranges of equal width between limits (\code{branch.col.freqs.type="width"}) or of equal proportion of individuals (\code{branch.col.freqs.type="proportion"}).
 #' @param mapping.args Optional list. List of arguments to take into account for the "mapping". Depending on the \code{type} of trait, these arguments are either to be passed to \link[ape]{plot.phylo} (for discrete trait) or to \link[phytools]{contMap} (for continuous trait)
 #'
 #' @import ape
@@ -88,9 +91,35 @@
 #' ## Plot the trait value changes with the same color gradient than for the trait values themselves
 #' plot.mapping(tree,x,"branch",cols.args=cols.args,order="edge")
 #' ## Plot the trait value changes by simply splitting them in three colors (the lower half of the changes being in blue, the second in yellow, and the highest value in red)
-#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge")
-#' ## Changing the order of the trait values
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = "equal")
+#' ## Playing a bit with the options regarding branch color frequencies
 #' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",title="reference")
+#' ### Changing proportion of colors of branches: ranges of same width between values limits
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = "equal",branch.col.freqs.type="width",title="equal range widths between limits")
+#' tiplabels(round(x[tree$edge[,2]<=Ntip(tree)],2),adj=-0.25,frame = "none",cex=0.75)
+#' nodelabels(c("",round(x[tree$edge[,2]>Ntip(tree)],2)),adj=-0.25,frame = "none",cex=0.75)
+#' setNames(seq(min(x),max(x),length.out=4),c("","blue","yellow","red"))
+#' ### Changing proportion of colors of branches: same proportion of individuals between values limits
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = "equal",branch.col.freqs.type="proportion",title="range widths with same proportion of values")
+#' tiplabels(round(x[tree$edge[,2]<=Ntip(tree)],2),adj=-0.25,frame = "none",cex=0.75)
+#' nodelabels(c("",round(x[tree$edge[,2]>Ntip(tree)],2)),adj=-0.25,frame = "none",cex=0.75)
+#' setNames(quantile(x,seq(0,1,1/3)),c("","blue","yellow","red"))
+#' ### Changing proportion of colors of branches: custom proportional width ranges
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = c(0.3,0.1,0.6),branch.col.freqs.type="width",title="range of custom widths between limits")
+#' tiplabels(round(x[tree$edge[,2]<=Ntip(tree)],2),adj=-0.25,frame = "none",cex=0.75)
+#' nodelabels(c("",round(x[tree$edge[,2]>Ntip(tree)],2)),adj=-0.25,frame = "none",cex=0.75)
+#' setNames(c(min(x)+c(0,0.3,0.4,1)*diff(range(x))),c("","blue","yellow","red"))
+#' ### Changing proportion of colors of branches: custom proportions of values
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = c(0.3,0.1,0.6),branch.col.freqs.type="proportion",title="range of custom widths between limits")
+#' tiplabels(round(x[tree$edge[,2]<=Ntip(tree)],2),adj=-0.25,frame = "none",cex=0.75)
+#' nodelabels(c("",round(x[tree$edge[,2]>Ntip(tree)],2)),adj=-0.25,frame = "none",cex=0.75)
+#' setNames(quantile(x,c(0,0.3,0.4,1)),c("","blue","yellow","red"))
+#' ### Changing proportion of colors of branches: custom steps, i.e., ranges with custom values between each color range
+#' plot.mapping(tree,x,"branch",cols.args=c("blue","yellow","red"),order="edge",branch.col.freqs = c(-1,1),title="Values splitted in three ranges with custom internal bounds between them")
+#' tiplabels(round(x[tree$edge[,2]<=Ntip(tree)],2),adj=-0.25,frame = "none",cex=0.75)
+#' nodelabels(c("",round(x[tree$edge[,2]>Ntip(tree)],2)),adj=-0.25,frame = "none",cex=0.75)
+#' setNames(c(min(x),-1,1,max(x)),c("","blue","yellow","red"))
+#' ## Playing a bit with the options regarding the sorting of the values
 #' ### Sorting according to phylogeny (order of tips and nodes)
 #' plot.mapping(tree,x[order(tree$edge[,2])],"branch",cols.args=c("blue","yellow","red"),order="phylo",title="phylo sorting")
 #' ### Sorting according to taxa labels
@@ -104,7 +133,7 @@
 #'
 #' @export plot.mapping
 
-plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,lims=NULL,order=c("phylo","names","edge"),mapping.args=NULL){
+plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,lims=NULL,order=c("phylo","names","edge"),branch.col.freqs=NULL,branch.col.freqs.type=c("width","proportion"),mapping.args=NULL){
   if(length(order)>1&&length(order)!=length(values)){
     order<-order[order%in%c("phylo","names","edge")][1]
   }
@@ -112,10 +141,6 @@ plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,
     type<-type[c("taxa","branch")%in%type][1]
   }
   branch<-any("branch"%in%type)
-
-  if(missing(cols.args)){
-    cols.args<-list(fun="scale.palette",cols=c("blue","yellow","red"))
-  }
 
   if(is.null(lims)){
     lims<-range(values)
@@ -138,46 +163,68 @@ plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,
     PCM.args<-mapping.args[names(mapping.args)%in%plotcontmap.args]
   }
 
+  if(missing(cols.args)){
+    if(branch){
+      cols.args<-list(fun="discrete.palette",cols=c("blue","yellow","red"))
+    }
+    else{
+      cols.args<-list(fun="scale.palette",cols=c("blue","yellow","red"))
+    }
+  }
+
+  if(!is.list(cols.args)&branch&!is.null(branch.col.freqs)){
+    cols.args<-list("cols"=cols.args,"fun"="discrete.palette")
+  }
+
   if(is.list(cols.args)){
     if(!"fun"%in%names(cols.args)){
-      stop("No function provided to establish the color palette, please provide it")
+      cols.args$fun<-paste0(ifelse(branch&!is.null(branch.col.freqs),"discrete","scale"),".palette")
+      warning("No function provided to establish the color palette, automatically deduced from other arguments")
     }
     if(!"cols"%in%names(cols.args)){
       cols.args<-c(cols.args,list("cols"=c("blue","yellow","red")))
       warning("No colors provided to establish the color palette, default blue-yellow-red color scale applied")
     }
-    if(cols.args$fun=="discrete.palette"){
-      DP.args<-cols.args[-which("fun"%in%names(cols.args))]
-      if(!"ncols"%in%names(DP.args)){
-        if(!is.null(mapping.args)&&"res"%in%names(mapping.args)){
-          DP.args<-c(DP.args,list("ncols"=mapping.args$res+1))
-        }
-        else if(branch){
-          DP.args<-c(DP.args,list("ncols"=length(DP.args$cols)))
-        }
-        else{
-          DP.args<-c(DP.args,list("ncols"=1001))
-        }
-      }
-      cols<-do.call("discrete.palette",DP.args)
-    }
-    else if(cols.args$fun=="scale.palette"){
-      SP.args<-cols.args[-which("fun"%in%names(cols.args))]
+
+    if(cols.args$fun=="scale.palette"){
+      SP.args<-cols.args[-which(names(cols.args)=="fun")]
       if(!"ncols"%in%names(SP.args)){
-        if(!is.null(mapping.args)&&"res"%in%names(mapping.args)){
-          SP.args<-c(SP.args,list("ncols"=mapping.args$res+1))
-        }
-        else if(branch){
-          SP.args<-c(SP.args,list("ncols"=length(SP.args$cols)))
+        SP.args$ncols<-if(!is.null(mapping.args)&&"res"%in%names(mapping.args)){mapping.args$res+1}else if(branch){length(SP.args$cols)}else{1001}
+      }
+      if(!"middle.col"%in%names(SP.args)){SP.args$middle.col<-NA}
+      if(!"middle"%in%names(SP.args)){SP.args$middle<-NA}
+      if(!"span"%in%names(SP.args)){SP.args$span<-c(0,1)}
+
+      if(branch&!is.null(branch.col.freqs)){
+        cols.args$cols<-do.call("scale.palette",SP.args)
+        cols.args$fun<-"discrete.palette"
+      }
+      else{
+        cols<-do.call("scale.palette",SP.args)
+      }
+    }
+
+
+    if(cols.args$fun=="discrete.palette"){
+      DP.args<-cols.args[which(names(cols.args)%in%c("ncols","cols","freqs","steps"))]
+
+      if(!"ncols"%in%names(DP.args)){
+        DP.args$ncols<-if(!is.null(mapping.args)&&"res"%in%names(mapping.args)&&!branch){mapping.args$res+1}else if(branch){max(length(DP.args$cols),1000)}else{1001}
+      }
+
+      if(branch&!is.null(branch.col.freqs)){
+        if(is.list(branch.col.freqs)){
+          global.values<-branch.col.freqs$global.values
+          branch.col.freqs<-branch.col.freqs$branch.col.freqs
         }
         else{
-          SP.args<-c(SP.args,list("ncols"=1001))
+          global.values<-values
         }
+        cols<-freq.cols(cols=DP.args$cols,ncols=DP.args$ncols,freqs=branch.col.freqs,lims=lims,type=branch.col.freqs.type,values=global.values)
       }
-      if(!"middle.col"%in%names(SP.args)){SP.args<-c(SP.args,list("middle.col"=NA))}
-      if(!"middle"%in%names(SP.args)){SP.args<-c(SP.args,list("middle"=NA))}
-      if(!"span"%in%names(SP.args)){SP.args<-c(SP.args,list("span"=lims))}
-      cols<-do.call("scale.palette",SP.args)
+      else{
+        cols<-do.call("discrete.palette",DP.args)
+      }
     }
   }
   else{
@@ -211,12 +258,13 @@ plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,
     }
 
     if(col.scale){
-      cols<-cols[round(scales::rescale(values,c(1,length(cols)),lims))]
+      cols<-cols[round(scales::rescale(values,c(0.5+1e-10,length(cols)+0.5-1e-10),lims))]
     }
     PP.args<-c(PP.args,list(x=tree,edge.color=cols))
     if(!"show.tip.label"%in%names(PP.args)){PP.args<-c(PP.args,list(show.tip.label=FALSE))}
     if(!"edge.width"%in%names(PP.args)){PP.args<-c(PP.args,list(edge.width=3))}
     par(mar=c(0,0,if(is.null(title)){0}else{2.1},0))
+
     do.call("plot.phylo",PP.args)
   }
   else{

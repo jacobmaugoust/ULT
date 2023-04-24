@@ -57,9 +57,11 @@
 #'
 #' bg_cols<-scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE)
 #' plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=bg_cols)
+#' abline(v=span[1],lwd=2,col=cols[1])
 #' for (i in 1:length(steps)){
 #'   abline(v=steps[i],lwd=2,col=cols[i+1])
 #' }
+#' abline(v=span[2],lwd=2,col=cols[length(cols)])
 #'
 #' @export scale.palette
 
@@ -158,7 +160,7 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     if(!middle.col%in%cols){
       cols<-c(cols[1:(length(cols)/2)],middle.col,cols[length(cols)/2+(1:(length(cols)/2))])
     }
-    n_middle_col<-which(middle.col==cols)
+    n_middle_col<-round(median(which(middle.col==cols)))
 
     final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
     if(length(final_palette)!=ncols){
@@ -180,4 +182,3 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
 
   return(final_palette)
 }
-

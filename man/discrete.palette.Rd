@@ -7,7 +7,7 @@
 discrete.palette (ncols, cols, freqs, steps)
 }
 \arguments{
-\item{ncols}{The number of colors to be outputted.}
+\item{ncols}{The number of colors to be outputted. Must be equal or superior to the length of \code{cols}}
 
 \item{cols}{The colors to be used.}
 

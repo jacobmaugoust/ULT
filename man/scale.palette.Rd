@@ -65,8 +65,10 @@ steps<-seq(span[1],span[2],length.out=(length(cols)))[-c(1,length(cols))]
 
 bg_cols<-scale.palette(ncols=ncols,cols=cols,middle.col=NA,span=span,middle=NA,steps=steps,invert=FALSE)
 plot(seq(span[1],span[2],length.out=ncols),seq(span[1],span[2],length.out=ncols),pch=21,col=NA,bg=bg_cols)
+abline(v=span[1],lwd=2,col=cols[1])
 for (i in 1:length(steps)){
   abline(v=steps[i],lwd=2,col=cols[i+1])
 }
+abline(v=span[2],lwd=2,col=cols[length(cols)])
 
 }

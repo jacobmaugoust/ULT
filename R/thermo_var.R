@@ -7,14 +7,15 @@
 #' By default, the function considers that a previous mapping has been done and that it aims to do "summarize" various methods; this is considered here by calculating the arithmetic mean value of all methods for each taxon (the median could be inadequate if the number of methods is small).
 #' By default, no thermometer is reconstructed for taxa with values that are equal for each method (like ancestral reconstructions of tips.
 #'
-#' @usage thermo.var(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,order=c("phylo","names"),
-#'            aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
+#' @usage thermo.var(tree,values,cols.args,thermo.lims=c("global","local","asym","sym0","symx"),
+#'            resolution=100,order=c("phylo","names"),aggr=TRUE,
+#'            aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
 #'            root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5))
 #'
 #' @param tree The phylogenetic tree to put "thermometers" on
 #' @param values The data the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
 #' @param cols.args Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "blue-yellow-red" palette of resolution 100 is computed.
-#' @param thermo.lims Optional. Upper and lower limits of \code{values} to be considered for the global tree-level color palette. Can be a character to set to \code{values} range (\code{thermo.lims="global"}) or only to the aggregated values range (\code{thermo.lims="local"}). Otherwise, a numeric of length 2 explicitly specifying values to take as limits.
+#' @param thermo.lims Optional. Upper and lower limits of \code{values} to be considered for the global tree-level color palette. Can be a character to set to the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) asymmetrically (taking natural values range, \code{"asy"}), symmetrically around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value). Otherwise, a numeric of length 2 explicitly specifying values to take as limits.
 #' @param resolution Optional numeric. The resolution of the gradient of each "thermometer", i.e., the number of steps (and of successive colors). By default set to 100.
 #' @param order Optional character. To specify the order of the \code{values}. Default is to consider that \code{values} are sorted in the tips/nodes order (\code{order="phylo"}; 1-Ntip rows of \code{values} being for tips 1-N, and so on for the nodes). Values can also be sorted depending on their names (\code{order="names"}; if the tree AND the values have names for tips AND nodes) or given a custom order (\code{order} being a vector of the names of all tips/nodes of same length than the number of rows of \code{values})
 #' @param aggr Optional. The reference \code{values} column for the "aggregated" variable (i.e., the variable taking into account all methods by taking the arithmetic mean of all values for each taxon) that represents the center of the color palette (but not necessarily of the "thermometers"!). The \code{values} data can already contain it as being the last column (\code{aggr=TRUE}, the default), as being absent (\code{aggr=FALSE}, computed by the function), as being one of the columns but no the last one (\code{aggr} being the column name or number refering to it in \code{values}).
@@ -66,7 +67,7 @@
 #' plot.mapping(tree,values[,6],title="black/white aggr bars")
 #' thermo.var(tree,values,root.value=TRUE,aggr.bar.col="blackwhite")
 #' # One can notice that the color of the "thermometer" the bar is at is not necessarily the same than the one used for the mapping; this is because the range of average values is not necessarily the same than the range of all values (i.e., including extreme cases smoothed by averaging values)
-#' # Re-plot the mapping with a range of colors encompassing and add "thermometers"
+#' # Re-plot the mapping with a range of colors based on aggregated values only (left) and on all dataset values (righ) and add "thermometers"
 #' par(mfrow=c(1,2))
 #' plot.mapping(tree,values[,6],lims=range(values[,6]),title="with aggr limits for map")
 #' thermo.var(tree,values,root.value=TRUE,aggr.bar.col="blackwhite",border=TRUE)
@@ -90,7 +91,7 @@
 #' plot.mapping(tree,values[,6],title="global colors, no aggr bar",lims=range(values))
 #' thermo.var(tree,values,root.value=TRUE,aggr.bar=FALSE,thermo.lims = "global")
 #' ## Modify colors palette
-#' plot.mapping(tree,values[,6],cols=list(fun="scale.palette",cols=c("blue","green3","pink")),title="with other colors")
+#' plot.mapping(tree,values[,6],cols=list(fun="scale.palette",cols=c("blue","green3","pink")),title="with other colors",lims=range(values))
 #' thermo.var(tree,values,root.value=TRUE,cols.args=list(cols=c("blue","green3","pink")))
 #' ## Modify thermo resolution to something very extreme
 #' plot.mapping(tree,values[,6],title="with low resolution of 'thermometers' (e.g., tips t15 or t7)")
@@ -127,28 +128,12 @@
 #' ## Making "thermometers" a bit higher
 #' plot.mapping(tree,values[,6],title="tall thermometers")
 #' thermo.var(tree,values,cols.args=list(cols=c("blue","yellow","red")),root.value=TRUE,height=3)
+#'
 #' @export
 
-thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,order=c("phylo","names"),aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5)){
+thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local","asym","sym0","symx"),resolution=100,order=c("phylo","names"),aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5)){
   if(!nrow(values)%in%c(Ntip(tree),Nnode(tree),(Ntip(tree)+Nnode(tree))-ifelse(root.value,0,1))){
     stop("Please provide values as a list whose length is equal to the number of tips, of nodes, or of both")
-  }
-
-  if(missing(cols.args)){
-    cols.args<-list("ncols"=1000,
-                     "cols"=c("blue","yellow","red"),
-                     "middle.col"="yellow",
-                     "middle"=NA,
-                     "steps"=NA,
-                     "span"=range(values))
-  }
-  else{
-    if(!"ncols"%in%names(cols.args)){cols.args<-c(cols.args,list("ncols"=1000))}
-    if(!"cols"%in%names(cols.args)){cols.args<-c(cols.args,list("cols"=c("blue","yellow","red")))}
-    if(!"middle.col"%in%names(cols.args)){cols.args<-c(cols.args,list("middle.col"=NA))}
-    if(!"middle"%in%names(cols.args)){cols.args<-c(cols.args,list("middle"=NA))}
-    if(!"steps"%in%names(cols.args)){cols.args<-c(cols.args,list("steps"=NA))}
-    if(!"span"%in%names(cols.args)){cols.args<-c(cols.args,list("span"=range(values)))}
   }
 
   if(length(order)>1&&any(c("phylo","names")%in%order)){
@@ -171,14 +156,71 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local"),resol
     stop("Please provided a column number for aggregated values within the number of columns of the values dataset, or any interpretable value for aggr; see help")
   }
 
-  if(is.character(thermo.lims)){
-    thermo.lims<-thermo.lims[thermo.lims%in%c("local","global")][1]
-    if(thermo.lims=="local"){
-      thermo.lims<-range(values[,aggr])
+  char.to.num.lims<-function(lims,data,i){
+    a<-lims[lims%in%c("local","global")][1]
+    b<-lims[lims%in%c("asym","sym0","symx")][1]
+    x<-lims[!lims%in%c("local","global","asym","sym0","symx")][1]
+    if(is.character(x)){x<-as.numeric(x)}
+
+    if(is.na(a)){a<-"local"}
+    if(is.na(b)){b<-"asym"}
+
+    if(a=="local"){
+      data<-data[,i]
+    }
+    if(is.na(x)){x<-mean(range(data))}
+    if(b!="asym"){
+      lims<-c(-1,1)*(max(abs(data-ifelse(b=="symx",x,0))))+ifelse(b=="symx",x,0)
     }
     else{
-      thermo.lims<-range(values)
+      lims<-range(data)
     }
+    lims
+  }
+  if(all(is.character(thermo.lims))){
+    if("local"%in%thermo.lims){
+      lims<-"local"
+    }
+    else{
+      lims<-"global"
+    }
+    thermo.lims<-do.call("char.to.num.lims",list(thermo.lims,values,aggr))
+  }
+
+  if(missing(cols.args)){
+    cols.args<-list("cols"=c("blue","yellow","red"))
+  }
+
+  if(length(cols.args)==2&&"hidden"%in%names(cols.args)){
+    branch.col.freqs<-cols.args$hidden$branch.col.freqs
+    branch.col.freqs.type<-cols.args$hidden$branch.col.freqs.type
+    cols.args<-cols.args$cols.args
+    if(is.null(cols.args)){
+      cols.args<-list("cols"=c("blue","yellow","red"))
+    }
+  }
+  else{
+    branch.col.freqs<-branch.col.freqs.type<-NULL
+  }
+
+  if(!is.list(cols.args)&!is.null(branch.col.freqs)){
+    cols.args<-list("cols"=cols.args)
+  }
+
+  if(is.list(cols.args)){
+    if(!"ncols"%in%names(cols.args)){cols.args$ncols<-max(1000,resolution*10)}
+    if(!"middle.col"%in%names(cols.args)){cols.args$middle.col<-NA}
+    if(!"middle"%in%names(cols.args)){cols.args$middle<-NA}
+    if(!"span"%in%names(cols.args)){cols.args$span<-c(0,1)}
+    if(!is.null(branch.col.freqs)){
+      cols<-freq.cols(cols=do.call("scale.palette",cols.args),ncols=cols.args$ncols,freqs=branch.col.freqs,lims=thermo.lims,type=branch.col.freqs.type,values=values[,if(lims=="global"){c(1:ncol(values))}else{aggr}])
+    }
+    else{
+      cols<-do.call("scale.palette",cols.args)
+    }
+  }
+  else{
+    cols<-cols.args
   }
 
   if(any(aggr.bar.col%in%c("adaptative","blackwhite"))){
@@ -264,10 +306,10 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local"),resol
   values<-values[which(check.taxa),]
 
   col.values<-apply(values,c(1,2),function(x){
-    colnumber<-scales::rescale(x,c(1,cols.args$ncols),thermo.lims)
+    colnumber<-scales::rescale(x,c(0.5+1e-10,cols.args$ncols+0.5-1e-10),thermo.lims)
     if(colnumber<1){colnumber<-1}
     if(colnumber>cols.args$ncols){colnumber<-cols.args$ncols}
-    do.call("scale.palette",c(cols.args[c("ncols","cols","middle.col","middle")],list("span"=thermo.lims)))[colnumber]
+    cols[colnumber]
     })
 
   for(i in 1:length(x)){

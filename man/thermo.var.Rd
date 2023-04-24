@@ -4,8 +4,9 @@
 \alias{thermo.var}
 \title{Add "thermometers" of trait variation across reconstruction methods for phylogenetic taxa}
 \usage{
-thermo.var(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,order=c("phylo","names"),
-           aggr=TRUE,aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
+thermo.var(tree,values,cols.args,thermo.lims=c("global","local","asym","sym0","symx"),
+           resolution=100,order=c("phylo","names"),aggr=TRUE,
+           aggr.bar=TRUE,aggr.bar.col=c("adaptative","blackwhite","black","anycolor"),
            root.value=FALSE,border=FALSE,cex=NULL,width=NULL,height=NULL,adj=c(0.5,0.5))
 }
 \arguments{
@@ -15,7 +16,7 @@ thermo.var(tree,values,cols.args,thermo.lims=c("global","local"),resolution=100,
 
 \item{cols.args}{Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "blue-yellow-red" palette of resolution 100 is computed.}
 
-\item{thermo.lims}{Optional. Upper and lower limits of \code{values} to be considered for the global tree-level color palette. Can be a character to set to \code{values} range (\code{thermo.lims="global"}) or only to the aggregated values range (\code{thermo.lims="local"}). Otherwise, a numeric of length 2 explicitly specifying values to take as limits.}
+\item{thermo.lims}{Optional. Upper and lower limits of \code{values} to be considered for the global tree-level color palette. Can be a character to set to the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) asymmetrically (taking natural values range, \code{"asy"}), symmetrically around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value). Otherwise, a numeric of length 2 explicitly specifying values to take as limits.}
 
 \item{resolution}{Optional numeric. The resolution of the gradient of each "thermometer", i.e., the number of steps (and of successive colors). By default set to 100.}
 
@@ -81,7 +82,7 @@ thermo.var(tree,values,root.value=TRUE)
 plot.mapping(tree,values[,6],title="black/white aggr bars")
 thermo.var(tree,values,root.value=TRUE,aggr.bar.col="blackwhite")
 # One can notice that the color of the "thermometer" the bar is at is not necessarily the same than the one used for the mapping; this is because the range of average values is not necessarily the same than the range of all values (i.e., including extreme cases smoothed by averaging values)
-# Re-plot the mapping with a range of colors encompassing and add "thermometers"
+# Re-plot the mapping with a range of colors based on aggregated values only (left) and on all dataset values (righ) and add "thermometers"
 par(mfrow=c(1,2))
 plot.mapping(tree,values[,6],lims=range(values[,6]),title="with aggr limits for map")
 thermo.var(tree,values,root.value=TRUE,aggr.bar.col="blackwhite",border=TRUE)
@@ -105,7 +106,7 @@ thermo.var(tree,values,root.value=TRUE,aggr.bar=FALSE,thermo.lims = "local")
 plot.mapping(tree,values[,6],title="global colors, no aggr bar",lims=range(values))
 thermo.var(tree,values,root.value=TRUE,aggr.bar=FALSE,thermo.lims = "global")
 ## Modify colors palette
-plot.mapping(tree,values[,6],cols=list(fun="scale.palette",cols=c("blue","green3","pink")),title="with other colors")
+plot.mapping(tree,values[,6],cols=list(fun="scale.palette",cols=c("blue","green3","pink")),title="with other colors",lims=range(values))
 thermo.var(tree,values,root.value=TRUE,cols.args=list(cols=c("blue","green3","pink")))
 ## Modify thermo resolution to something very extreme
 plot.mapping(tree,values[,6],title="with low resolution of 'thermometers' (e.g., tips t15 or t7)")
@@ -142,4 +143,5 @@ thermo.var(tree,values,cols.args=list(cols=c("blue","yellow","red")),root.value=
 ## Making "thermometers" a bit higher
 plot.mapping(tree,values[,6],title="tall thermometers")
 thermo.var(tree,values,cols.args=list(cols=c("blue","yellow","red")),root.value=TRUE,height=3)
+
 }

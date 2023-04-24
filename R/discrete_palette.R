@@ -8,12 +8,13 @@
 #' The function takes as input the colors the user wants to repeat, and optionally their proportions if it is not intended to distribute them equally.
 #' The equal distribution may not be fully true: if needed, proportional samples are rounded to have an integer number of repeats of each color. The goal is rather to output the specified number of colors the user wants.
 #'
-#' @param ncols The number of colors to be outputted.
+#' @param ncols The number of colors to be outputted. Must be equal or superior to the length of \code{cols}
 #' @param cols The colors to be used.
 #' @param freqs Optional. The proportions for the repartition of the colors. By default, proportions are all equal.
 #' @param steps Optional. The value of the steps the colors represent.
 #'
 #' @importFrom scales rescale
+#' @importFrom stats approx
 #'
 #' @usage discrete.palette (ncols, cols, freqs, steps)
 #'
@@ -23,7 +24,7 @@
 #' @export discrete.palette
 
 discrete.palette<-function(ncols,cols,freqs,steps){
-  if((missing(freqs)||is.null(freqs)||is.na(freqs))&(missing(steps)||is.null(steps)||is.na(steps))){
+  if((missing(freqs)||is.null(freqs)||all(is.na(freqs)))&(missing(steps)||is.null(steps)||all(is.na(steps)))){
     freqs<-rep(ncols%/%length(cols),length(cols))
   }
 
@@ -59,7 +60,6 @@ discrete.palette<-function(ncols,cols,freqs,steps){
     }
   }
   if(!missing(freqs)){
-    discpal<-character(length=ncols)
     if(length(cols)!=length(freqs)){
       warning("Number of proportions not equal to the number of colors; rescaled to be all equal")
       freqs<-rep(ncols%/%length(cols),length(cols))
@@ -68,20 +68,15 @@ discrete.palette<-function(ncols,cols,freqs,steps){
       freqs<-freqs/sum(freqs)
     }
     n_freqs<-round(freqs*ncols)
-    if(sum(n_freqs)!=ncols){
-      if(length(which(freqs==min(freqs)))==1){
-        med_n_freqs<-which(freqs==min(freqs))
-      }
-      else{
-        med_n_freqs<-round(median(1:length(n_freqs)))
-      }
-      n_freqs[med_n_freqs]<-n_freqs[med_n_freqs]+1*ifelse(sum(n_freqs)>ncols,-1,1)
-    }
+    discpal<-character(length=sum(n_freqs))
 
     for (i in 1:length(n_freqs)){
       start<-ifelse(i==1,1,end+1)
       end<-start+n_freqs[i]-1
       discpal[start:end]<-cols[i]
+    }
+    if(length(discpal)!=ncols){
+      discpal<-discpal[round(approx(c(1:length(discpal)),n=ncols)$y-0.499999999999999)]
     }
   }
 
