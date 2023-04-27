@@ -193,7 +193,7 @@ plot.mapping<-function(tree,values,type=c("taxa","branch"),cols.args,title=NULL,
       }
       if(!"middle.col"%in%names(SP.args)){SP.args$middle.col<-NA}
       if(!"middle"%in%names(SP.args)){SP.args$middle<-NA}
-      if(!"span"%in%names(SP.args)){SP.args$span<-c(0,1)}
+      if(!"span"%in%names(SP.args)){SP.args$span<-lims}
 
       if(branch&!is.null(branch.col.freqs)){
         cols.args$cols<-do.call("scale.palette",SP.args)

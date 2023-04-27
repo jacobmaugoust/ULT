@@ -211,7 +211,7 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local","asym"
     if(!"ncols"%in%names(cols.args)){cols.args$ncols<-max(1000,resolution*10)}
     if(!"middle.col"%in%names(cols.args)){cols.args$middle.col<-NA}
     if(!"middle"%in%names(cols.args)){cols.args$middle<-NA}
-    if(!"span"%in%names(cols.args)){cols.args$span<-c(0,1)}
+    if(!"span"%in%names(cols.args)){cols.args$span<-thermo.lims}
     if(!is.null(branch.col.freqs)){
       cols<-freq.cols(cols=do.call("scale.palette",cols.args),ncols=cols.args$ncols,freqs=branch.col.freqs,lims=thermo.lims,type=branch.col.freqs.type,values=values[,if(lims=="global"){c(1:ncol(values))}else{aggr}])
     }
