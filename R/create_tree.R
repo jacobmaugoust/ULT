@@ -486,6 +486,7 @@ create.tree <- function(nbtaxa,taxa,age_taxa=NULL,nbnodes,nodes,age_nodes=NULL,n
   for (i in 1:length(branches[, 1])) {
     age_branches[i] <- age_all[branches[i, 1]] - age_all[branches[i, 2]]
   }
+  branches<-apply(branches,c(1,2),function(x){if(x>nbtaxa){nbtaxa+1+((nbtaxa+nbnodes)-x)}else{x}})
   if(ultra==FALSE){
     output <-list(edge = branches,edge.length = age_branches,Nnode = as.integer(nbnodes),tip.label = taxa)
   }

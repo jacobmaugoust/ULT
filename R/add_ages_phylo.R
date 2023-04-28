@@ -116,6 +116,7 @@ add.ages.phylo<-function(tree,tip.ages=NULL,node.ages=NULL,plot=TRUE){
   else{
     NT_arguments<-c(NT_arguments,"node.labels"=FALSE)
   }
+
   new.tree<-do.call("create.tree",NT_arguments)
   if(plot){
     axisPhylo()
