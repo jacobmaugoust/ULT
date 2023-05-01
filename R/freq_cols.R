@@ -77,7 +77,7 @@ freq.cols<-function(cols,ncols,freqs,lims,type,values){
   }
 
   all.cols<-do.call("discrete.palette",list("cols"=cols,
-                                            "ncols"=max(ncols,round(max(1/freqs))),
+                                            "ncols"=max(ncols,round(max(1/freqs[which(freqs!=0)]))),
                                             "freqs"=freqs))
 
   cols<-all.cols[round(approx(c(1:length(all.cols)),n=ncols)$y-0.499999999999999)]
