@@ -45,6 +45,10 @@ freq.cols<-function(cols,ncols,freqs,lims,type,values){
 
   if(sum(freqs)!=1){
     freqs<-quantile.to.freqs(freqs,lims,colength)
+    if(length(freqs)!=colength){
+      freqs<-approx(c(freqs,0),n=colength+1,method="constant")$y[-(colength+1)]
+      freqs<-freqs/sum(freqs)
+    }
   }
   else{
     if(length(freqs)!=colength){
