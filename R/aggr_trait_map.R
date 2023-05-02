@@ -250,7 +250,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
 
       if(!missing(cols.args)){
         if("fun"%in%(names(cols.args))){
-          cols.args<-cols.args[-which("fun"%in%names(cols.args))]
+          cols.args<-cols.args[-which(names(cols.args)=="fun")]
         }
         TV.args<-c(TV.args,list("cols.args"=cols.args))
       }
