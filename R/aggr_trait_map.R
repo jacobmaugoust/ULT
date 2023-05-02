@@ -7,7 +7,7 @@
 #'
 #' @usage aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
 #'                order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
-#'                thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
+#'                disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
 #'
 #' @param tree The phylogenetic tree to put "thermometers" on.
 #' @param values The data to "map" onto the phylogenetic tree and that the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
@@ -17,6 +17,8 @@
 #' @param order Optional character. To specify the order of the \code{values} to take into account for the "mapping" and the "thermometers" (if \code{thermo=TRUE}). Default is to consider that \code{values} are sorted in the tips/nodes order (\code{order="phylo"}; 1-Ntip rows of \code{values} being for tips 1-N, and so on for the nodes). Values can also be sorted depending on their names (\code{order="names"}; if the tree AND the values have names for tips AND nodes), according to the tree branches construction (\code{order="edge"}; branches construction is available by asking tree$edge, the numbers refering to tips and nodes), or given a custom order (\code{order} being a vector of the names or of the number of all tips/nodes and of same length than the length of \code{values})
 #' @param cols.args Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "red-yellow-blue" palette of resolution 100 is computed. Please not that if a lot of colors are provided, if \code{type="branch"}, and if \code{branch.col.freqs} and optionally \code{branch.col.freqs.type} are provided in \code{plot.mapping.args}, the function may encounter a bug: some points would not have an attributed color because of the too narrow value steps between each color.
 #' @param lims Optional. The type or values of limits for the "mapping" and/or the "thermometers" to consider. If a character, limits can encompass the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) and they can be asymmetric (taking natural values range, \code{"asy"}), symmetric around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value) that is applicable for all desired "mappings" and for "thermometers. If a numeric, in the case of a continuous trait, the value limits to consider (two values: the inferior and superior bounds), hence a numeric vector of length two. In both cases, it can also be a list of such vectors (character or numeric) of length two if \code{thermo=TRUE} and desiring different limits for "mappings" and "thermometers", or a list of same length than the number of desired plots (depending on what is passed to the \code{plot} argument, with therefore different limits for each plot) and whose elements are either a single vector (specifying limits for "mappings" and also for "thermometers" if applicable) or a list of two vectors (specifying limits for both "mappings" and "thermometers").
+#' @param disag Optional. If \code{type="branch"}, whether to consider "disagreements" between branch values; this is especially useful while considering signs or discrete traits. By default set to \code{FALSE}, can be set to \code{TRUE} (hence coloring disagreeing branches in black) or to any color (hence coloring disagreeing branches in the given color).
+#' @param return.disag If \code{disag=TRUE}, whether to return the list of disagreeing taxa.
 #' @param thermo Optional logical. Whether to plot "thermometers" to account for values variation or not. Set to \code{TRUE} by default, automatically turned to \code{FALSE} if the values is a single-columned matrix/dataframe.
 #' @param plot.mapping.args Optional list. Arguments to be passed to \link[ULT]{plot.mapping} that are not informed from elsewhere. These are the plot title (\code{title}) and other "mapping" arguments (\code{mapping.args}). Can be a list of lists if \code{plot="methods"} or \code{plot=c("methods","aggr")}, then of same length than the desired number of plots.
 #' @param thermo.var.args Optional list. Argmuents to be passed to \link[ULT]{thermo.var} that are not informed from elsewhere. These are the resolution for "thermometers" (\code{resolution}), the choice to plot a bar indicating the location of the aggregated value (\code{aggr.bar}) and its color type (\code{aggr.bar.col}), and various graphical aspects of "thermometers" (their border with \code{border}, their size with \code{cex}, their width with \code{width}, their height with \code{height}, and their position relative to taxa with \code{adj}).
@@ -92,6 +94,20 @@
 #' aggr.trait.map(tree,changes,type="branch",aggr=FALSE,order="edge",lims=c("local","sym0"),cols.args=cols.args,plot.mapping.args = list("branch.col.freqs"=c(0.475,0.05,0.475),"branch.col.freqs.type"="proportion"))
 #' aggr.trait.map(tree,changes,type="branch",aggr=FALSE,order="edge",lims=c("global","sym0"),cols.args=cols.args,plot.mapping.args = list("branch.col.freqs"=c(0.475,0.05,0.475),"branch.col.freqs.type"="proportion"))
 #'
+#' # Get signs of changes
+#' signs<-apply(changes,c(1,2),sign)
+#' aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag=TRUE)
+#' # Now signs are too much present, let's get some tolerance and set as zero value the ones close to zero
+#' range(changes) # Let's take -0.5 and 0.5 as bounds
+#' signs<-apply(changes,c(1,2),function(x){if(x<0.5&x>(-0.5)){x<-0}else{sign(x)}})
+#' aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag=TRUE)
+#' # Let's do same with -1 and 1 as bounds, and with disagreeing branches in light gray, to first see agreeing branches
+#' signs<-apply(changes,c(1,2),function(x){if(x<1&x>(-1)){x<-0}else{sign(x)}})
+#' aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag="lightgray")
+#' # Now let's get the disagreeing branches
+#' disag<-aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag="lightgray",return.disag=TRUE)
+#' disag[which(disag)]
+#'
 #' # Sort values with custom order
 #' order<-sample(1:nrow(values),nrow(values))
 #' # Get aggregated values relying on their names
@@ -120,7 +136,7 @@
 #'
 #' @export
 
-aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
+aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
   char.to.num.lims<-function(lims,data,i){
     a<-lims[lims%in%c("local","global")][1]
     b<-lims[lims%in%c("asym","sym0","symx")][1]
@@ -205,6 +221,16 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     plot.mapping.args<-rep(list(plot.mapping.args),nplots)
   }
 
+  if(type=="branch"&disag!=FALSE&"aggr"%in%plot){
+    if(is.character(disag)){
+      disag.col<-disag
+      disag<-TRUE
+    }
+    else{
+      disag.col<-"black"
+    }
+  }
+
   for(i in 1:length(plot.order)){
     if(all(is.character(map.lims[[i]]))){
       temp.map.lims<-do.call("char.to.num.lims",list(map.lims[[i]],values,plot.order[i]))
@@ -228,6 +254,25 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     }
 
     do.call("plot.mapping",PM.args)
+
+    ###########################
+    ##### PUT DISAGREEMENT HERE
+    ###########################
+    if(type=="branch"&disag&"aggr"%in%plot&plot.order[i]==aggr){
+      disag.values<-apply(values[,-aggr,drop=FALSE],1,function(x){length(unique(sign(x)))>1})
+      lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+      last_disag<-which(disag.values)
+      for(d in 1:length(last_disag)){
+        temp_x<-lastPP$xx[tree$edge[last_disag[d],]]
+        temp_y<-lastPP$yy[tree$edge[last_disag[d],]]
+        segments(temp_x[1],temp_y[1],temp_x[1],temp_y[2],col=disag.col,lwd=3)
+        segments(temp_x[1],temp_y[2],temp_x[2],temp_y[2],col=disag.col,lwd=3)
+      }
+      if(return.disag){
+        return(disag.values)
+      }
+    }
+
 
     if(thermo&&plot.order[i]==aggr){
       root.value<-ifelse(type=="branch",FALSE,TRUE)

@@ -6,7 +6,7 @@
 \usage{
 aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
                order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
-               thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
+               disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
 }
 \arguments{
 \item{tree}{The phylogenetic tree to put "thermometers" on.}
@@ -24,6 +24,10 @@ aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr
 \item{cols.args}{Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "red-yellow-blue" palette of resolution 100 is computed. Please not that if a lot of colors are provided, if \code{type="branch"}, and if \code{branch.col.freqs} and optionally \code{branch.col.freqs.type} are provided in \code{plot.mapping.args}, the function may encounter a bug: some points would not have an attributed color because of the too narrow value steps between each color.}
 
 \item{lims}{Optional. The type or values of limits for the "mapping" and/or the "thermometers" to consider. If a character, limits can encompass the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) and they can be asymmetric (taking natural values range, \code{"asy"}), symmetric around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value) that is applicable for all desired "mappings" and for "thermometers. If a numeric, in the case of a continuous trait, the value limits to consider (two values: the inferior and superior bounds), hence a numeric vector of length two. In both cases, it can also be a list of such vectors (character or numeric) of length two if \code{thermo=TRUE} and desiring different limits for "mappings" and "thermometers", or a list of same length than the number of desired plots (depending on what is passed to the \code{plot} argument, with therefore different limits for each plot) and whose elements are either a single vector (specifying limits for "mappings" and also for "thermometers" if applicable) or a list of two vectors (specifying limits for both "mappings" and "thermometers").}
+
+\item{disag}{Optional. If \code{type="branch"}, whether to consider "disagreements" between branch values; this is especially useful while considering signs or discrete traits. By default set to \code{FALSE}, can be set to \code{TRUE} (hence coloring disagreeing branches in black) or to any color (hence coloring disagreeing branches in the given color).}
+
+\item{return.disag}{If \code{disag=TRUE}, whether to return the list of disagreeing taxa.}
 
 \item{thermo}{Optional logical. Whether to plot "thermometers" to account for values variation or not. Set to \code{TRUE} by default, automatically turned to \code{FALSE} if the values is a single-columned matrix/dataframe.}
 
@@ -105,6 +109,20 @@ aggr.trait.map(tree,changes,type="branch",aggr=FALSE,order="edge",lims=c("global
 # Now do the same with the 5\% central values being in yellow before doing the color gradient (with therefore more colors, the 5\% central values being the yellowests)
 aggr.trait.map(tree,changes,type="branch",aggr=FALSE,order="edge",lims=c("local","sym0"),cols.args=cols.args,plot.mapping.args = list("branch.col.freqs"=c(0.475,0.05,0.475),"branch.col.freqs.type"="proportion"))
 aggr.trait.map(tree,changes,type="branch",aggr=FALSE,order="edge",lims=c("global","sym0"),cols.args=cols.args,plot.mapping.args = list("branch.col.freqs"=c(0.475,0.05,0.475),"branch.col.freqs.type"="proportion"))
+
+# Get signs of changes
+signs<-apply(changes,c(1,2),sign)
+aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag=TRUE)
+# Now signs are too much present, let's get some tolerance and set as zero value the ones close to zero
+range(changes) # Let's take -0.5 and 0.5 as bounds
+signs<-apply(changes,c(1,2),function(x){if(x<0.5&x>(-0.5)){x<-0}else{sign(x)}})
+aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag=TRUE)
+# Let's do same with -1 and 1 as bounds, and with disagreeing branches in light gray, to first see agreeing branches
+signs<-apply(changes,c(1,2),function(x){if(x<1&x>(-1)){x<-0}else{sign(x)}})
+aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag="lightgray")
+# Now let's get the disagreeing branches
+disag<-aggr.trait.map(tree,signs,type="branch",aggr=FALSE,order="edge",disag="lightgray",return.disag=TRUE)
+disag[which(disag)]
 
 # Sort values with custom order
 order<-sample(1:nrow(values),nrow(values))

@@ -3,7 +3,7 @@
 #' @description For a given list of trees of same structure (same tips, same branching pattern) but of various ages of taxa, this function computes (and returns) a single tree with median node ages.
 #' It also names the nodes by either taking the already provided node labels or by creating new ones.
 #'
-#' @usage median.tree(trees,node.labelling=TRUE,node.label.opt=NULL)
+#' @usage median.tree(trees,node.labelling=FALSE,node.label.opt=NULL)
 #'
 #' @param trees The list of phylogenetic trees to consider
 #' @param node.labelling Logical. Whether to set node labels or not.
@@ -73,7 +73,7 @@
 #'
 #' @export median.tree
 
-median.tree<-function(trees,node.labelling=TRUE,node.label.opt=NULL){
+median.tree<-function(trees,node.labelling=FALSE,node.label.opt=NULL){
   med_tree<-trees[[1]]
   med_NH<-matrix(apply(mapply(nodeHeights,trees),1,median),ncol=2,nrow=nrow(med_tree$edge),byrow=FALSE)
   med_tree$edge.length<-apply(med_NH,1,diff)

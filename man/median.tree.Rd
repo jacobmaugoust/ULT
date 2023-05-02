@@ -4,7 +4,7 @@
 \alias{median.tree}
 \title{Get the tree with median taxa ages among a list of trees}
 \usage{
-median.tree(trees,node.labelling=TRUE,node.label.opt=NULL)
+median.tree(trees,node.labelling=FALSE,node.label.opt=NULL)
 }
 \arguments{
 \item{trees}{The list of phylogenetic trees to consider}
