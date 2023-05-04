@@ -65,24 +65,32 @@
 #'
 #' @export scale.palette
 
-scale.palette<-function(ncols,cols=NULL,middle.col=NULL,span=NULL,middle=NULL,steps=NULL,invert=FALSE){
+scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
   if(missing(ncols)){
     stop("No desired number of color provided")
   }
-  if(is.null(cols)){
-    warning("No color provided, palette will be from white to black")
+  if(missing(cols)||is.null(cols)||all(is.na(cols))){
+    if(missing(cols)){
+      warning("No color provided, palette will be from white to black")
+    }
     cols<-c("white","black")
   }
-  if(is.null(span)){
-    warning("No range provided to scale the color gradient; 0-1 span taken by default")
+  if(missing(span)||is.null(span)|all(is.na(span))){
+    if(missing(span)){
+      warning("No range provided to scale the color gradient; 0-1 span taken by default")
+    }
     span<-c(0,1)
   }
-  if(is.null(middle)){
-    warning("No middle provided to adjust a middle color; half of the span taken by default")
+  if(missing(middle)||is.null(middle)||all(is.na(middle))){
+    if(missing(middle)){
+      warning("No middle provided to adjust a middle color; half of the span taken by default")
+    }
     middle<-mean(span)
   }
-  if(is.null(middle.col)){
-    warning(paste0("No middle color provided; replacing it by the ",if(length(cols)==2||length(cols)%%2==0){"average color between the two "},if(length(cols)==2){"provided"}else{"closest"}," color",if(length(cols)%%2==0){"s"},if(length(cols)>2){" to the middle of the colors vector"}))
+  if(missing(middle.col)||is.null(middle.col)|all(is.na(middle.col))){
+    if(missing(middle.col)){
+      warning(paste0("No middle color provided; replacing it by the ",if(length(cols)==2||length(cols)%%2==0){"average color between the two "},if(length(cols)==2){"provided"}else{"closest"}," color",if(length(cols)%%2==0){"s"},if(length(cols)>2){" to the middle of the colors vector"}))
+    }
 
     if(length(cols)==2){
       middle.col<-rgb(t(apply(col2rgb(cols),1,function(x){sqrt(x[1]^2*middle/diff(span)+x[2]^2*(1-middle/diff(span)))})),maxColorValue = 255)
@@ -99,8 +107,8 @@ scale.palette<-function(ncols,cols=NULL,middle.col=NULL,span=NULL,middle=NULL,st
       cols<-c(cols[1:(length(cols)/2)],middle.col,cols[length(cols)/2+(1:(length(cols)/2))])
     }
   }
-  if(is.null(steps)||length(steps)!=(length(cols)-2)){
-    if(!is.null(steps)&length(steps)!=(length(cols)-2)){
+  if(missing(steps)||is.null(steps)||all(is.na(steps))||length(steps)!=(length(cols)-2)){
+    if(!(is.null(steps)|all(is.na(steps)))&length(steps)!=(length(cols)-2)){
       warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
     }
     steps<-middle
