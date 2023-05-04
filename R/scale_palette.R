@@ -65,32 +65,45 @@
 #'
 #' @export scale.palette
 
-scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
+scale.palette<-function(ncols,cols=NULL,middle.col=NULL,span=NULL,middle=NULL,steps=NULL,invert=FALSE){
   if(missing(ncols)){
     stop("No desired number of color provided")
   }
-  if(missing(cols)){
+  if(is.null(cols)){
     warning("No color provided, palette will be from white to black")
     cols<-c("white","black")
   }
-  if(missing(span)){
+  if(is.null(span)){
     warning("No range provided to scale the color gradient; 0-1 span taken by default")
-    span<-NA
+    span<-c(0,1)
   }
-  if(missing(middle)){
+  if(is.null(middle)){
     warning("No middle provided to adjust a middle color; half of the span taken by default")
-    middle<-NA
+    middle<-mean(span)
   }
-  if(missing(middle.col)){
+  if(is.null(middle.col)){
     warning(paste0("No middle color provided; replacing it by the ",if(length(cols)==2||length(cols)%%2==0){"average color between the two "},if(length(cols)==2){"provided"}else{"closest"}," color",if(length(cols)%%2==0){"s"},if(length(cols)>2){" to the middle of the colors vector"}))
-    middle.col<-NA
+
+    if(length(cols)==2){
+      middle.col<-rgb(t(apply(col2rgb(cols),1,function(x){sqrt(x[1]^2*middle/diff(span)+x[2]^2*(1-middle/diff(span)))})),maxColorValue = 255)
+    }
+    else{
+      if(((length(cols)-2)%%2)==1){
+        middle.col<-cols[(length(cols)+1)/2]
+      }
+      else{
+        middle.col<-rgb(t(apply(col2rgb(cols[length(cols)/2+c(0,1)]),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
+      }
+    }
+    if(!middle.col%in%cols){
+      cols<-c(cols[1:(length(cols)/2)],middle.col,cols[length(cols)/2+(1:(length(cols)/2))])
+    }
   }
-  if(missing(steps)){
-    steps<-NA
-  }
-  if(all(!is.na(steps))&(length(steps)!=(length(cols)-2))){
-    warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
-    steps<-NA
+  if(is.null(steps)||length(steps)!=(length(cols)-2)){
+    if(!is.null(steps)&length(steps)!=(length(cols)-2)){
+      warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
+    }
+    steps<-middle
   }
 
   if(is.matrix(cols)==TRUE){
@@ -131,47 +144,14 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     cols<-rev(cols)
   }
 
-  if(all(is.na(span))){
-    span<-c(0,1)
+  final_palette<-c()
+
+  if(diff(span)==0){
+    final_palette<-rep(middle.col,ncols)
   }
-
-  if(any(is.na(steps))){
-    if(is.na(middle)){
-      middle<-mean(span)
-    }
-
-    middle<-(middle-span[1])/(span[length(span)]-span[1])
-    span<-(span-span[1])/(span[length(span)]-span[1])
-
-    if(is.na(middle.col)){
-      if(length(cols)==2){
-        middle.col<-rgb(t(apply(col2rgb(cols),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
-      }
-      else{
-        if(((length(cols)-2)%%2)==1){
-          middle.col<-cols[(length(cols)+1)/2]
-        }
-        else{
-          middle.col<-rgb(t(apply(col2rgb(cols[length(cols)/2+c(0,1)]),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
-        }
-      }
-    }
-
-    if(!middle.col%in%cols){
-      cols<-c(cols[1:(length(cols)/2)],middle.col,cols[length(cols)/2+(1:(length(cols)/2))])
-    }
-    n_middle_col<-round(median(which(middle.col==cols)))
-
-    final_palette<-c(colorRampPalette(cols[1:n_middle_col])(ncols*(middle-span[1])),colorRampPalette(cols[n_middle_col:length(cols)])(ncols*(span[length(span)]-middle)))
-    if(length(final_palette)!=ncols){
-      final_palette<-final_palette[-which(rgb(t(col2rgb(cols[n_middle_col])),maxColorValue = 255)==final_palette)[1]]
-    }
-  }
-
   else{
-    final_palette<-c()
     steps<-c(span[1],steps,span[2])
-    steps<-(steps-steps[1])/(steps[length(steps)]-steps[1])
+    steps<-(steps-steps[1])/diff(span)
     n_steps<-round(ncols*steps)
     for (i in 1:(length(steps)-1)){
       if(i==1){local_palette<-c(colorRampPalette(cols[i:(i+1)])(n_steps[i+1]-n_steps[i]))}
