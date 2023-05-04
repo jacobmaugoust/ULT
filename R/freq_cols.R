@@ -29,7 +29,13 @@ freq.cols<-function(cols,ncols,freqs,lims,type,values){
     if(length(q)==length.out){
       q<-q[-which.max(q)]
     }
-    freqs<-(c(q,max(lims))-c(min(lims),q))/diff(lims)
+    freqs<-(c(q,max(lims))-c(min(lims),q))/ifelse(lims[1]==lims[2],1,diff(lims))
+    if(any(freqs<0)){
+      freqs[freqs<0]<-0
+    }
+    if(sum(freqs)!=1){
+      freqs<-freqs/sum(freqs)
+    }
     freqs
   }
 
