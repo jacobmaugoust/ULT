@@ -108,7 +108,7 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     }
   }
   if(missing(steps)||is.null(steps)||all(is.na(steps))||length(steps)!=(length(cols)-2)){
-    if(!(is.null(steps)|all(is.na(steps)))&length(steps)!=(length(cols)-2)){
+    if(!(missing(steps)||is.null(steps)||all(is.na(steps))&&length(steps)==(length(cols)-2))){
       warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
     }
     steps<-middle
