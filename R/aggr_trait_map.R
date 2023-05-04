@@ -255,9 +255,6 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
 
     do.call("plot.mapping",PM.args)
 
-    ###########################
-    ##### PUT DISAGREEMENT HERE
-    ###########################
     if(type=="branch"&disag&"aggr"%in%plot&plot.order[i]==aggr){
       disag.values<-apply(values[,-aggr,drop=FALSE],1,function(x){length(unique(sign(x)))>1})
       lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)

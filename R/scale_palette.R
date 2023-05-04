@@ -111,7 +111,10 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     if(!(missing(steps))&&(is.null(steps)||all(is.na(steps))&&length(steps)==(length(cols)-2))){
       warning("Provided steps are not equal to the number of non-extreme colors; converted steps to NA")
     }
-    steps<-middle
+    steps<-numeric(length(cols)-2)
+    n.middle.col<-which(cols==middle.col)-1
+    steps[1:n.middle.col]<-seq(span[1],middle,length.out=length(c(1:n.middle.col)))
+    steps[n.middle.col:length(steps)]<-seq(middle,span[2],length.out=length(c(n.middle.col:length(steps))))
   }
 
   if(is.matrix(cols)==TRUE){
