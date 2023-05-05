@@ -75,7 +75,7 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     }
     cols<-c("white","black")
   }
-  if(missing(span)||is.null(span)|all(is.na(span))){
+  if(missing(span)||is.null(span)||all(is.na(span))){
     if(missing(span)){
       warning("No range provided to scale the color gradient; 0-1 span taken by default")
     }
@@ -113,8 +113,8 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     }
     steps<-numeric(length(cols)-2)
     n.middle.col<-which(cols==middle.col)-1
-    steps[1:n.middle.col]<-seq(span[1],middle,length.out=length(c(1:n.middle.col)))
-    steps[n.middle.col:length(steps)]<-seq(middle,span[2],length.out=length(c(n.middle.col:length(steps))))
+    steps[1:n.middle.col]<-seq(span[1],middle,length.out=length(c(1:n.middle.col))+1)[-1]
+    steps[n.middle.col:length(steps)]<-seq(middle,span[2],length.out=length(c(n.middle.col:length(steps)))+1)[-(length(c(n.middle.col:length(steps)))+1)]
   }
 
   if(is.matrix(cols)==TRUE){
