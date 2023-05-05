@@ -6,7 +6,8 @@
 \usage{
 aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
                order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
-               disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
+               disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,
+               plot.mapping.args=NULL,thermo.var.args=NULL)
 }
 \arguments{
 \item{tree}{The phylogenetic tree to put "thermometers" on.}

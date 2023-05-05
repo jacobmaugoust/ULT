@@ -7,7 +7,8 @@
 #'
 #' @usage aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
 #'                order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
-#'                disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL)
+#'                disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,
+#'                plot.mapping.args=NULL,thermo.var.args=NULL)
 #'
 #' @param tree The phylogenetic tree to put "thermometers" on.
 #' @param values The data to "map" onto the phylogenetic tree and that the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
@@ -136,7 +137,7 @@
 #'
 #' @export
 
-aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),disag=FALSE,return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
+aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
   char.to.num.lims<-function(lims,data,i){
     a<-lims[lims%in%c("local","global")][1]
     b<-lims[lims%in%c("asym","sym0","symx")][1]
@@ -229,6 +230,10 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     else{
       disag.col<-"black"
     }
+    disag.type<-disag.type[disag.type%in%c("sign","steps")]
+    if(length(disag.type)!=1){
+      disag.type<-"sign"
+    }
   }
 
   for(i in 1:length(plot.order)){
@@ -256,7 +261,12 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     do.call("plot.mapping",PM.args)
 
     if(type=="branch"&disag&"aggr"%in%plot&plot.order[i]==aggr){
-      disag.values<-apply(values[,-aggr,drop=FALSE],1,function(x){length(unique(sign(x)))>1})
+      if(disag.type=="sign"){
+        disag.values<-apply(values[,-aggr,drop=FALSE],1,function(x){length(unique(sign(x)))>1})
+      }
+      else if(disag.type=="steps"){
+        disag.values<-apply(values[,-aggr,drop=FALSE],1,function(x){length(unique(x))>1})
+      }
       lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
       last_disag<-which(disag.values)
       for(d in 1:length(last_disag)){
