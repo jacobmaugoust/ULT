@@ -43,9 +43,7 @@ split.cols<-function(x,split.col=NULL,split.char=NULL,split.names=NULL,list.name
   if(is.list(x)){
     out<-do.call("rbind",x)
   }
-  else{
-    out<-as.matrix(x)
-  }
+  out<-as.matrix(x)
   if(!is.null(split.col)){
     if(length(split.char)==1){
       split.char<-rep(split.char,length(split.col))
