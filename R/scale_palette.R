@@ -87,7 +87,7 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
     }
     middle<-mean(span)
   }
-  if(missing(middle.col)||is.null(middle.col)|all(is.na(middle.col))){
+  if(missing(middle.col)||is.null(middle.col)||all(is.na(middle.col))){
     if(missing(middle.col)){
       warning(paste0("No middle color provided; replacing it by the ",if(length(cols)==2||length(cols)%%2==0){"average color between the two "},if(length(cols)==2){"provided"}else{"closest"}," color",if(length(cols)%%2==0){"s"},if(length(cols)>2){" to the middle of the colors vector"}))
     }
@@ -100,7 +100,7 @@ scale.palette<-function(ncols,cols,middle.col,span,middle,steps,invert=FALSE){
         middle.col<-cols[(length(cols)+1)/2]
       }
       else{
-        middle.col<-rgb(t(apply(col2rgb(cols[length(cols)/2+c(0,1)]),1,function(x){sqrt(x[1]^2*middle+x[2]^2*(1-middle))})),maxColorValue = 255)
+        middle.col<-rgb(t(apply(col2rgb(cols[length(cols)/2+c(0,1)]),1,function(x){sqrt(x[1]^2*middle/diff(span)+x[2]^2*(1-middle/diff(span)))})),maxColorValue = 255)
       }
     }
     if(!middle.col%in%cols){

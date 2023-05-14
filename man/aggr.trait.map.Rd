@@ -4,8 +4,8 @@
 \alias{aggr.trait.map}
 \title{Plot the mapping of a reconstructed trait averaging several methods and add "thermometers" of methods variation}
 \usage{
-aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
-               order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
+aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","groups","aggr"),aggr=TRUE,groups=NULL,
+               order=c("phylo","names","edge"),cols.args,lims=c("local","groups","global","asym","sym0","symx"),
                disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,
                plot.mapping.args=NULL,thermo.var.args=NULL)
 }
@@ -16,9 +16,11 @@ aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr
 
 \item{type}{Optional character. If \code{mapping=TRUE}, whether the values represent values for branches (hence coloring the edge with a single color; \code{type="discrete"}) or taxa (hence coloring the edges with a gradient from a taxon to another; \code{type="continuous"})}
 
-\item{plot}{Optional character. Whether to plot all methods + "aggregated" values (\code{plot=c("methods","aggr")}, the default) or either one or the other(hence automatically not plotting "thermometers" if \code{plot="methods"}).}
+\item{plot}{Optional character. Whether to plot all methods (\code{plot="methods"}, hence automatically not plotting "thermometers" for these plots), groups of methods (\code{plot="groups"}), "aggregated" values (\code{plot="aggr"}, the default), or combinations of them in a character vector. (hence automatically not plotting "thermometers" if \code{plot="methods"}).}
 
 \item{aggr}{Optional. The reference \code{values} column for the "aggregated" variable (i.e., the variable taking into account all methods by taking the arithmetic mean of all values for each taxon) that represents the center of the color palette (but not necessarily of the "thermometers"!). The \code{values} data can already contain it as being the last column (\code{aggr=TRUE}, the default), as being absent (\code{aggr=FALSE}, computed by the function), as being one of the columns but no the last one (\code{aggr} being the column name or number refering to it in \code{values}).}
+
+\item{groups}{Optional. If \code{plot="groups"}, there must be a list or a vector specifying which variables pertain to which "group" of variables. Can either be a list of vectors citing the number or the name of each variable, or a numeric vector with numbers from 1 to the number of groupes sorted like the variables (e.g., for three variables, if the two first are grouped and the latter is alone, then \code{groups=c(1,1,2)}).}
 
 \item{order}{Optional character. To specify the order of the \code{values} to take into account for the "mapping" and the "thermometers" (if \code{thermo=TRUE}). Default is to consider that \code{values} are sorted in the tips/nodes order (\code{order="phylo"}; 1-Ntip rows of \code{values} being for tips 1-N, and so on for the nodes). Values can also be sorted depending on their names (\code{order="names"}; if the tree AND the values have names for tips AND nodes), according to the tree branches construction (\code{order="edge"}; branches construction is available by asking tree$edge, the numbers refering to tips and nodes), or given a custom order (\code{order} being a vector of the names or of the number of all tips/nodes and of same length than the length of \code{values})}
 
@@ -27,6 +29,8 @@ aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr
 \item{lims}{Optional. The type or values of limits for the "mapping" and/or the "thermometers" to consider. If a character, limits can encompass the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) and they can be asymmetric (taking natural values range, \code{"asy"}), symmetric around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value) that is applicable for all desired "mappings" and for "thermometers. If a numeric, in the case of a continuous trait, the value limits to consider (two values: the inferior and superior bounds), hence a numeric vector of length two. In both cases, it can also be a list of such vectors (character or numeric) of length two if \code{thermo=TRUE} and desiring different limits for "mappings" and "thermometers", or a list of same length than the number of desired plots (depending on what is passed to the \code{plot} argument, with therefore different limits for each plot) and whose elements are either a single vector (specifying limits for "mappings" and also for "thermometers" if applicable) or a list of two vectors (specifying limits for both "mappings" and "thermometers").}
 
 \item{disag}{Optional. If \code{type="branch"}, whether to consider "disagreements" between branch values; this is especially useful while considering signs or discrete traits. By default set to \code{FALSE}, can be set to \code{TRUE} (hence coloring disagreeing branches in black) or to any color (hence coloring disagreeing branches in the given color).}
+
+\item{disag.type}{Optional. If \code{type="branch"} and \code{disag=TRUE}, the type of disagreement to consider: it can regards signs of values (-1/0/1) (\code{disag.type="sign"}) or discrete steps between integer values (\code{disag.type="steps"})}
 
 \item{return.disag}{If \code{disag=TRUE}, whether to return the list of disagreeing taxa.}
 
@@ -80,6 +84,12 @@ aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims=c("global","symx",mean(ra
 # Let's repeat this but this time using "local" color ranges for "mappings" (to have maximal palette range for each), still keeping a symmetric color palette (using thus "symx") centered on "local" data arithmetic mean (not providing the "x" that will be automatically calculated)
 # and "global" color ranges for "thermometers" (to check the "aggregated" values position, with necessarily the colors of the "thermometers" not matching that of the "aggregated mapping")
 aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims=list(c("local","symx"),c("global","symx",mean(range(values)))))
+# Now let's consider there are two groups or methods: one with the first tree, one with the two last. Let's plot them
+layout(get.grid(2))
+aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims="global",plot="groups",groups=c(1,1,1,2,2))
+# Let's now see them with all methods and with global aggregate
+layout(get.grid(ncol(values)+3))
+aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims="global",plot=c("methods","groups","aggr"),groups=c(1,1,1,2,2))
 
 # Get trait values changes between taxa
 changes<-apply(values,2,function(x){x[tree$edge[,2]]-x[tree$edge[,1]]})

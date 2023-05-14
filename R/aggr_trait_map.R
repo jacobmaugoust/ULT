@@ -5,20 +5,22 @@
 #' Such arithmetic mean is considered as the "aggregated" method and is displayed by coloring the tree branches.
 #' Additional information about the variation between methods can be displayed by "thermometers" (see also \link[ape]{tiplabels} and \link[ape]{nodelabels}) for each taxon, with a color gradient for the value reconstructed for the array of methods.
 #'
-#' @usage aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,
-#'                order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),
+#' @usage aggr.trait.map(tree,values,type=c("taxa","branch"),plot=c("methods","groups","aggr"),aggr=TRUE,groups=NULL,
+#'                order=c("phylo","names","edge"),cols.args,lims=c("local","groups","global","asym","sym0","symx"),
 #'                disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,
 #'                plot.mapping.args=NULL,thermo.var.args=NULL)
 #'
 #' @param tree The phylogenetic tree to put "thermometers" on.
 #' @param values The data to "map" onto the phylogenetic tree and that the colors have to follow; can be a data frame or a matrix with taxa as rows and methods as columns.
 #' @param type Optional character. If \code{mapping=TRUE}, whether the values represent values for branches (hence coloring the edge with a single color; \code{type="discrete"}) or taxa (hence coloring the edges with a gradient from a taxon to another; \code{type="continuous"})
-#' @param plot Optional character. Whether to plot all methods + "aggregated" values (\code{plot=c("methods","aggr")}, the default) or either one or the other(hence automatically not plotting "thermometers" if \code{plot="methods"}).
+#' @param plot Optional character. Whether to plot all methods (\code{plot="methods"}, hence automatically not plotting "thermometers" for these plots), groups of methods (\code{plot="groups"}), "aggregated" values (\code{plot="aggr"}, the default), or combinations of them in a character vector. (hence automatically not plotting "thermometers" if \code{plot="methods"}).
 #' @param aggr Optional. The reference \code{values} column for the "aggregated" variable (i.e., the variable taking into account all methods by taking the arithmetic mean of all values for each taxon) that represents the center of the color palette (but not necessarily of the "thermometers"!). The \code{values} data can already contain it as being the last column (\code{aggr=TRUE}, the default), as being absent (\code{aggr=FALSE}, computed by the function), as being one of the columns but no the last one (\code{aggr} being the column name or number refering to it in \code{values}).
+#' @param groups Optional. If \code{plot="groups"}, there must be a list or a vector specifying which variables pertain to which "group" of variables. Can either be a list of vectors citing the number or the name of each variable, or a numeric vector with numbers from 1 to the number of groupes sorted like the variables (e.g., for three variables, if the two first are grouped and the latter is alone, then \code{groups=c(1,1,2)}).
 #' @param order Optional character. To specify the order of the \code{values} to take into account for the "mapping" and the "thermometers" (if \code{thermo=TRUE}). Default is to consider that \code{values} are sorted in the tips/nodes order (\code{order="phylo"}; 1-Ntip rows of \code{values} being for tips 1-N, and so on for the nodes). Values can also be sorted depending on their names (\code{order="names"}; if the tree AND the values have names for tips AND nodes), according to the tree branches construction (\code{order="edge"}; branches construction is available by asking tree$edge, the numbers refering to tips and nodes), or given a custom order (\code{order} being a vector of the names or of the number of all tips/nodes and of same length than the length of \code{values})
 #' @param cols.args Optional list. A list of arguments for the reference color palette to be passed to the \link[ULT]{scale.palette} function. These arguments are the palette resolution \code{ncol}, the colors to consider \code{col}, the central color \code{middle.col} if there is (otherwise turning this to \code{NA}), a central value in the \code{values} range \code{middle} (if there is, otherwise turning this to \code{NA}), and the \code{values} steps to follow \code{steps} (if there are, otherwise turning this to \code{NA}). Of these, the parameters \code{ncol} and \code{cols} are the most important; the parameters \code{middle.col} and \code{middle} can be left empty, and the parameter \code{span} is estimated as the range of \code{values} if left empty. By default, a "red-yellow-blue" palette of resolution 100 is computed. Please not that if a lot of colors are provided, if \code{type="branch"}, and if \code{branch.col.freqs} and optionally \code{branch.col.freqs.type} are provided in \code{plot.mapping.args}, the function may encounter a bug: some points would not have an attributed color because of the too narrow value steps between each color.
 #' @param lims Optional. The type or values of limits for the "mapping" and/or the "thermometers" to consider. If a character, limits can encompass the range of plotted values only (\code{lims="local"}; the average of all methods) or of all values (\code{lims="global"}) and they can be asymmetric (taking natural values range, \code{"asy"}), symmetric around zero (taking further value from zero and its opposite, \code{"sym0"}), or around another value (\code{"symx"}, the arithmetic mean by default); hence it can be a vector of length 1 (choosing limits across or within variables), 2 (adding the asymmetric or symmetric choice), or 3 (adding the central value if symmetric to a given value) that is applicable for all desired "mappings" and for "thermometers. If a numeric, in the case of a continuous trait, the value limits to consider (two values: the inferior and superior bounds), hence a numeric vector of length two. In both cases, it can also be a list of such vectors (character or numeric) of length two if \code{thermo=TRUE} and desiring different limits for "mappings" and "thermometers", or a list of same length than the number of desired plots (depending on what is passed to the \code{plot} argument, with therefore different limits for each plot) and whose elements are either a single vector (specifying limits for "mappings" and also for "thermometers" if applicable) or a list of two vectors (specifying limits for both "mappings" and "thermometers").
 #' @param disag Optional. If \code{type="branch"}, whether to consider "disagreements" between branch values; this is especially useful while considering signs or discrete traits. By default set to \code{FALSE}, can be set to \code{TRUE} (hence coloring disagreeing branches in black) or to any color (hence coloring disagreeing branches in the given color).
+#' @param disag.type Optional. If \code{type="branch"} and \code{disag=TRUE}, the type of disagreement to consider: it can regards signs of values (-1/0/1) (\code{disag.type="sign"}) or discrete steps between integer values (\code{disag.type="steps"})
 #' @param return.disag If \code{disag=TRUE}, whether to return the list of disagreeing taxa.
 #' @param thermo Optional logical. Whether to plot "thermometers" to account for values variation or not. Set to \code{TRUE} by default, automatically turned to \code{FALSE} if the values is a single-columned matrix/dataframe.
 #' @param plot.mapping.args Optional list. Arguments to be passed to \link[ULT]{plot.mapping} that are not informed from elsewhere. These are the plot title (\code{title}) and other "mapping" arguments (\code{mapping.args}). Can be a list of lists if \code{plot="methods"} or \code{plot=c("methods","aggr")}, then of same length than the desired number of plots.
@@ -64,6 +66,12 @@
 #' # Let's repeat this but this time using "local" color ranges for "mappings" (to have maximal palette range for each), still keeping a symmetric color palette (using thus "symx") centered on "local" data arithmetic mean (not providing the "x" that will be automatically calculated)
 #' # and "global" color ranges for "thermometers" (to check the "aggregated" values position, with necessarily the colors of the "thermometers" not matching that of the "aggregated mapping")
 #' aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims=list(c("local","symx"),c("global","symx",mean(range(values)))))
+#' # Now let's consider there are two groups or methods: one with the first tree, one with the two last. Let's plot them
+#' layout(get.grid(2))
+#' aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims="global",plot="groups",groups=c(1,1,1,2,2))
+#' # Let's now see them with all methods and with global aggregate
+#' layout(get.grid(ncol(values)+3))
+#' aggr.trait.map(tree,values,type="taxa",aggr=FALSE,lims="global",plot=c("methods","groups","aggr"),groups=c(1,1,1,2,2))
 #'
 #' # Get trait values changes between taxa
 #' changes<-apply(values,2,function(x){x[tree$edge[,2]]-x[tree$edge[,1]]})
@@ -137,11 +145,11 @@
 #'
 #' @export
 
-aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","aggr"),aggr=TRUE,order=c("phylo","names","edge"),cols.args,lims=c("local","global","asym","sym0","symx"),disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
-  char.to.num.lims<-function(lims,data,i){
-    a<-lims[lims%in%c("local","global")][1]
+aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","groups","aggr"),aggr=TRUE,groups=NULL,order=c("phylo","names","edge"),cols.args,lims=c("local","groups","global","asym","sym0","symx"),disag=FALSE,disag.type=c("sign","steps"),return.disag=FALSE,thermo=TRUE,plot.mapping.args=NULL,thermo.var.args=NULL){
+  char.to.num.lims<-function(lims,data,i,groups){
+    a<-lims[lims%in%c("local","groups","global")][1]
     b<-lims[lims%in%c("asym","sym0","symx")][1]
-    x<-lims[!lims%in%c("local","global","asym","sym0","symx")][1]
+    x<-lims[!lims%in%c("local","global","groups","asym","sym0","symx")][1]
     if(is.character(x)){x<-as.numeric(x)}
 
     if(is.na(a)){a<-"local"}
@@ -149,6 +157,9 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
 
     if(a=="local"){
       data<-data[,i]
+    }
+    else if(a=="groups"){
+      data<-data[,groups]
     }
     if(is.na(x)){x<-mean(range(data))}
     if(b!="asym"){
@@ -178,19 +189,33 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     stop("Please provided a column number for aggregated values within the number of columns of the values dataset, or any interpretable value for aggr; see help")
   }
 
-  if(!"aggr"%in%plot){
-    nplots<-ncol(values)-1
-    plot.order<-c(1:nplots)
-    thermo<-FALSE
-    thermo.var.args<-NULL
+  if("groups"%in%plot&is.null(groups)){
+    plot<-plot[-which(plot=="groups")]
   }
-  else if(!"methods"%in%plot){
-    nplots<-1
-    plot.order<-aggr
+  if("groups"%in%plot){
+    if(is.list(groups)){
+      groups<-lapply(groups,function(x){if(is.character(x)){which(colnames(values)%in%x)}else{x}})
+      groups<-rep(1:length(groups),sapply(groups,length))[order(unlist(groups))]
+    }
+  }
+
+  if("groups"%in%plot){
+    new.values<-NULL
+    for(i in 1:max(groups)){
+      new.values<-cbind(new.values,if("methods"%in%plot){values[,which(groups==i),drop=FALSE]},apply(values[,which(groups==i)],1,mean))
+      colnames(new.values)[ncol(new.values)]<-paste0("Aggregated.g.",i)
+    }
+    nplots<-ncol(new.values)
+    if("aggr"%in%plot){
+      nplots<-nplots+1
+      new.values<-cbind(new.values,values[,aggr,drop=FALSE])
+    }
+    plot.order<-c(1:nplots)
   }
   else{
-    nplots<-ncol(values)
-    plot.order<-c(c(1:nplots)[-aggr],aggr)
+    new.values<-cbind(if("methods"%in%plot){values[,-aggr,drop=FALSE]},if("aggr"%in%plot){values[,aggr,drop=FALSE]})
+    nplots<-ncol(new.values)
+    plot.order<-c(1:nplots)
   }
 
   if(is.list(lims)){
@@ -222,6 +247,22 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
     plot.mapping.args<-rep(list(plot.mapping.args),nplots)
   }
 
+  for(i in 1:nplots){
+    if(is.character(map.lims[[i]])){
+      map.lims[[i]]<-char.to.num.lims(map.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
+    }
+    if(is.character(thermo.lims[[i]])){
+      temp<-char.to.num.lims(thermo.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
+      if(branch&&"branch.col.freqs"%in%names(plot.mapping.args[[i]])){
+        thermo.lims[[i]]<-c("thermo.lims"=list(temp),"lims"=list(thermo.lims[[i]]))
+      }
+      else{
+        thermo.lims[[i]]<-temp
+      }
+    }
+  }
+
+
   if(type=="branch"&disag!=FALSE&"aggr"%in%plot){
     if(is.character(disag)){
       disag.col<-disag
@@ -237,25 +278,19 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
   }
 
   for(i in 1:length(plot.order)){
-    if(all(is.character(map.lims[[i]]))){
-      temp.map.lims<-do.call("char.to.num.lims",list(map.lims[[i]],values,plot.order[i]))
-    }
-    else{
-      temp.map.lims<-map.lims[[i]]
-    }
     PM.args<-c(list("tree"=tree,
-                    "values"=values[,plot.order[i]],
+                    "values"=new.values[,plot.order[i]],
                     "type"=type,
-                    "lims"=temp.map.lims,
+                    "lims"=map.lims[[i]],
                     "order"=order),
                plot.mapping.args[[i]][names(plot.mapping.args[[i]])%in%c("title","branch.col.freqs","branch.col.freqs.type","mapping.args")])
     if(!missing(cols.args)){
       PM.args<-c(PM.args,list("cols.args"=cols.args))
     }
 
-    if(branch&&"branch.col.freqs"%in%names(PM.args)&&("global"%in%lims|temp.map.lims[1]>min(PM.args$values)&temp.map.lims[2]<max(PM.args$values))){
+    if(branch&&"branch.col.freqs"%in%names(PM.args)&&("global"%in%lims|map.lims[[i]][1]>min(PM.args$values)&map.lims[[i]][2]<max(PM.args$values))){
       PM.args$branch.col.freqs<-list("branch.col.freqs"=PM.args$branch.col.freqs,
-                                     "global.values"=values[values>=temp.map.lims[1]&values<=temp.map.lims[2]])
+                                     "global.values"=values[values>=map.lims[[i]][1]&values<=map.lims[[i]][2]])
     }
 
     do.call("plot.mapping",PM.args)
@@ -280,8 +315,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
       }
     }
 
-
-    if(thermo&&plot.order[i]==aggr){
+    if(thermo&&!colnames(new.values)[i]%in%colnames(values)[-aggr]){
       root.value<-ifelse(type=="branch",FALSE,TRUE)
 
       if(length(order)==1&&order=="edge"){
@@ -292,13 +326,13 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
       }
 
       TV.args<-c(list("tree"=tree,
-                      "values"=values,
+                      "values"=if("groups"%in%plot&&(!colnames(new.values)[i]%in%colnames(values))){cbind(values[,which(groups==as.numeric(strsplit(colnames(new.values)[i],"Aggregated.g.")[[1]][2])),drop=FALSE],new.values[,i,drop=FALSE])}else{values},
                       "thermo.lims"=thermo.lims[[i]],
                       "order"=order,
-                      "aggr"=aggr,
+                      "aggr"=ifelse("groups"%in%plot&&(!colnames(new.values)[i]%in%colnames(values)),TRUE,aggr),
                       "root.value"=root.value
-                      ),
-                 thermo.var.args[names(thermo.var.args)%in%c("resolution","aggr.bar","aggr.bar.col","border","cex","width","height","adj")])
+      ),
+      thermo.var.args[names(thermo.var.args)%in%c("resolution","aggr.bar","aggr.bar.col","border","cex","width","height","adj")])
 
       if(!missing(cols.args)){
         if("fun"%in%(names(cols.args))){
@@ -307,7 +341,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","a
         TV.args<-c(TV.args,list("cols.args"=cols.args))
       }
       if(branch&&"branch.col.freqs"%in%names(PM.args)){
-        if("global"%in%lims|temp.map.lims[1]>min(PM.args$values)&temp.map.lims[2]<max(PM.args$values)){
+        if("global"%in%lims|map.lims[[i]][1]>min(PM.args$values)&map.lims[[i]][2]<max(PM.args$values)){
           hidden<-PM.args$branch.col.freqs[names(PM.args$branch.col.freqs)=="branch.col.freqs"]
         }
         else{

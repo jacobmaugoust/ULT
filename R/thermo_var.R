@@ -186,6 +186,10 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local","asym"
     }
     thermo.lims<-do.call("char.to.num.lims",list(thermo.lims,values,aggr))
   }
+  else if(is.list(thermo.lims)&&length(thermo.lims)==2){
+    lims<-thermo.lims[[which(unlist(lapply(thermo.lims,is.character)))]]
+    thermo.lims<-thermo.lims[[which(unlist(lapply(thermo.lims,is.numeric)))]]
+  }
 
   if(missing(cols.args)){
     cols.args<-list("cols"=c("blue","yellow","red"))
@@ -213,7 +217,7 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local","asym"
     if(!"middle"%in%names(cols.args)){cols.args$middle<-NA}
     if(!"span"%in%names(cols.args)){cols.args$span<-thermo.lims}
     if(!is.null(branch.col.freqs)){
-      cols<-freq.cols(cols=do.call("scale.palette",cols.args),ncols=cols.args$ncols,freqs=branch.col.freqs,lims=thermo.lims,type=branch.col.freqs.type,values=values[,if(lims=="global"){c(1:ncol(values))}else{aggr}])
+      cols<-freq.cols(cols=do.call("scale.palette",cols.args),ncols=cols.args$ncols,freqs=branch.col.freqs,lims=thermo.lims,type=branch.col.freqs.type,values=values[,if("global"%in%lims){c(1:ncol(values))}else{aggr}])
     }
     else{
       cols<-do.call("scale.palette",cols.args)
@@ -297,13 +301,13 @@ thermo.var<-function(tree,values,cols.args,thermo.lims=c("global","local","asym"
       }
     }
 
-    values<-values[values.match,]
+    values<-values[values.match,,drop=FALSE]
   }
 
   if(!root.value){
     check.taxa<-check.taxa[-(Ntip(tree)+1)]
   }
-  values<-values[which(check.taxa),]
+  values<-values[which(check.taxa),,drop=FALSE]
 
   col.values<-apply(values,c(1,2),function(x){
     colnumber<-scales::rescale(x,c(0.5+1e-10,cols.args$ncols+0.5-1e-10),thermo.lims)
