@@ -339,10 +339,10 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       thermo.var.args[names(thermo.var.args)%in%c("resolution","aggr.bar","aggr.bar.col","border","cex","width","height","adj")])
 
       if(!missing(cols.args)){
-        if("fun"%in%(names(cols.args))){
-          cols.args<-cols.args[-which(names(cols.args)=="fun")]
-        }
         TV.args<-c(TV.args,list("cols.args"=cols.args))
+        if("fun"%in%(names(TV.args$cols.args))){
+          TV.args$cols.args<-TV.args$cols.args[-which(names(TV.args$cols.args)=="fun")]
+        }
       }
       if(branch&&"branch.col.freqs"%in%names(PM.args)){
         if("global"%in%lims|map.lims[[i]][1]>min(PM.args$values)&map.lims[[i]][2]<max(PM.args$values)){
