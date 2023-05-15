@@ -173,6 +173,10 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
 
   branch<-any("branch"%in%type)
 
+  if(is.null(colnames(values))){
+    colnames(values)<-letters[1:ncol(values)]
+  }
+
   if(is.logical(aggr)){
     if(aggr==TRUE){
       aggr<-ncol(values)
@@ -206,21 +210,22 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
   if("groups"%in%plot){
     new.values<-NULL
     for(i in 1:max(groups)){
-      new.values<-cbind(new.values,if("methods"%in%plot){values[,which(groups==i),drop=FALSE]},apply(values[,which(groups==i),drop=FALSE],1,mean))
+      new.values<-cbind(new.values,values[,which(groups==i),drop=FALSE],apply(values[,which(groups==i),drop=FALSE],1,mean))
       colnames(new.values)[ncol(new.values)]<-paste0("Aggregated.g.",i)
     }
-    nplots<-ncol(new.values)
-    if("aggr"%in%plot){
-      nplots<-nplots+1
-      new.values<-cbind(new.values,values[,aggr,drop=FALSE])
-    }
-    plot.order<-c(1:nplots)
   }
   else{
-    new.values<-cbind(if("methods"%in%plot){values[,-aggr,drop=FALSE]},if("aggr"%in%plot){values[,aggr,drop=FALSE]})
-    nplots<-ncol(new.values)
-    plot.order<-c(1:nplots)
+    new.values<-values[,-aggr,drop=FALSE]
   }
+  new.values<-cbind(new.values,values[,aggr,drop=FALSE])
+  plot.order<-c(1:ncol(new.values))
+  if(!"methods"%in%plot){
+    plot.order<-plot.order[-which(plot.order%in%which(colnames(new.values)%in%colnames(values)[-aggr]))]
+  }
+  if(!"aggr"%in%plot){
+    plot.order<-plot.order[-which(plot.order%in%which(colnames(new.values)==colnames(values)[aggr]))]
+  }
+  nplots<-length(plot.order)
 
   if(is.list(lims)){
     if(length(lims)==nplots){
@@ -252,11 +257,23 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
   }
 
   for(i in 1:nplots){
+    if("groups"%in%plot){
+      if(colnames(new.values)[plot.order[i]]%in%colnames(values)[-aggr]){
+        g<-which(colnames(new.values)%in%colnames(values)[which(groups%in%groups[colnames(values)[-aggr]%in%colnames(new.values)[plot.order[i]]])])
+      }
+      else if(colnames(new.values)[plot.order[i]]==colnames(values)[aggr]){
+        g<-which(colnames(new.values)%in%colnames(values)[-aggr])
+      }
+      else{
+        g<-which(colnames(new.values)%in%colnames(values)[-aggr][groups%in%which(colnames(new.values)[-which(colnames(new.values)%in%colnames(values))]==colnames(new.values)[plot.order[i]])])
+      }
+    }
+
     if(is.character(map.lims[[i]])){
-      map.lims[[i]]<-char.to.num.lims(map.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
+      map.lims[[i]]<-char.to.num.lims(map.lims[[i]],new.values,plot.order[i],g)
     }
     if(thermo&&is.character(thermo.lims[[i]])){
-      temp<-char.to.num.lims(thermo.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
+      temp<-char.to.num.lims(thermo.lims[[i]],new.values,plot.order[i],g)
       if(branch&&"branch.col.freqs"%in%names(plot.mapping.args[[i]])){
         thermo.lims[[i]]<-c("thermo.lims"=list(temp),"lims"=list(thermo.lims[[i]]))
       }
@@ -265,7 +282,6 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       }
     }
   }
-
 
   if(type=="branch"&disag!=FALSE&"aggr"%in%plot){
     if(is.character(disag)){
@@ -319,7 +335,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       }
     }
 
-    if(thermo&&!colnames(new.values)[i]%in%colnames(values)[-aggr]){
+    if(thermo&&!colnames(new.values)[plot.order[i]]%in%colnames(values)[-aggr]){
       root.value<-ifelse(type=="branch",FALSE,TRUE)
 
       if(length(order)==1&&order=="edge"){
@@ -330,10 +346,10 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       }
 
       TV.args<-c(list("tree"=tree,
-                      "values"=if("groups"%in%plot&&(!colnames(new.values)[i]%in%colnames(values))){cbind(values[,which(groups==as.numeric(strsplit(colnames(new.values)[i],"Aggregated.g.")[[1]][2])),drop=FALSE],new.values[,i,drop=FALSE])}else{values},
+                      "values"=if("groups"%in%plot&&(!colnames(new.values)[plot.order[i]]%in%colnames(values))){cbind(values[,which(groups==as.numeric(strsplit(colnames(new.values)[plot.order[i]],"Aggregated.g.")[[1]][2])),drop=FALSE],new.values[,plot.order[i],drop=FALSE])}else{values},
                       "thermo.lims"=thermo.lims[[i]],
                       "order"=order,
-                      "aggr"=ifelse("groups"%in%plot&&(!colnames(new.values)[i]%in%colnames(values)),TRUE,aggr),
+                      "aggr"=ifelse("groups"%in%plot&&(!colnames(new.values)[plot.order[i]]%in%colnames(values)),TRUE,aggr),
                       "root.value"=root.value
       ),
       thermo.var.args[names(thermo.var.args)%in%c("resolution","aggr.bar","aggr.bar.col","border","cex","width","height","adj")])
