@@ -197,12 +197,16 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       groups<-lapply(groups,function(x){if(is.character(x)){which(colnames(values)%in%x)}else{x}})
       groups<-rep(1:length(groups),sapply(groups,length))[order(unlist(groups))]
     }
+    else if(is.character(groups)&&!is.null(names(groups))){
+      groups<-groups[match(colnames(values),groups)]
+      groups<-sapply(names(groups),function(x){which(unique(names(groups))==x)})
+    }
   }
 
   if("groups"%in%plot){
     new.values<-NULL
     for(i in 1:max(groups)){
-      new.values<-cbind(new.values,if("methods"%in%plot){values[,which(groups==i),drop=FALSE]},apply(values[,which(groups==i)],1,mean))
+      new.values<-cbind(new.values,if("methods"%in%plot){values[,which(groups==i),drop=FALSE]},apply(values[,which(groups==i),drop=FALSE],1,mean))
       colnames(new.values)[ncol(new.values)]<-paste0("Aggregated.g.",i)
     }
     nplots<-ncol(new.values)
