@@ -198,7 +198,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
       groups<-rep(1:length(groups),sapply(groups,length))[order(unlist(groups))]
     }
     else if(is.character(groups)&&!is.null(names(groups))){
-      groups<-groups[match(colnames(values),groups)]
+      groups<-groups[match(colnames(values)[-aggr],groups)]
       groups<-sapply(names(groups),function(x){which(unique(names(groups))==x)})
     }
   }
