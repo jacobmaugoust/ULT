@@ -255,7 +255,7 @@ aggr.trait.map<-function(tree,values,type=c("taxa","branch"),plot=c("methods","g
     if(is.character(map.lims[[i]])){
       map.lims[[i]]<-char.to.num.lims(map.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
     }
-    if(is.character(thermo.lims[[i]])){
+    if(thermo&&is.character(thermo.lims[[i]])){
       temp<-char.to.num.lims(thermo.lims[[i]],values,i,if("groups"%in%plot){which(groups==i)})
       if(branch&&"branch.col.freqs"%in%names(plot.mapping.args[[i]])){
         thermo.lims[[i]]<-c("thermo.lims"=list(temp),"lims"=list(thermo.lims[[i]]))
